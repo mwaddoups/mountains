@@ -1,7 +1,12 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from authemail.models import EmailUserManager, EmailAbstractUser
 
-# Create your models here.
-class User(AbstractUser):
-    pass
+# We use a custom user model
+
+class User(EmailAbstractUser):
+    # Custom fields below...
+    mobile_number = models.CharField(max_length=15, blank=True)
+
+    # Required
+    objects = EmailUserManager()
