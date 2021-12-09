@@ -8,6 +8,7 @@ import {
 import Navigation from "./components/Navigation";
 import Landing from "./components/Landing";
 import Platform from "./components/Platform";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="members" element={<Platform />} />
           </Route>
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
