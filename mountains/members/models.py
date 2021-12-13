@@ -17,3 +17,4 @@ class Event(models.Model):
     description = models.TextField(blank=False)
     attendees = models.ManyToManyField(User)
     max_attendees = models.IntegerField(null=True, blank=False)
+    organiser = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='organiser')
