@@ -22,9 +22,9 @@ function App() {
           <Routes>
             <Route path="/">
               <Route index element={<Landing />} />
-              <Route path="members" element={<Platform />}>
+              <Route path="platform" element={<Platform />}>
                 <Route index element={<Feed />} />
-                <Route path="directory" element={<Members />} />
+                <Route path="members" element={<Members />} />
                 <Route path="events" element={<Events />} />
               </Route>
             </Route>

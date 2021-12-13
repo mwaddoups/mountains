@@ -20,7 +20,7 @@ function Sidebar() {
   let links = [
     ["", "Feed"],
     ["events", "Events"],
-    ["directory", "Members"],
+    ["members", "Members"],
   ]
 
   return (

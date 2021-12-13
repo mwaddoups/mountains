@@ -10,7 +10,7 @@ export default function Navigation() {
         </span>
       </div>
       <Link to="/" className="h-full p-4 hover:bg-gray-200">Home</Link>
-      <Link to="/members" className="h-full p-4 hover:bg-gray-200">Members Area</Link>
+      <Link to="/platform" className="h-full p-4 hover:bg-gray-200">Members Area</Link>
     </nav>
   )
 }
