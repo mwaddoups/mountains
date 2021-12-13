@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'authemail',
     'members',
+    'social',
 ]
 
 AUTH_USER_MODEL = 'members.User'

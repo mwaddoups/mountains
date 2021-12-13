@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from members import views
+from members.views import UserViewSet
+from social.views import FeedPostViewSet
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'posts', FeedPostViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
