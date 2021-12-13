@@ -9,6 +9,7 @@ python = "^3.10"
 Django = "^3.2"
 django-rest-framework = "^0.1.0"
 django-rest-authemail = "^2.1.1"
+django-cors-headers = "^3.10.1"
 
 [tool.poetry.dev-dependencies]
 

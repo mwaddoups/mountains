@@ -46,6 +46,17 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-cors-headers"
+version = "3.10.1"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Django = ">=2.2"
+
+[[package]]
 name = "django-rest-authemail"
 version = "2.1.1"
 description = "A RESTful API for user signup and authentication using email addresses"
@@ -138,7 +149,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "91456b7e5da8b5bfcb651e580a1064fc6f9c3972a6d0ac0600602a74a100534f"
+content-hash = "97a3f200652bdb0ce380a8acd8a04cf8e82eb5650edd90df0c6d1aec62603c0a"
 
 [metadata.files]
 asgiref = [
@@ -156,6 +167,10 @@ charset-normalizer = [
 django = [
     {file = "Django-3.2.10-py3-none-any.whl", hash = "sha256:df6f5eb3c797b27c096d61494507b7634526d4ce8d7c8ca1e57a4fb19c0738a3"},
     {file = "Django-3.2.10.tar.gz", hash = "sha256:074e8818b4b40acdc2369e67dcd6555d558329785408dcd25340ee98f1f1d5c4"},
+]
+django-cors-headers = [
+    {file = "django-cors-headers-3.10.1.tar.gz", hash = "sha256:b5a874b492bcad99f544bb76ef679472259eb41ee5644ca62d1a94ddb26b7f6e"},
+    {file = "django_cors_headers-3.10.1-py3-none-any.whl", hash = "sha256:1390b5846e9835b0911e2574409788af87cd9154246aafbdc8ec546c93698fe6"},
 ]
 django-rest-authemail = [
     {file = "django-rest-authemail-2.1.1.tar.gz", hash = "sha256:972e53f5aa3430609b4273375d751239e4be8a271a47a30da54c8095dc6ef51d"},
