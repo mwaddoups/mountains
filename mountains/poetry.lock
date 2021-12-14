@@ -92,6 +92,18 @@ python-versions = ">=3.5"
 django = ">=2.2"
 
 [[package]]
+name = "drfpasswordless"
+version = "1.5.7"
+description = "Passwordless auth for Django Rest Framework Token Authentication."
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+Django = "*"
+djangorestframework = "*"
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -149,7 +161,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "97a3f200652bdb0ce380a8acd8a04cf8e82eb5650edd90df0c6d1aec62603c0a"
+content-hash = "b09d669a39babf2a9f59af7936821fa39c1fb024339d23969e366025b630a55a"
 
 [metadata.files]
 asgiref = [
@@ -182,6 +194,10 @@ django-rest-framework = [
 djangorestframework = [
     {file = "djangorestframework-3.12.4-py3-none-any.whl", hash = "sha256:6d1d59f623a5ad0509fe0d6bfe93cbdfe17b8116ebc8eda86d45f6e16e819aaf"},
     {file = "djangorestframework-3.12.4.tar.gz", hash = "sha256:f747949a8ddac876e879190df194b925c177cdeb725a099db1460872f7c0a7f2"},
+]
+drfpasswordless = [
+    {file = "drfpasswordless-1.5.7-py3-none-any.whl", hash = "sha256:48a672fb974a2a85dd9f279b9d8252008ea12a8bdd1b0c76da8c6b954fe2c8c6"},
+    {file = "drfpasswordless-1.5.7.tar.gz", hash = "sha256:f5c9355c35b41e9666920647225a0e69c515d9397b2e4a3b2a503141a3b6eb91"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'authemail',
+    'drfpasswordless',
     'corsheaders',
     'members',
     'social',
@@ -57,6 +58,11 @@ REST_FRAMEWORK = {
     )
 }
 
+PASSWORDLESS_AUTH = {
+    'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@example.com',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,6 +77,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'mountains.urls'
 
