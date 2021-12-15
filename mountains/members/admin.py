@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
-from authemail.admin import EmailUserAdmin
-from .models import Event
+from django.contrib.auth.admin import UserAdmin
+from .models import User
 
-class UserAdmin(EmailUserAdmin):
+class CustomUserAdmin(UserAdmin):
+    list_display = ('email', 'is_staff', 'is_superuser')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Information', {'fields': ('first_name', 'last_name', 'mobile_number')}),
@@ -11,14 +11,14 @@ class UserAdmin(EmailUserAdmin):
             'is_active',
             'is_staff',
             'is_superuser',
-            'is_verified',
             'groups',
             'user_permissions',
         )}),
         ('Relevant Dates', {'fields': ('last_login', 'date_joined')}),
     )
 
-admin.site.unregister(get_user_model())
-admin.site.register(get_user_model(), UserAdmin)
+    search_fields = ('email',)
+    ordering = ('email',)
+    filter_horizontal = ()
 
-admin.site.register(Event)
+admin.site.register(User, CustomUserAdmin)

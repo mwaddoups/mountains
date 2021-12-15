@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from members.views import UserViewSet, EventViewSet
+from members.views import UserViewSet
+from events.views import EventViewSet
 from social.views import FeedPostViewSet
 
 router = routers.DefaultRouter()
