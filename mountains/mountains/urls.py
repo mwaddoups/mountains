@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers
 
-from members.views import UserViewSet
+from members.views import ExperienceViewSet, UserViewSet
 from events.views import EventViewSet
 from social.views import FeedPostViewSet
 
@@ -26,9 +26,13 @@ router.register(r'users', UserViewSet)
 router.register(r'events', EventViewSet)
 router.register(r'posts', FeedPostViewSet)
 
+domains_router = routers.NestedDefaultRouter(router, r'users', lookup='user')
+domains_router.register(r'experience', ExperienceViewSet, basename='experience')
+
 urlpatterns = [
-    path('', include(router.urls)),
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include('drfpasswordless.urls')),
+    path(r'', include(router.urls)),
+    path(r'', include(domains_router.urls)),
+    path(r'admin/', admin.site.urls),
+    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path(r'', include('drfpasswordless.urls')),
 ]
