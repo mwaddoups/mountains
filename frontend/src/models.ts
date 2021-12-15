@@ -2,7 +2,8 @@ export type User = {
   id: number,
   first_name: string,
   last_name: string,
-  phone_number: string,
+  mobile_number: string,
+  about: string,
 }
 
 export type Event = {

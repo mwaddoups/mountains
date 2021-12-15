@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Outlet, Link, useOutletContext } from "react-router-dom";
 
 import Login from "./Login";
@@ -6,7 +6,13 @@ import Login from "./Login";
 type AuthContext = { authToken: string | null }
 
 export default function Platform() {
-  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
+
+  const storeAuth = useCallback(token => {
+    console.log('Storing authorization token...')
+    localStorage.setItem('token', token);
+    setAuthToken(token);
+  }, [setAuthToken])
 
   return (
     authToken 
@@ -19,7 +25,7 @@ export default function Platform() {
         </div>
       </main>
     </div>
-    : <Login setAuthToken={setAuthToken}/>
+    : <Login setAuthToken={storeAuth}/>
   
   )
 }

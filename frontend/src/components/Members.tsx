@@ -11,11 +11,7 @@ export default function Members() {
 
   useEffect(() => {
     setIsLoading(true);
-    api.get("users/", {
-      headers: {
-        'Authorization': `Token ${authToken}`
-      }
-    }).then(response => {
+    api.get("users/").then(response => {
       setUserList(response.data);
       setIsLoading(false);
     });
