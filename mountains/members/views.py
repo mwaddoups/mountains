@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, views
+from rest_framework.response import Response
 from .models import User, Experience
 from .serializers import ExperienceSerializer, UserSerializer
 
@@ -6,6 +7,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class SelfUserView(views.APIView):
+    """
+    Simple view for getting the current user id
+    """
+    def get(self, request):
+        serialized = UserSerializer(request.user)
+        return Response(serialized.data)
 
 class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.all()

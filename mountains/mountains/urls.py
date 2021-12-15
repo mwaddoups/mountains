@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
 
-from members.views import ExperienceViewSet, UserViewSet
+from members.views import ExperienceViewSet, UserViewSet, SelfUserView
 from events.views import EventViewSet
 from social.views import FeedPostViewSet
 
@@ -30,6 +30,7 @@ domains_router = routers.NestedDefaultRouter(router, r'users', lookup='user')
 domains_router.register(r'experience', ExperienceViewSet, basename='experience')
 
 urlpatterns = [
+    path(r'users/self/', SelfUserView.as_view()),
     path(r'', include(router.urls)),
     path(r'', include(domains_router.urls)),
     path(r'admin/', admin.site.urls),
