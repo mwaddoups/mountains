@@ -2,9 +2,18 @@ export type User = {
   id: number,
   first_name: string,
   last_name: string,
+  profile_picture: string | undefined,
+}
+
+
+export type Experiences = {
+  hillwalking: number,
+}
+
+export interface FullUser extends User {
   mobile_number: string,
   about: string,
-  profile_picture: string | undefined,
+  experience: Experiences
 }
 
 

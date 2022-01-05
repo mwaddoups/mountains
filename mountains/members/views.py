@@ -1,12 +1,17 @@
 from rest_framework import viewsets, permissions, views
 from rest_framework.response import Response
 from .models import User, Experience
-from .serializers import ExperienceSerializer, UserSerializer
+from .serializers import ExperienceSerializer, SmallUserSerializer, UserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return UserSerializer
+        return SmallUserSerializer
 
 class SelfUserView(views.APIView):
     """

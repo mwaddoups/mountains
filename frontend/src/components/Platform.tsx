@@ -21,9 +21,10 @@ export default function Platform() {
   }, [setAuthToken])
 
   useEffect(() => {
-    api.get('users/self').then(res => setCurrentUser(res.data))
-    // This does depend on authtoken, but it's fairly implicit.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (authToken) {
+      console.log(authToken)
+      api.get('users/self').then(res => setCurrentUser(res.data))
+    }
   }, [authToken])
 
   return (

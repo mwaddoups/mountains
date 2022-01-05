@@ -1,3 +1,5 @@
+import os
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
@@ -26,12 +28,22 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+def get_profile_pic_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return os.path.join('uploads', 'profile', filename)
+
 class User(AbstractUser):
     # We redefine email because it must be set as unique
     email = models.EmailField('email address', unique=True)
     # Other custom fields can then be added below.
     mobile_number = models.CharField(max_length=50, blank=True)
     about = models.TextField('about you', blank=True)
+    profile_picture = models.ImageField(
+        upload_to=get_profile_pic_filename,
+        null=True,
+        blank=True,
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -41,12 +53,12 @@ class User(AbstractUser):
 
 class Experience(models.Model):
     EXP_LEVELS = (
-        (0, 'Not Interested'),
+        (0, 'No Experience'),
         (1, 'Beginner'),
-        (2, 'Competent'),
-        (3, 'Happy Leading'),
+        (2, 'Second'),
+        (3, 'Leader'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='experience', primary_key=True)
     hillwalking = models.IntegerField(choices=EXP_LEVELS)
     scrambling = models.IntegerField(choices=EXP_LEVELS)
     trad_climbing = models.IntegerField(choices=EXP_LEVELS)

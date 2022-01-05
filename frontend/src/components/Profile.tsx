@@ -1,34 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
-import { User } from "../models";
+import { FullUser } from "../models";
 import { useAuth } from "./Platform";
 
-type Experiences = {
-  hillwalking: number,
-}
-
-interface UserWithExperience extends User {
-  experience: Experiences
-}
-
 export default function Profile() {
-  const [user, setUser] = useState<UserWithExperience | null>(null)
+  const [user, setUser] = useState<FullUser | null>(null);
   let { memberId } = useParams();
 
-  const authToken = useAuth();
+  const {currentUser} = useAuth();
 
   // Fetch the user data together with the experience
   useEffect(() => {
     api.get(`users/${memberId}`).then(response => {
       let foundUser = response.data;
-      api.get(`users/${memberId}/experience`).then(response => {
-        foundUser.experience = response.data[0];
-        setUser(foundUser);
-        console.log(foundUser)
-      })
+      setUser(foundUser)
     });
-  }, [setUser, authToken, memberId])
+  }, [setUser, memberId])
 
   return (
     <div className="transition-all">
