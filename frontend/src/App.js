@@ -10,7 +10,7 @@ import Landing from "./components/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
 import Members from "./components/Members";
-import Feed from "./components/Feed";
+import Feed from "./components/feed/Feed";
 import Events from "./components/Events";
 import Profile from "./components/Profile";
 
