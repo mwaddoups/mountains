@@ -19,12 +19,13 @@ from rest_framework_nested import routers
 
 from members.views import ExperienceViewSet, UserViewSet, SelfUserView
 from events.views import EventViewSet
-from social.views import FeedPostViewSet
+from social.views import FeedPostViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'events', EventViewSet)
 router.register(r'posts', FeedPostViewSet)
+router.register(r'comments', CommentViewSet)
 
 domains_router = routers.NestedDefaultRouter(router, r'users', lookup='user')
 domains_router.register(r'experience', ExperienceViewSet, basename='experience')
