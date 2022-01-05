@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import { User } from "../models";
-import { useAuth } from "./Platform";
 import Loading from "./Loading";
 
 export default function Members() {
   const [userList, setUserList] = useState<Array<User>>([])
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
     setIsLoading(true);
     api.get("users/").then(response => {
