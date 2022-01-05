@@ -19,7 +19,8 @@ export type Event = {
 }
 
 export type FeedPost = {
-  id: number
+  id: number,
+  url: string,
   user: User,
   posted: Date,
   text: string,
@@ -28,7 +29,7 @@ export type FeedPost = {
 
 export type Comment = {
   id: number,
-  post_id: number,
+  post_id: string,
   user: User,
   posted: Date,
   text: string,

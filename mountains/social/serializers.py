@@ -7,14 +7,14 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         # Use authenticated user to author the comment
-        return FeedPost.objects.create(
+        return Comment.objects.create(
             user=self.context['request'].user,
             **validated_data
         )
     class Meta:
       model = Comment
       fields = ['id', 'post_id', 'user', 'posted', 'text']
-      read_only_fields = ['id', 'post_id', 'user', 'posted']
+      read_only_fields = ['user', 'posted']
 
 
 class FeedPostSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,5 +30,5 @@ class FeedPostSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = FeedPost
-        fields = ['id', 'user', 'posted', 'text', 'comments']
-        read_only_fields = ['id', 'posted']
+        fields = ['id', 'url', 'user', 'posted', 'text', 'comments']
+        read_only_fields = ['posted']
