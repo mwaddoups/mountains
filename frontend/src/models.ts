@@ -6,6 +6,7 @@ export type User = {
   about: string,
 }
 
+
 export type Event = {
   id: number,
   title: string,
@@ -15,4 +16,20 @@ export type Event = {
   attendees: Array<User>,
   max_attendees: number | null,
   organiser: User | null,
+}
+
+export type FeedPost = {
+  id: number
+  user: User,
+  posted: Date,
+  text: string,
+  comments: Array<Comment>,
+}
+
+export type Comment = {
+  id: number,
+  post_id: number,
+  user: User,
+  posted: Date,
+  text: string,
 }

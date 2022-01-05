@@ -21,7 +21,7 @@ export default function Platform() {
       <Sidebar />
       <main className="ml-40">
         <div className="container p-2 mx-auto">
-          <Outlet context={authToken} />
+          <Outlet context={{authToken}} />
         </div>
       </main>
     </div>
