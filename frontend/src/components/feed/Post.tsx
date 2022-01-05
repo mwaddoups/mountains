@@ -3,6 +3,7 @@ import api from "../../api";
 import * as models from "../../models";
 import Comment from "./Comment";
 import CommentCreator from "./CommentCreator";
+import UserPost from "./UserPost";
 
 export default function Post(initialPost: models.FeedPost) {
   let [post, setPost] = useState<models.FeedPost>(initialPost);
@@ -14,10 +15,11 @@ export default function Post(initialPost: models.FeedPost) {
 
   return (
     <div className="m-5 p-5 block rounded bg-gray-200">
-      <h3>{post.user.first_name} {post.user.last_name} ({post.posted})</h3>
-      <p>{post.text}</p>
-      {post.comments.map((comment: models.Comment) => <Comment key={comment.id} {...comment} />)}
-      <CommentCreator postUrl={post.url} updateComments={updatePost} />
+      <UserPost user={post.user} posted={post.posted} text={post.text} />
+      <div className="ml-2">
+        {post.comments.map((comment: models.Comment) => <Comment key={comment.id} {...comment} />)}
+        <CommentCreator postUrl={post.url} updateComments={updatePost} />
+      </div>
     </div>
   )
 }

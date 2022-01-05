@@ -4,6 +4,7 @@ export type User = {
   last_name: string,
   mobile_number: string,
   about: string,
+  profile_picture: string | undefined,
 }
 
 

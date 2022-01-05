@@ -18,7 +18,7 @@ export default function CommentCreator({postUrl, updateComments}: CommentCreator
 
     setCommentText('');
     updateComments();
-  }, [postUrl, commentText, setCommentText, updateComments])
+  }, [commentText, setCommentText, updateComments, postUrl])
 
   return (
     <form onSubmit={e => e.preventDefault()}>
