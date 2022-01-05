@@ -1,12 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Outlet, Link, useOutletContext } from "react-router-dom";
+import api from "../api";
 
+import { User } from "../models";
 import Login from "./Login";
 
-type AuthContext = { authToken: string | null }
+type AuthContext = { 
+  authToken: string,
+  currentUser: User,
+}
 
 export default function Platform() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const storeAuth = useCallback(token => {
     console.log('Storing authorization token...')
@@ -14,15 +20,21 @@ export default function Platform() {
     setAuthToken(token);
   }, [setAuthToken])
 
+  useEffect(() => {
+    api.get('users/self').then(res => setCurrentUser(res.data))
+    // This does depend on authtoken, but it's fairly implicit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authToken])
+
   return (
-    authToken 
+    (authToken && currentUser)
     ?
-    <div className="min-h-full">
-      <Sidebar />
-      <main className="ml-40">
-        <div className="container p-2 mx-auto">
-          <Outlet context={{authToken}} />
-        </div>
+    <div className="min-h-screen container flex">
+      <div className="min-w-32 flex-none">
+        <Sidebar user={currentUser} />
+      </div>
+      <main className="ml-5 flex-auto w-full">
+        <Outlet context={{currentUser, authToken}} />
       </main>
     </div>
     : <Login setAuthToken={storeAuth}/>
@@ -34,16 +46,19 @@ export function useAuth() {
   return useOutletContext<AuthContext>();
 }
 
-function Sidebar() {
-  let links = [
-    ["", "Feed"],
-    ["events", "Events"],
-    ["members", "Members"],
-  ]
+interface SidebarProps {
+  user: User,
+}
+
+function Sidebar({user}: SidebarProps) {
+  const linkStyles = "block mx-1 p-2 text-sm rounded hover:bg-gray-300"
 
   return (
-    <nav className="w-32 fixed bg-gray-100 h-full">
-      {links.map(([url, name], ix) => <Link key={ix} to={url} className="block m-1 p-2 text-sm rounded hover:bg-gray-300">{name}</Link>)}
+    <nav className="bg-gray-100 py-1">
+      <Link to={`members/${user.id}`} className={linkStyles}>{user.first_name} {user.last_name}</Link>
+      <Link to="" className={linkStyles}>Feed</Link>
+      <Link to="events" className={linkStyles}>Events</Link>
+      <Link to="members" className={linkStyles}>Members</Link>
     </nav>
   )
 }

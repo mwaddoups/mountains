@@ -1644,6 +1644,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/dateformat@^5.0.0":
+  "integrity" "sha512-SZg4JdHIWHQGEokbYGZSDvo5wA4TLYPXaqhigs/wH+REDOejcJzgH+qyY+HtEUtWOZxEUkbhbdYPqQDiEgrXeA=="
+  "resolved" "https://registry.npmjs.org/@types/dateformat/-/dateformat-5.0.0.tgz"
+  "version" "5.0.0"
+
 "@types/eslint-visitor-keys@^1.0.0":
   "integrity" "sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag=="
   "resolved" "https://registry.npmjs.org/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz"
@@ -3885,6 +3890,11 @@
     "abab" "^2.0.0"
     "whatwg-mimetype" "^2.2.0"
     "whatwg-url" "^7.0.0"
+
+"dateformat@^5.0.2":
+  "integrity" "sha512-h9vywpuz+ReixnJTwFx5JLtZpS8eLCbRm8shwwKkCKOZA547N6yoMtD3W91Z6+NFZ8wOaZlcaCcK/w+kELhSVg=="
+  "resolved" "https://registry.npmjs.org/dateformat/-/dateformat-5.0.2.tgz"
+  "version" "5.0.2"
 
 "debug@^2.2.0":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="

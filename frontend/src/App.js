@@ -19,7 +19,7 @@ function App() {
     <div className="container mx-auto px-20">
       <Router>
         <Navigation />
-        <div className="min-h-screen pt-16">
+        <div className="min-h-screen">
           <Routes>
             <Route path="/">
               <Route index element={<Landing />} />

@@ -11,8 +11,8 @@ export type User = {
 export type Event = {
   id: number,
   title: string,
-  created_date: Date,
-  event_date: Date,
+  created_date: string,
+  event_date: string,
   description: string,
   attendees: Array<User>,
   max_attendees: number | null,
@@ -23,7 +23,7 @@ export type FeedPost = {
   id: number,
   url: string,
   user: User,
-  posted: Date,
+  posted: string,
   text: string,
   comments: Array<Comment>,
 }
@@ -32,6 +32,6 @@ export type Comment = {
   id: number,
   post_id: string,
   user: User,
-  posted: Date,
+  posted: string,
   text: string,
 }
