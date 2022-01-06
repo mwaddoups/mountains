@@ -4,6 +4,7 @@ import { Outlet, Link } from "react-router-dom";
 import { User } from "../models";
 import { useAuth } from "./Layout";
 import Login from "./Login";
+import ProfileEditor from "./ProfileEditor";
 
 export default function Platform() {
   const { authToken, currentUser, storeAuth } = useAuth();
@@ -12,27 +13,23 @@ export default function Platform() {
     return <Login setAuthToken={storeAuth} />
   }
 
+  if (authToken && currentUser && !currentUser.is_approved) {
+    return <ProfileEditor />
+  }
+
   return (
-    (authToken && currentUser)
-    ?
     <div className="min-h-screen container flex">
       <div className="w-32 flex-none grow bg-gray-100">
-        <Sidebar user={currentUser} />
+        <Sidebar />
       </div>
       <main className="ml-5 flex-auto w-full my-3">
         <Outlet />
       </main>
     </div>
-    : <Login setAuthToken={storeAuth}/>
-  
   )
 }
 
-interface SidebarProps {
-  user: User,
-}
-
-function Sidebar({user}: SidebarProps) {
+function Sidebar() {
   const linkStyles = "block mx-1 p-2 text-sm rounded hover:bg-gray-300"
 
   return (

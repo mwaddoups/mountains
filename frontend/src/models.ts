@@ -4,6 +4,7 @@ export type User = {
   first_name: string,
   last_name: string,
   profile_picture: string | undefined,
+  is_approved: boolean,
 }
 
 export type Experiences = {
