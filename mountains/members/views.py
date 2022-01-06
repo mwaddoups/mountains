@@ -9,16 +9,16 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return UserSerializer
-        return SmallUserSerializer
+        if self.action == 'list':
+            return SmallUserSerializer
+        return UserSerializer
 
 class SelfUserView(generics.GenericAPIView):
     """
     Simple view for getting the current user id
     """
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def get(self, request):
         serialized = UserSerializer(request.user, context={'request': request})
         return Response(serialized.data)

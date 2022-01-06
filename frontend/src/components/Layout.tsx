@@ -8,14 +8,20 @@ export default function Landing() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
-  useEffect(() => {
+  const refreshUser = useCallback(async () => {
     if (authToken) {
-      console.log(`Fetching user for ${authToken}...`)
-      api.get('users/self').then(res => setCurrentUser(res.data))
+      console.log(`Fetching user for ${authToken}...`);
+      const res = await api.get('users/self');
+      setCurrentUser(res.data);
     }
   }, [authToken])
 
-  const storeAuth = useCallback(token => {
+  useEffect(() => {
+    const f = async () => await refreshUser();
+    f();
+  }, [refreshUser]);
+
+  const storeAuth = useCallback(async token => {
     console.log('Storing authorization token...')
     localStorage.setItem('token', token);
     setAuthToken(token);
@@ -28,7 +34,7 @@ export default function Landing() {
     setCurrentUser(null);
   }, [setAuthToken])
 
-  const authContext = {currentUser, authToken, storeAuth, logout, setCurrentUser}
+  const authContext = {currentUser, authToken, storeAuth, logout, refreshUser}
 
 
   return (

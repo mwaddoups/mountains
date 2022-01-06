@@ -49,7 +49,7 @@ export type Comment = {
 export type AuthContext = { 
   authToken: string | null,
   currentUser: FullUser | null,
-  setCurrentUser: (a: FullUser | null) => void,
+  refreshUser: () => void,
   storeAuth: (a: string | null) => void,
   logout: () => void,
 }

@@ -27,7 +27,7 @@ export default function Profile() {
           </h1>
         </div>
         <div className="pt-4">
-          <Link to="edit"><button className={buttonStyle}>Edit profile</button></Link>
+          <Link to="../members/edit"><button className={buttonStyle}>Edit profile</button></Link>
         </div>
         <div className="py-4">
           Badges go here

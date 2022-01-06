@@ -6,7 +6,8 @@ import Login from "./Login";
 import ProfileEditor from "./ProfileEditor";
 
 export default function Platform() {
-  const { authToken, currentUser, storeAuth } = useAuth();
+  const authContext = useAuth()
+  const { authToken, currentUser, storeAuth } = authContext;
 
   if (!authToken) {
     return <Login setAuthToken={storeAuth} />
@@ -22,7 +23,7 @@ export default function Platform() {
         <Sidebar />
       </div>
       <main className="ml-5 flex-auto w-full my-3">
-        <Outlet />
+        <Outlet context={authContext} />
       </main>
     </div>
   )

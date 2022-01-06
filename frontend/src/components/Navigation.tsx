@@ -12,7 +12,6 @@ export default function Navigation({ authContext }: NavigationProps) {
   const {currentUser, logout} = authContext;
 
   const linkStyles = "h-full p-4 hover:bg-gray-200";
-  console.log(currentUser)
 
   return (
     <nav className="container flex items-center border-b-4 text-gray-900 bg-white sticky h-16">
