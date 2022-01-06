@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 
-import { User } from "../models";
 import { useAuth } from "./Layout";
 import Login from "./Login";
 import ProfileEditor from "./ProfileEditor";

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import api from "../api";
-import { User, AuthContext } from "../models";
+import { FullUser, AuthContext } from "../models";
 import Navigation from "./Navigation";
 
 export default function Landing() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
   useEffect(() => {
     if (authToken) {
@@ -28,7 +28,7 @@ export default function Landing() {
     setCurrentUser(null);
   }, [setAuthToken])
 
-  const authContext = {currentUser, authToken, storeAuth, logout}
+  const authContext = {currentUser, authToken, storeAuth, logout, setCurrentUser}
 
 
   return (

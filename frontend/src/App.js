@@ -2,7 +2,8 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom";
 
 import Landing from "./components/Landing";
@@ -25,11 +26,12 @@ function App() {
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Feed />} />
                 <Route path="members" element={<Members />} />
-                <Route path="members/:memberId/edit" element={<ProfileEditor />} />
+                <Route path="members/edit" element={<ProfileEditor />} />
                 <Route path="members/:memberId" element={<Profile />} />
                 <Route path="events" element={<Events />} />
               </Route>
             </Route>
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         <Footer />
       </Router>
