@@ -18,7 +18,7 @@ class SelfUserView(views.APIView):
     Simple view for getting the current user id
     """
     def get(self, request):
-        serialized = UserSerializer(request.user)
+        serialized = UserSerializer(request.user, context={'request': request})
         return Response(serialized.data)
 
 class ExperienceViewSet(viewsets.ModelViewSet):

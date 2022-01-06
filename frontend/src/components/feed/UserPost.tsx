@@ -12,7 +12,9 @@ interface UserPostProps {
 export default function UserPost({user, posted, text}: UserPostProps) {
   return (
     <div className="flex">
-      <ProfilePicture imageUrl={user.profile_picture} />
+      <div className="w-8 h-8">
+        <ProfilePicture imageUrl={user.profile_picture} />
+      </div>
       <div className="ml-3">
         <span className="font-semibold">{get_username(user)}</span>
         <span className="ml-3 text-sm font-light">{describe_date(posted)}</span>
