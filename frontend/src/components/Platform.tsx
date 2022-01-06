@@ -8,6 +8,10 @@ import Login from "./Login";
 export default function Platform() {
   const { authToken, currentUser, storeAuth } = useAuth();
 
+  if (!authToken) {
+    return <Login setAuthToken={storeAuth} />
+  }
+
   return (
     (authToken && currentUser)
     ?
@@ -16,7 +20,7 @@ export default function Platform() {
         <Sidebar user={currentUser} />
       </div>
       <main className="ml-5 flex-auto w-full my-3">
-        <Outlet context={{currentUser, authToken}} />
+        <Outlet />
       </main>
     </div>
     : <Login setAuthToken={storeAuth}/>

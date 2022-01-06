@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getName } from "../methods/user";
 import { AuthContext } from "../models";
 import ProfilePicture from "./ProfilePicture";
 
@@ -25,7 +26,7 @@ export default function Navigation({ authContext }: NavigationProps) {
       {currentUser && (
         <>
         <Link to={`/platform/members/${currentUser.id}`} className={linkStyles + " ml-auto flex"}>
-          <span className="mr-2">{currentUser.first_name} {currentUser.last_name}</span>
+          <span className="mr-2">{getName(currentUser)}</span>
           <div className="w-8 h-8"><ProfilePicture imageUrl={currentUser.profile_picture} /></div>
         </Link>
         <Link to="/" onClick={logout} className={linkStyles}>Logout</Link>

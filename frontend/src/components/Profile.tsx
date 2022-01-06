@@ -39,7 +39,7 @@ export default function Profile() {
         <div>
           <h2 className="text-3xl font-medium">Experience</h2>
           <ul>
-            <li>Hillwalking - {user?.experience.hillwalking}</li>
+            <li>Hillwalking - {user?.experience?.hillwalking}</li>
           </ul>
         </div>
       </div>

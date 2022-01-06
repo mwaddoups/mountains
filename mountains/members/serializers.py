@@ -16,10 +16,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = [
             'id', 'first_name', 'last_name', 'mobile_number', 
-            'about', 'experience', 'profile_picture'
+            'about', 'experience', 'profile_picture', 'is_approved'
         ]
 
 class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'url', 'first_name', 'last_name', 'profile_picture']
+        fields = [
+            'id', 'url', 'first_name', 'last_name', 'profile_picture', 
+            'is_approved'
+        ]

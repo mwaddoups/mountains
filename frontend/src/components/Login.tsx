@@ -29,17 +29,28 @@ export default function Login({ setAuthToken }: LoginProps) {
     }).catch(res => console.log(res))
   }, [email, token, setAuthToken]);
 
+  const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
+  const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline" 
+
   return (
-    <form onSubmit={e => e.preventDefault()}>
-      <label htmlFor="email">Email</label>
-      <input type="email" id="email" value={email} onChange={event => setEmail(event.target.value)}/>
-      {waitingForToken && (
-        <>
-        <label htmlFor="token">Token (check email)</label>
-        <input type="number" id="token" value={token} onChange={event => setToken(event.target.value)} />
-        </>
-      )}
-      <button onClick={waitingForToken ? sendLogin : requestToken}>Login/Signup</button>
+    <form onSubmit={e => e.preventDefault()} className="max-w-xs mx-auto bg-white shadow-md rounded p-8 m-4">
+      <div className="mb-4">
+        <label htmlFor="email" className={labelStyles}>Email</label>
+        <input 
+          className={inputStyles} placeholder="Email"
+          type="email" id="email" value={email} onChange={event => setEmail(event.target.value)}/>
+        {waitingForToken && (
+          <div className="mt-4">
+            <label htmlFor="token" className={labelStyles}>6-digit Token (check email)</label>
+            <input 
+              className={inputStyles}
+              type="string" id="token" value={token} onChange={event => setToken(event.target.value)} />
+          </div>
+        )}
+      </div>
+      <button 
+        className="block mx-auto rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
+        onClick={waitingForToken ? sendLogin : requestToken}>Login/Signup</button>
     </form>
   )
 }

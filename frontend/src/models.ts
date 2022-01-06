@@ -13,7 +13,7 @@ export type Experiences = {
 export interface FullUser extends User {
   mobile_number: string,
   about: string,
-  experience: Experiences
+  experience: Experiences | null
 }
 
 

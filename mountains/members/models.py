@@ -34,6 +34,7 @@ def get_profile_pic_filename(instance, filename):
     return os.path.join('uploads', 'profile', filename)
 
 class User(AbstractUser):
+    username = None
     # We redefine email because it must be set as unique
     email = models.EmailField('email address', unique=True)
     # Other custom fields can then be added below.
@@ -44,6 +45,7 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+    is_approved = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

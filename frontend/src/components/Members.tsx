@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
+import { getName } from "../methods/user";
 import { User } from "../models";
 import Loading from "./Loading";
 import ProfilePicture from "./ProfilePicture";
@@ -37,7 +38,7 @@ function ProfileSquare({user}: ProfileSquareProps) {
           <ProfilePicture imageUrl={user.profile_picture} />
         </div>
         <div className="relative border border-gray-300 mx-auto text-center -mt-3 bg-white rounded z-50">
-          <h1 className="text-sm font-semibold">{user.first_name} {user.last_name}</h1> 
+          <h1 className="text-sm font-semibold">{getName(user)}</h1> 
         </div>
 
       </div>
