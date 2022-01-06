@@ -12,7 +12,7 @@ export default function Platform() {
     (authToken && currentUser)
     ?
     <div className="min-h-screen container flex">
-      <div className="min-w-32 flex-none">
+      <div className="w-32 flex-none grow bg-gray-100">
         <Sidebar user={currentUser} />
       </div>
       <main className="ml-5 flex-auto w-full">
@@ -32,8 +32,7 @@ function Sidebar({user}: SidebarProps) {
   const linkStyles = "block mx-1 p-2 text-sm rounded hover:bg-gray-300"
 
   return (
-    <nav className="bg-gray-100 py-1">
-      <Link to={`members/${user.id}`} className={linkStyles}>{user.first_name} {user.last_name}</Link>
+    <nav className="py-1">
       <Link to="" className={linkStyles}>Feed</Link>
       <Link to="events" className={linkStyles}>Events</Link>
       <Link to="members" className={linkStyles}>Members</Link>
