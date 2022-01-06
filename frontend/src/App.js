@@ -5,7 +5,6 @@ import {
   Route
 } from "react-router-dom";
 
-import Navigation from "./components/Navigation";
 import Landing from "./components/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
@@ -13,15 +12,14 @@ import Members from "./components/Members";
 import Feed from "./components/feed/Feed";
 import Events from "./components/Events";
 import Profile from "./components/Profile";
+import Layout from "./components/Layout"
 
 function App() {
   return (
     <div className="container mx-auto px-20">
       <Router>
-        <Navigation />
-        <div className="min-h-screen">
           <Routes>
-            <Route path="/">
+            <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Feed />} />
@@ -31,7 +29,6 @@ function App() {
               </Route>
             </Route>
           </Routes>
-        </div>
         <Footer />
       </Router>
     </div>

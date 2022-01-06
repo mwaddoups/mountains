@@ -18,7 +18,7 @@ export default function Members() {
   return (
     <Loading loading={isLoading}>
       <div>
-        {userList.map(user => <p key={user.id}>{JSON.stringify(user)}</p>)}
+        {userList.map(user => <p key={user.url}>{JSON.stringify(user)}</p>)}
       </div>
     </Loading>
   )

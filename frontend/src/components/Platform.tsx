@@ -1,31 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Outlet, Link, useOutletContext } from "react-router-dom";
-import api from "../api";
+import React, { useCallback } from "react";
+import { Outlet, Link } from "react-router-dom";
 
 import { User } from "../models";
+import { useAuth } from "./Layout";
 import Login from "./Login";
 
-type AuthContext = { 
-  authToken: string,
-  currentUser: User,
-}
-
 export default function Platform() {
-  const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { authToken, currentUser, setAuthToken } = useAuth();
 
   const storeAuth = useCallback(token => {
     console.log('Storing authorization token...')
     localStorage.setItem('token', token);
     setAuthToken(token);
   }, [setAuthToken])
-
-  useEffect(() => {
-    if (authToken) {
-      console.log(authToken)
-      api.get('users/self').then(res => setCurrentUser(res.data))
-    }
-  }, [authToken])
 
   return (
     (authToken && currentUser)
@@ -41,10 +28,6 @@ export default function Platform() {
     : <Login setAuthToken={storeAuth}/>
   
   )
-}
-
-export function useAuth() {
-  return useOutletContext<AuthContext>();
 }
 
 interface SidebarProps {

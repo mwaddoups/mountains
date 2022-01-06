@@ -1,5 +1,6 @@
 export type User = {
   id: number,
+  url: string,
   first_name: string,
   last_name: string,
   profile_picture: string | undefined,

@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import { FullUser } from "../models";
-import { useAuth } from "./Platform";
 
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   let { memberId } = useParams();
-
-  const {currentUser} = useAuth();
 
   // Fetch the user data together with the experience
   useEffect(() => {
