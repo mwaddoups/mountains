@@ -45,3 +45,10 @@ export type Comment = {
   posted: string,
   text: string,
 }
+
+export type AuthContext = { 
+  authToken: string | null,
+  currentUser: User | null,
+  storeAuth: (a: string | null) => void,
+  logout: () => void,
+}

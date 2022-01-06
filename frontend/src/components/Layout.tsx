@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import api from "../api";
-import { User } from "../models";
+import { User, AuthContext } from "../models";
 import Navigation from "./Navigation";
-
-type AuthContext = { 
-  authToken: string,
-  setAuthToken: (a: string) => void,
-  currentUser: User,
-}
 
 export default function Landing() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
@@ -16,16 +10,32 @@ export default function Landing() {
 
   useEffect(() => {
     if (authToken) {
-      console.log(authToken)
+      console.log(`Fetching user for ${authToken}...`)
       api.get('users/self').then(res => setCurrentUser(res.data))
     }
   }, [authToken])
 
+  const storeAuth = useCallback(token => {
+    console.log('Storing authorization token...')
+    localStorage.setItem('token', token);
+    setAuthToken(token);
+  }, [setAuthToken])
+
+  const logout = useCallback(() => {
+    console.log('Logging out...')
+    localStorage.removeItem('token');
+    setAuthToken(null);
+    setCurrentUser(null);
+  }, [setAuthToken])
+
+  const authContext = {currentUser, authToken, storeAuth, logout}
+
+
   return (
     <>
-    <Navigation />
+    <Navigation authContext={authContext} />
     <div className="min-h-screen">
-      <Outlet context={{currentUser, authToken, setAuthToken}} />
+      <Outlet context={authContext} />
     </div>
     </>
   )

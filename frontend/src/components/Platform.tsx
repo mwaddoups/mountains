@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Outlet, Link } from "react-router-dom";
 
 import { User } from "../models";
@@ -6,13 +6,7 @@ import { useAuth } from "./Layout";
 import Login from "./Login";
 
 export default function Platform() {
-  const { authToken, currentUser, setAuthToken } = useAuth();
-
-  const storeAuth = useCallback(token => {
-    console.log('Storing authorization token...')
-    localStorage.setItem('token', token);
-    setAuthToken(token);
-  }, [setAuthToken])
+  const { authToken, currentUser, storeAuth } = useAuth();
 
   return (
     (authToken && currentUser)
