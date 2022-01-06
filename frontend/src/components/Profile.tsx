@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../api";
 import { FullUser } from "../models";
 import ProfilePicture from "./ProfilePicture";
@@ -8,13 +8,15 @@ export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   let { memberId } = useParams();
 
-  // Fetch the user data together with the experience
   useEffect(() => {
     api.get(`users/${memberId}`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
     });
   }, [setUser, memberId])
+
+  const buttonStyle = "rounded-lg bg-blue-500 p-2 text-gray-100 text-sm"
+  
 
   return (
     <div className="flex h-full">
@@ -23,6 +25,9 @@ export default function Profile() {
           <h1 className="text-5xl font-medium">
             {user?.first_name} {user?.last_name}
           </h1>
+        </div>
+        <div className="pt-4">
+          <Link to="edit"><button className={buttonStyle}>Edit profile</button></Link>
         </div>
         <div className="py-4">
           Badges go here
@@ -43,7 +48,7 @@ export default function Profile() {
           <ProfilePicture imageUrl={user?.profile_picture} />
         </div>
         <div className="flex justify-center">
-        <button className="rounded-lg bg-blue-500 p-2 text-gray-100 b-1 text-sm">Update profile picture</button>
+        <button className={buttonStyle}>Update profile picture</button>
         </div>
       </div>
     </div>

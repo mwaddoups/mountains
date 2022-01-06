@@ -3,7 +3,7 @@ import React from "react";
 export default function Landing() {
   return (
     <main className="min-h-full">
-      <section className="bg-cover bg-landing bg-bottom bg-fixed h-80"></section>
+      <section className="bg-landing bg-cover bg-bottom bg-fixed h-80"></section>
       <Section header="About Us">
         <Paragraph>We are a mountaineering club based in Glasgow and founded in 2021.  We were created to focus on the 20s and 30s age groups within the city, but are open to all. Our aim is to create a group of friendly, kind and like-minded people who like to get out and have challenging days in the mountains, safely.</Paragraph>
         <Paragraph>Our main activities are harder hill and mountain walking, winter walking, scrambling and easy climbing - together with other outdoor activities in Scotland such as skiing and trail running.</Paragraph>

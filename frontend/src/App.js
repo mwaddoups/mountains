@@ -12,6 +12,7 @@ import Members from "./components/Members";
 import Feed from "./components/feed/Feed";
 import Events from "./components/Events";
 import Profile from "./components/Profile";
+import ProfileEditor from "./components/ProfileEditor";
 import Layout from "./components/Layout"
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Feed />} />
                 <Route path="members" element={<Members />} />
+                <Route path="members/:memberId/edit" element={<ProfileEditor />} />
                 <Route path="members/:memberId" element={<Profile />} />
                 <Route path="events" element={<Events />} />
               </Route>

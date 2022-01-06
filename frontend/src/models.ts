@@ -6,7 +6,6 @@ export type User = {
   profile_picture: string | undefined,
 }
 
-
 export type Experiences = {
   hillwalking: number,
 }

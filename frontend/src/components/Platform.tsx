@@ -15,7 +15,7 @@ export default function Platform() {
       <div className="w-32 flex-none grow bg-gray-100">
         <Sidebar user={currentUser} />
       </div>
-      <main className="ml-5 flex-auto w-full">
+      <main className="ml-5 flex-auto w-full my-3">
         <Outlet context={{currentUser, authToken}} />
       </main>
     </div>
