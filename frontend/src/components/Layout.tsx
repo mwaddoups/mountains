@@ -4,7 +4,7 @@ import api from "../api";
 import { FullUser, AuthContext } from "../models";
 import Navigation from "./Navigation";
 
-export default function Landing() {
+export default function Layout() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
@@ -17,15 +17,17 @@ export default function Landing() {
   }, [authToken])
 
   useEffect(() => {
-    const f = async () => await refreshUser();
-    f();
-  }, [refreshUser]);
+    if (authToken) {
+      refreshUser();
+    }
+  }, [authToken, refreshUser])
 
   const storeAuth = useCallback(async token => {
     console.log('Storing authorization token...')
     localStorage.setItem('token', token);
     setAuthToken(token);
-  }, [setAuthToken])
+    await refreshUser();
+  }, [refreshUser, setAuthToken])
 
   const logout = useCallback(() => {
     console.log('Logging out...')

@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
+  Outlet,
 } from "react-router-dom";
 
 import Landing from "./components/Landing";
@@ -14,7 +15,7 @@ import Feed from "./components/feed/Feed";
 import Events from "./components/Events";
 import Profile from "./components/Profile";
 import ProfileEditor from "./components/ProfileEditor";
-import Layout from "./components/Layout"
+import Layout, { useAuth } from "./components/Layout"
 
 function App() {
   return (
@@ -25,9 +26,11 @@ function App() {
               <Route index element={<Landing />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Feed />} />
-                <Route path="members" element={<Members />} />
-                <Route path="members/edit" element={<ProfileEditor />} />
-                <Route path="members/:memberId" element={<Profile />} />
+                <Route path="members" element={<MemberContext />}>
+                  <Route index element={<Members />} />
+                  <Route path="edit" element={<ProfileEditor />} />
+                  <Route path=":memberId" element={<Profile />} />
+                </Route>
                 <Route path="events" element={<Events />} />
               </Route>
             </Route>
@@ -40,3 +43,10 @@ function App() {
 }
 
 export default App;
+
+
+function MemberContext() {
+  const authContext = useAuth();
+
+  return <Outlet context={authContext} />
+}

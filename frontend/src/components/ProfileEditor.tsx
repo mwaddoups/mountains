@@ -39,7 +39,7 @@ export default function ProfileEditor() {
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
 
-  if (currentUser && submitted) {
+  if (currentUser && submitted && approved) {
     return <Navigate to={`../${currentUser.id}`} />
   }
 
@@ -47,19 +47,25 @@ export default function ProfileEditor() {
     <div className="w-3/4 mx-auto bg-white shadow-md roudned p-8 m-4">
       <h1 className="text-lg font-bold text-gray-700 tracking-wide">Edit Profile</h1>
       {(!approved) && <p className="text-red-500 text-sm italic">
-        You must be approved to access the site. Please fill in the below
+        You must be approved to access the site (to avoid spam signups!). Please fill in the below
         form and you will receive an email when you have been approved.
       </p>}
       <form onSubmit={updateUser} className="mt-4">
-        <label className={labelStyles} htmlFor="firstName">First Name</label>
-        <input 
-          className={inputStyles} type="string" id="firstName" 
-          value={firstName} onChange={event => setFirstName(event.target.value)} />
-        <label className={labelStyles} htmlFor="surname">Surname</label>
-        <input 
-          className={inputStyles} type="string" id="surname" 
-          value={surname} onChange={event => setSurname(event.target.value)} />
-        <label className={labelStyles} htmlFor="about">About</label>
+        <div className="flex w-full">
+          <div className="flex-grow mr-2">
+            <label className={labelStyles} htmlFor="firstName">First Name</label>
+            <input 
+              className={inputStyles} type="string" id="firstName" 
+              value={firstName} onChange={event => setFirstName(event.target.value)} />
+          </div>
+          <div className="flex-grow ml-2">
+            <label className={labelStyles} htmlFor="surname">Surname</label>
+            <input 
+              className={inputStyles} type="string" id="surname" 
+              value={surname} onChange={event => setSurname(event.target.value)} />
+          </div>
+        </div>
+        <label className={labelStyles} htmlFor="about">Bio</label>
         <p className="text-sm text-gray-700 italic mb-2 ml-2">
           Write about yourself and what brings you to our club! This will be public 
           once you are approved, but you can change it later on.
@@ -72,11 +78,12 @@ export default function ProfileEditor() {
             type="submit">
               {approved ? "Update" : "Submit for verification"}
           </button>
-          <Link to=".">
+          <Link to={currentUser ? `../${currentUser.id}` : ''}>
             <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>
           </Link>
         </div>
       </form>
+      {(submitted && !approved) && <p>Thank you for submitting! Someone should approve you shortly. You can edit your answers above at any time.</p>}
     </div>
   )
 }
