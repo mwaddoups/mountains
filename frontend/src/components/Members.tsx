@@ -33,12 +33,12 @@ interface ProfileSquareProps {
 function ProfileSquare({user}: ProfileSquareProps) {
   return (
     <Link to={`${user.id}`}>
-      <div className="w-32 rounded-lg p-2">
+      <div className="w-48 h-48 rounded-lg p-2">
         <div className="relative z-0 mx-auto w-5/6">
           <ProfilePicture imageUrl={user.profile_picture} />
         </div>
         <div className="relative border border-gray-300 mx-auto text-center -mt-3 bg-white rounded z-50">
-          <h1 className="text-sm font-semibold">{getName(user)}</h1> 
+          <h1 className="text-lg font-semibold">{getName(user)}</h1> 
         </div>
 
       </div>

@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api";
 import { FullUser } from "../models";
+import { useAuth } from "./Layout";
 import ProfilePicture from "./ProfilePicture";
 
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
-  let { memberId } = useParams();
+  const { memberId } = useParams();
+  const { currentUser } = useAuth();
+
+  const isUser = currentUser && user && (currentUser.id === user.id);
 
   useEffect(() => {
     api.get(`users/${memberId}`).then(response => {
@@ -15,7 +19,10 @@ export default function Profile() {
     });
   }, [setUser, memberId])
 
-  const buttonStyle = "rounded-lg bg-blue-500 p-2 text-gray-100 text-sm"
+  let buttonStyle = "rounded-lg bg-blue-500 p-2 text-gray-100 text-sm"
+  if (!isUser) {
+    buttonStyle += " hidden"
+  }
   
 
   return (
@@ -34,7 +41,9 @@ export default function Profile() {
         </div>
         <div className="h-40 min-h-40">
           <h2 className="text-3xl font-medium">About</h2>
-          <p>{user?.about ? user.about : "Nothing here yet!"}</p>
+          {user?.about 
+            ? <p>user.about</p> 
+            : <p className="italic text-gray-500"> Nothing here yet!</p>}
         </div>
         <div>
           <h2 className="text-3xl font-medium">Experience</h2>
