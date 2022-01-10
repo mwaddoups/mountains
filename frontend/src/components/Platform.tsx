@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Calendar, Newspaper, PeopleFill } from "react-bootstrap-icons";
+import { Outlet, NavLink } from "react-router-dom";
 
 import { useAuth } from "./Layout";
 import Login from "./Login";
@@ -19,7 +20,7 @@ export default function Platform() {
 
   return (
     <div className="min-h-screen container flex">
-      <div className="w-32 flex-none grow bg-gray-100">
+      <div className="w-32 flex-none grow bg-teal-600 text-gray-100">
         <Sidebar />
       </div>
       <main className="ml-5 flex-auto w-full my-3">
@@ -30,13 +31,20 @@ export default function Platform() {
 }
 
 function Sidebar() {
-  const linkStyles = "block mx-1 p-2 text-sm rounded hover:bg-gray-300"
+  const linkStyles = "block mx-1 p-2 text-sm rounded hover:bg-teal-800";
+  const linkStyler = ({isActive}: any) => isActive ? linkStyles + " bg-teal-700" : linkStyles;
 
   return (
     <nav className="py-1">
-      <Link to="" className={linkStyles}>Feed</Link>
-      <Link to="events" className={linkStyles}>Events</Link>
-      <Link to="members" className={linkStyles}>Members</Link>
+      <NavLink end to="" className={linkStyler}>
+        <span className="flex"><Newspaper className="h-6 w-6 mr-3" /> Feed</span>
+      </NavLink>
+      <NavLink to="events" className={linkStyler}>
+        <span className="flex"><Calendar className="h-6 w-6 mr-3" /> Events</span>
+      </NavLink>
+      <NavLink to="members" className={linkStyler}>
+        <span className="flex h-full"><PeopleFill className="h-6 w-6 mr-3" /> Members</span>
+      </NavLink>
     </nav>
   )
 }

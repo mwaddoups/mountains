@@ -7,6 +7,7 @@ import { getName } from "../methods/user";
 import { FullUser } from "../models";
 import { useAuth } from "./Layout";
 import ProfilePicture from "./ProfilePicture";
+import Loading from "./Loading";
 
 interface ProfileButtonProps {
   $loading?: boolean;
@@ -47,50 +48,52 @@ export default function Profile() {
   }, [setUser, memberId])
 
   return (
-    <div className="flex h-full">
-      <div className="flex-auto py-4">
-        <div className="flex">
-          <div>
-            <h1 className="text-5xl font-medium">
-              {user && getName(user)}
-            </h1>
-          </div>
-          {isUser && (
-            <div className="ml-4 mt-auto mb-1">
-              <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
+    <Loading loading={(!user)}>
+      <div className="flex h-full">
+        <div className="flex-auto py-4">
+          <div className="flex">
+            <div>
+              <h1 className={"text-5xl font-medium" + (user ? "" : " invisible")}>
+                {user ? getName(user) : "Loading name..."}
+              </h1>
             </div>
-          )}
+            {isUser && (
+              <div className="ml-4 mt-auto mb-1">
+                <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
+              </div>
+            )}
+          </div>
+          <div className="pt-4 flex">
+            {user?.is_approved
+              ? <ProfileBadge $badgeColor="green">Approved</ProfileBadge>
+              : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
+            }
+          </div>
+          <div className="h-40 min-h-40 pt-4">
+            <h2 className="text-3xl font-medium">About</h2>
+            {user?.about 
+              ? <p>{user.about}</p> 
+              : <p className="italic text-gray-500"> Nothing here yet!</p>}
+          </div>
+          <div>
+            <h2 className="text-3xl font-medium">Experience</h2>
+            <ul>
+              <li>Hillwalking - {user?.experience?.hillwalking}</li>
+            </ul>
+          </div>
         </div>
-        <div className="pt-4 flex">
-          {user?.is_approved
-            ? <ProfileBadge $badgeColor="green">Approved</ProfileBadge>
-            : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
-          }
-        </div>
-        <div className="h-40 min-h-40 pt-4">
-          <h2 className="text-3xl font-medium">About</h2>
-          {user?.about 
-            ? <p>{user.about}</p> 
-            : <p className="italic text-gray-500"> Nothing here yet!</p>}
-        </div>
-        <div>
-          <h2 className="text-3xl font-medium">Experience</h2>
-          <ul>
-            <li>Hillwalking - {user?.experience?.hillwalking}</li>
-          </ul>
+        <div className="ml-auto">
+          <div className="w-64 h-64 p-4">
+            <ProfilePicture imageUrl={user?.profile_picture} />
+          </div>
+          <div className="flex justify-center">
+            {isUser && (
+              <ProfileUploaderButton />
+            )}
+          </div>
         </div>
       </div>
-      <div className="ml-auto">
-        <div className="w-64 h-64 p-4">
-          <ProfilePicture imageUrl={user?.profile_picture} />
-        </div>
-        <div className="flex justify-center">
-          {isUser && (
-            <ProfileUploaderButton />
-          )}
-        </div>
-      </div>
-    </div>
+    </Loading>
   )
 }
 
