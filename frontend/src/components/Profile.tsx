@@ -13,7 +13,7 @@ interface ProfileButtonProps {
 }
 
 const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
-  tw`rounded-lg bg-blue-500 p-2 text-gray-100 text-sm`,
+  tw`rounded-lg bg-blue-500 p-1.5 text-gray-100 text-sm`,
   $loading && tw`bg-gray-500`,
 ])
 
@@ -56,7 +56,7 @@ export default function Profile() {
             </h1>
           </div>
           {isUser && (
-            <div className="ml-4">
+            <div className="ml-4 mt-auto mb-1">
               <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
             </div>
           )}
