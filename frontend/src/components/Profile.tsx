@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import tw from 'twin.macro';
 import api from "../api";
+import { getName } from "../methods/user";
 import { FullUser } from "../models";
 import { useAuth } from "./Layout";
 import ProfilePicture from "./ProfilePicture";
@@ -14,6 +15,21 @@ interface ProfileButtonProps {
 const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
   tw`rounded-lg bg-blue-500 p-2 text-gray-100 text-sm`,
   $loading && tw`bg-gray-500`,
+])
+
+
+interface ProfileBadgeProps {
+  $badgeColor: "red" | "green";
+}
+
+const colorVariants = {
+  red: tw`bg-red-400 text-gray-100`,
+  green: tw`bg-green-400 text-gray-100`,
+}
+
+const ProfileBadge = styled.span(({$badgeColor}: ProfileBadgeProps) => [
+ tw`rounded-lg mr-1 px-3 py-0.5 text-sm`,
+ colorVariants[$badgeColor], 
 ])
 
 export default function Profile() {
@@ -33,18 +49,25 @@ export default function Profile() {
   return (
     <div className="flex h-full">
       <div className="flex-auto py-4">
-        <div>
-          <h1 className="text-5xl font-medium">
-            {user?.first_name} {user?.last_name}
-          </h1>
+        <div className="flex">
+          <div>
+            <h1 className="text-5xl font-medium">
+              {user && getName(user)}
+            </h1>
+          </div>
+          {isUser && (
+            <div className="ml-4">
+              <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
+            </div>
+          )}
         </div>
-        <div className="pt-4">
-          <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
+        <div className="pt-4 flex">
+          {user?.is_approved
+            ? <ProfileBadge $badgeColor="green">Approved</ProfileBadge>
+            : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
+          }
         </div>
-        <div className="py-4">
-          Badges go here
-        </div>
-        <div className="h-40 min-h-40">
+        <div className="h-40 min-h-40 pt-4">
           <h2 className="text-3xl font-medium">About</h2>
           {user?.about 
             ? <p>{user.about}</p> 
