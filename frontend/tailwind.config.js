@@ -1,15 +1,13 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       backgroundImage: {
-        'landing': "url('/images/landing.jpg')",
+        'landing': "url('./images/landing.jpg')",
       }
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import tw from 'twin.macro';
 import api from "../api";
 import { getName } from "../methods/user";

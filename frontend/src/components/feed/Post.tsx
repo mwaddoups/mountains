@@ -14,7 +14,7 @@ export default function Post(initialPost: models.FeedPost) {
   }, [post, setPost])
 
   return (
-    <div className="m-5 p-5 block rounded bg-gray-200">
+    <div className="m-5 p-5 block rounded shadow bg-slate-100">
       <UserPost user={post.user} posted={post.posted} text={post.text} />
       <div className="ml-2">
         {post.comments.map((comment: models.Comment) => <Comment key={comment.id} {...comment} />)}

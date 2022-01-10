@@ -4,7 +4,7 @@ import UserPost from "./UserPost";
 
 export default function Comment({ user, posted, text }: models.Comment) {
   return (
-    <div className="my-2 p-2 rounded bg-gray-300">
+    <div className="my-2 p-2 border">
       <UserPost user={user} posted={posted} text={text} />
     </div>
   )

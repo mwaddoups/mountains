@@ -20,7 +20,6 @@ export default function Feed() {
 
   return (
     <Loading loading={isLoading}>
-      <h2>Newsfeed</h2> 
       {
         postCreated 
         ? <p>Post created!</p>

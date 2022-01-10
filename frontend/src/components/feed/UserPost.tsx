@@ -2,6 +2,7 @@ import React from "react";
 import { User } from "../../models";
 import dateFormat from "dateformat";
 import ProfilePicture from "../ProfilePicture";
+import { getName } from "../../methods/user";
 
 interface UserPostProps {
   user: User,
@@ -16,20 +17,12 @@ export default function UserPost({user, posted, text}: UserPostProps) {
         <ProfilePicture imageUrl={user.profile_picture} />
       </div>
       <div className="ml-3">
-        <span className="font-semibold">{get_username(user)}</span>
+        <span className="font-semibold">{getName(user)}</span>
         <span className="ml-3 text-sm font-light">{describe_date(posted)}</span>
-        <p>{text}</p>
+        <p className="text-sm">{text}</p>
       </div>
     </div>
   )
-}
-
-function get_username(user: User): string {
-  if (!user) {
-    return "<Deleted user>"
-  } else {
-    return `${user.first_name} ${user.last_name}`
-  }
 }
 
 function describe_date(dateStr: string): string {
