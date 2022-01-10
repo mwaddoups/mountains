@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
+import styled from "styled-components";
+import tw from 'twin.macro';
 import api from "../api";
 import { FullUser } from "../models";
 import { useAuth } from "./Layout";
 import ProfilePicture from "./ProfilePicture";
+
+interface ProfileButtonProps {
+  $loading?: boolean;
+}
+
+const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
+  tw`rounded-lg bg-blue-500 p-2 text-gray-100 text-sm`,
+  $loading && tw`bg-gray-500`,
+])
 
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
@@ -19,12 +30,6 @@ export default function Profile() {
     });
   }, [setUser, memberId])
 
-  let buttonStyle = "rounded-lg bg-blue-500 p-2 text-gray-100 text-sm"
-  if (!isUser) {
-    buttonStyle += " hidden"
-  }
-  
-
   return (
     <div className="flex h-full">
       <div className="flex-auto py-4">
@@ -34,7 +39,7 @@ export default function Profile() {
           </h1>
         </div>
         <div className="pt-4">
-          <Link to="../edit"><button className={buttonStyle}>Edit profile</button></Link>
+          <Link to="../edit"><ProfileButton>Edit profile</ProfileButton></Link>
         </div>
         <div className="py-4">
           Badges go here
@@ -42,7 +47,7 @@ export default function Profile() {
         <div className="h-40 min-h-40">
           <h2 className="text-3xl font-medium">About</h2>
           {user?.about 
-            ? <p>user.about</p> 
+            ? <p>{user.about}</p> 
             : <p className="italic text-gray-500"> Nothing here yet!</p>}
         </div>
         <div>
@@ -57,9 +62,39 @@ export default function Profile() {
           <ProfilePicture imageUrl={user?.profile_picture} />
         </div>
         <div className="flex justify-center">
-        <button className={buttonStyle}>Update profile picture</button>
+          {isUser && (
+            <ProfileUploaderButton />
+          )}
         </div>
       </div>
     </div>
+  )
+}
+
+
+function ProfileUploaderButton() {
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onButtonClick = useCallback(() => {
+    fileInput?.current?.click();
+  }, [fileInput])
+
+  const onChangeFile = useCallback(event => {
+    setLoading(true);
+    event.stopPropagation();
+    event.preventDefault();
+    const file = event.target.files[0];
+    console.log(file);
+    let form = new FormData();
+    form.append('file', file);
+    api.patch('users/profile/', form).then(res => setLoading(false));
+  }, [setLoading])
+
+  return (
+    <>
+    <input type="file" ref={fileInput} className="hidden" onChange={onChangeFile} />
+    <ProfileButton onClick={onButtonClick} $loading={loading}>Upload profile picture</ProfileButton>
+    </>
   )
 }

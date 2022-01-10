@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from members.views import ExperienceViewSet, UserViewSet, SelfUserView
+from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView
 from events.views import EventViewSet
 from social.views import FeedPostViewSet, CommentViewSet
 
@@ -31,6 +31,7 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path(r'users/self/', SelfUserView.as_view()),
+    path(r'users/profile/', ProfileUpdateView.as_view()),
     path(r'', include(router.urls)),
     path(r'admin/', admin.site.urls),
     path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),

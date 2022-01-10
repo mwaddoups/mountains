@@ -1,7 +1,7 @@
-from rest_framework import viewsets, permissions, generics
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from .models import User, Experience
-from .serializers import ExperienceSerializer, SmallUserSerializer, UserSerializer
+from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -12,6 +12,21 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return SmallUserSerializer
         return UserSerializer
+
+class ProfileUpdateView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        file = request.data['file']
+        user = User.objects.get(pk=request.user.id)
+        # TODO: Add file processing
+        serialized = ProfilePictureSerializer(user, data=dict(profile_picture=file), context={'request': request}, partial=True)
+        if serialized.is_valid():
+            serialized.save()
+            return Response(serialized.data)
+        else:
+            return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SelfUserView(generics.GenericAPIView):
     """
