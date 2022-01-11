@@ -9,6 +9,7 @@ class CustomUserAdmin(UserAdmin):
         ('Personal Information', {'fields': ('first_name', 'last_name', 'mobile_number')}),
         ('Permissions', {'fields': (
             'is_approved',
+            'is_committee',
             'is_active',
             'is_staff',
             'is_superuser',

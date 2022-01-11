@@ -46,6 +46,7 @@ class User(AbstractUser):
         blank=True,
     )
     is_approved = models.BooleanField(default=False)
+    is_committee = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
