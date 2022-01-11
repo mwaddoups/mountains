@@ -8,6 +8,7 @@ import { FullUser } from "../../models";
 import { useAuth } from "../Layout";
 import ProfilePicture from "./ProfilePicture";
 import Loading from "../Loading";
+import Badges from "./Badges";
 
 interface ProfileButtonProps {
   $loading?: boolean;
@@ -16,21 +17,6 @@ interface ProfileButtonProps {
 const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
   tw`rounded-lg bg-blue-500 p-1.5 text-gray-100 text-sm`,
   $loading && tw`bg-gray-500`,
-])
-
-
-interface ProfileBadgeProps {
-  $badgeColor: "red" | "green";
-}
-
-const colorVariants = {
-  red: tw`bg-red-400 text-gray-100`,
-  green: tw`bg-green-400 text-gray-100`,
-}
-
-const ProfileBadge = styled.span(({$badgeColor}: ProfileBadgeProps) => [
- tw`rounded-lg mr-1 px-3 py-0.5 text-sm`,
- colorVariants[$badgeColor], 
 ])
 
 export default function Profile() {
@@ -63,11 +49,8 @@ export default function Profile() {
               </div>
             )}
           </div>
-          <div className="pt-4 flex">
-            {user?.is_approved
-              ? <ProfileBadge $badgeColor="green">Approved</ProfileBadge>
-              : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
-            }
+          <div className="pt-4">
+            <Badges user={user} />
           </div>
           <div className="h-40 min-h-40 mt-4">
             <h2 className="text-3xl font-medium">About</h2>

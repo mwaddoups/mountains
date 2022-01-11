@@ -5,6 +5,7 @@ export type User = {
   last_name: string,
   profile_picture: string | undefined,
   is_approved: boolean,
+  is_committee: boolean,
 }
 
 export type Experiences = {
