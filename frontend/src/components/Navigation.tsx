@@ -14,7 +14,7 @@ export default function Navigation({ authContext }: NavigationProps) {
   const linkStyles = "h-full p-4 hover:bg-gray-200";
 
   return (
-    <nav className="container flex items-center border-b-4 text-gray-900 bg-white sticky h-16">
+    <nav className="container flex items-center border-b-4 text-gray-900 bg-white sticky h-16 border-teal-600">
       <div className="h-full p-4 ml-2 mr-12">
         <span className="font-semibold text-xl tracking-tight">
          <span role='img' aria-label="mountain">⛰️</span> Clyde Mountaineering Club
