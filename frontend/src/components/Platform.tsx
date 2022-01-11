@@ -36,7 +36,7 @@ function Sidebar() {
 
   return (
     <nav className="py-1">
-      <NavLink end to="" className={linkStyler}>
+      <NavLink end to="feed" className={linkStyler}>
         <span className="flex"><Newspaper className="h-6 w-6 mr-3" /> Feed</span>
       </NavLink>
       <NavLink to="events" className={linkStyler}>

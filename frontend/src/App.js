@@ -25,7 +25,7 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
               <Route path="platform" element={<Platform />}>
-                <Route index element={<Feed />} />
+                <Route path="feed" element={<Feed />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />
                   <Route path="edit" element={<ProfileEditor />} />

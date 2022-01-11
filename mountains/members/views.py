@@ -8,6 +8,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def create(self, request):
+        response = {'message': 'User creation not allowed on this path.'}
+        return Response(response, status=status.HTTP_403_FORBIDDEN)
+
     def get_serializer_class(self):
         if self.action == 'list':
             return SmallUserSerializer
