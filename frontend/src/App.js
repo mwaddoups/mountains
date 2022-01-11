@@ -10,11 +10,11 @@ import {
 import Landing from "./components/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
-import Members from "./components/Members";
+import Members from "./components/members/Members";
 import Feed from "./components/feed/Feed";
-import Events from "./components/Events";
-import Profile from "./components/Profile";
-import ProfileEditor from "./components/ProfileEditor";
+import Events from "./components/events/Events";
+import Profile from "./components/members/Profile";
+import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout"
 
 function App() {

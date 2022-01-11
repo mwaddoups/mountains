@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getName } from "../methods/user";
 import { AuthContext } from "../models";
-import ProfilePicture from "./ProfilePicture";
+import ProfilePicture from "./members/ProfilePicture";
 
 interface NavigationProps {
   authContext: AuthContext,

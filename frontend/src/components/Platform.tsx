@@ -4,7 +4,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 import { useAuth } from "./Layout";
 import Login from "./Login";
-import ProfileEditor from "./ProfileEditor";
+import ProfileEditor from "./members/ProfileEditor";
 
 export default function Platform() {
   const authContext = useAuth()

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import tw from "twin.macro";
-import api from "../api";
-import { User } from "../models";
-import Loading from "./Loading";
+import api from "../../api";
+import { User } from "../../models";
+import Loading from "../Loading";
 import ProfileSquare from "./ProfileSquare";
 
 export default function Members() {

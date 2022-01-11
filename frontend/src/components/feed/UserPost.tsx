@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../../models";
 import dateFormat from "dateformat";
-import ProfilePicture from "../ProfilePicture";
+import ProfilePicture from "../members/ProfilePicture";
 import { getName } from "../../methods/user";
 
 interface UserPostProps {

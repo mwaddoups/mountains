@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import api from "../api";
-import { useAuth } from "./Layout";
+import api from "../../api";
+import { useAuth } from "../Layout";
 
 export default function ProfileEditor() {
   const {currentUser, refreshUser} = useAuth();

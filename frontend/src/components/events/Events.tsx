@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import api from "../api";
-import { Event } from "../models";
-import Loading from "./Loading";
+import api from "../../api";
+import { Event } from "../../models";
+import Loading from "../Loading";
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([])

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { getName } from "../methods/user";
-import { User } from "../models";
+import { getName } from "../../methods/user";
+import { User } from "../../models";
 import ProfilePicture from "./ProfilePicture";
 
 interface ProfileSquareProps {

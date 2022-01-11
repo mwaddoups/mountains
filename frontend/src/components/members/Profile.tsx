@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import tw from 'twin.macro';
-import api from "../api";
-import { getName } from "../methods/user";
-import { FullUser } from "../models";
-import { useAuth } from "./Layout";
+import api from "../../api";
+import { getName } from "../../methods/user";
+import { FullUser } from "../../models";
+import { useAuth } from "../Layout";
 import ProfilePicture from "./ProfilePicture";
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 interface ProfileButtonProps {
   $loading?: boolean;
