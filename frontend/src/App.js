@@ -15,7 +15,8 @@ import Feed from "./components/feed/Feed";
 import Events from "./components/events/Events";
 import Profile from "./components/members/Profile";
 import ProfileEditor from "./components/members/ProfileEditor";
-import Layout, { useAuth } from "./components/Layout"
+import Layout, { useAuth } from "./components/Layout";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
               <Route path="platform" element={<Platform />}>
+                <Route index element={<Home />} />
                 <Route path="feed" element={<Feed />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />

@@ -50,7 +50,7 @@ export default function Profile() {
   return (
     <Loading loading={(!user)}>
       <div className="flex h-full">
-        <div className="flex-auto py-4">
+        <div className="flex-auto p-4 rounded shadow mr-3">
           <div className="flex">
             <div>
               <h1 className={"text-5xl font-medium" + (user ? "" : " invisible")}>
@@ -69,7 +69,7 @@ export default function Profile() {
               : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
             }
           </div>
-          <div className="h-40 min-h-40 pt-4">
+          <div className="h-40 min-h-40 mt-4">
             <h2 className="text-3xl font-medium">About</h2>
             {user?.about 
               ? <p>{user.about}</p> 
@@ -82,7 +82,7 @@ export default function Profile() {
             </ul>
           </div>
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto rounded shadow ">
           <div className="w-64 h-64 p-4">
             <ProfilePicture imageUrl={user?.profile_picture} />
           </div>

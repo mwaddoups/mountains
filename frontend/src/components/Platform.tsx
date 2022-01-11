@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Newspaper, PeopleFill } from "react-bootstrap-icons";
+import { Calendar, House, Newspaper, PeopleFill } from "react-bootstrap-icons";
 import { Outlet, NavLink } from "react-router-dom";
 
 import { useAuth } from "./Layout";
@@ -23,7 +23,7 @@ export default function Platform() {
       <div className="w-32 flex-none grow bg-teal-600 text-gray-100">
         <Sidebar />
       </div>
-      <main className="ml-10 flex-auto w-full my-3">
+      <main className="ml-5 flex-auto w-full my-3">
         <Outlet context={authContext} />
       </main>
     </div>
@@ -36,15 +36,19 @@ function Sidebar() {
 
   return (
     <nav className="py-1">
+      <NavLink end to="." className={linkStyler}>
+        <span className="flex"><House className="h-6 w-6 mr-3" />Home</span>
+      </NavLink>
       <NavLink end to="feed" className={linkStyler}>
-        <span className="flex"><Newspaper className="h-6 w-6 mr-3" /> Feed</span>
+        <span className="flex"><Newspaper className="h-6 w-6 mr-3" />Feed</span>
       </NavLink>
       <NavLink to="events" className={linkStyler}>
-        <span className="flex"><Calendar className="h-6 w-6 mr-3" /> Events</span>
+        <span className="flex"><Calendar className="h-6 w-6 mr-3" />Events</span>
       </NavLink>
       <NavLink to="members" className={linkStyler}>
-        <span className="flex h-full"><PeopleFill className="h-6 w-6 mr-3" /> Members</span>
+        <span className="flex"><PeopleFill className="h-6 w-6 mr-3" />Members</span>
       </NavLink>
+      <div className="mt-20"></div>
     </nav>
   )
 }
