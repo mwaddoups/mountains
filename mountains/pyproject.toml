@@ -11,6 +11,7 @@ django-rest-framework = "^0.1.0"
 django-cors-headers = "^3.10.1"
 drfpasswordless = "^1.5.7"
 Pillow = "^9.0.0"
+django-resized = "^0.3.11"
 
 [tool.poetry.dev-dependencies]
 

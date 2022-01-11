@@ -38,6 +38,14 @@ python-versions = ">=3.6"
 Django = ">=2.2"
 
 [[package]]
+name = "django-resized"
+version = "0.3.11"
+description = "Resizes image origin to specified size."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "django-rest-framework"
 version = "0.1.0"
 description = "alias."
@@ -98,7 +106,7 @@ python-versions = ">=3.5"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "42e4d65d4099642ecbb3f4f76a7debfe48f62184f7e72adf457479595673684a"
+content-hash = "d502037659604d1afcc49c571e92b7866467b7e79eac4a72e18ed9bc5bee12fb"
 
 [metadata.files]
 asgiref = [
@@ -112,6 +120,9 @@ django = [
 django-cors-headers = [
     {file = "django-cors-headers-3.10.1.tar.gz", hash = "sha256:b5a874b492bcad99f544bb76ef679472259eb41ee5644ca62d1a94ddb26b7f6e"},
     {file = "django_cors_headers-3.10.1-py3-none-any.whl", hash = "sha256:1390b5846e9835b0911e2574409788af87cd9154246aafbdc8ec546c93698fe6"},
+]
+django-resized = [
+    {file = "django-resized-0.3.11.tar.gz", hash = "sha256:77490397e94f37744f9199b7f8a5922329662dd7fc21473952ffe0417d36a9da"},
 ]
 django-rest-framework = [
     {file = "django-rest-framework-0.1.0.tar.gz", hash = "sha256:47a8f496fa69e3b6bd79f68dd7a1527d907d6b77f009e9db7cf9bb21cc565e4a"},

@@ -7,6 +7,7 @@ import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
 import ProfilePicture from "../members/ProfilePicture";
+import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
   event: Event;
@@ -21,13 +22,7 @@ export default function EventList({ event: initialEvent }: EventListProps) {
 
   return (
     <div className="w-full shadow p-4 flex">
-      <div className="relative h-20 w-20 mr-5">
-        <Calendar className="h-full w-full static text-gray-500" />
-        <div className="absolute left-0 right-0 top-0 mt-4 mx-auto text-center">
-          <div className="font-bold text-3xl">9</div>
-          <div className="font-light tracking-tight text-sm">Jan 2012</div>
-        </div>
-      </div>
+      <CalendarDate dateStr={event.event_date}/>
       <div>
         <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>

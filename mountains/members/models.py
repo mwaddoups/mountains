@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
+from django_resized import ResizedImageField
 
 class UserManager(BaseUserManager):
     """
@@ -40,7 +41,10 @@ class User(AbstractUser):
     # Other custom fields can then be added below.
     mobile_number = models.CharField(max_length=50, blank=True)
     about = models.TextField('about you', blank=True)
-    profile_picture = models.ImageField(
+    profile_picture = ResizedImageField(
+        size=[320, 320],
+        crop=['middle', 'center'],
+        quality=90,
         upload_to=get_profile_pic_filename,
         null=True,
         blank=True,
