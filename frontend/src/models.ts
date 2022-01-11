@@ -26,7 +26,7 @@ export type Event = {
   description: string,
   attendees: Array<User>,
   max_attendees: number | null,
-  organiser: User | null,
+  organiser: User,
 }
 
 export type FeedPost = {

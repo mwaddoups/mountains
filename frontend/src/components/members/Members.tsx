@@ -37,7 +37,7 @@ export default function Members() {
     <Loading loading={isLoading}>
       <SearchInput placeholder="Enter name to search..." type="text" id="search" value={searchString} onChange={event => setSearchString(event?.target.value)} /> 
       <div className="flex flex-wrap">
-        {filteredUsers.map((user, ix) => <ProfileSquare key={ix} user={user} />)}
+        {filteredUsers.map((user, ix) => <ProfileSquare key={ix} user={user} size="48" />)}
       </div>
     </Loading>
   )

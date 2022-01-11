@@ -6,11 +6,12 @@ import ProfilePicture from "./ProfilePicture";
 
 interface ProfileSquareProps {
   user: User,
+  size: string,
 }
 
-export default function ProfileSquare({user}: ProfileSquareProps) {
+export default function ProfileSquare({user, size}: ProfileSquareProps) {
   return (
-    <Link to={`${user.id}`} className="inline-block w-48 h-48 p-2 shadow mr-2 mt-2">
+    <Link to={`${user.id}`} className={`inline-block w-${size} h-${size} p-2 shadow mr-2 mt-2`}>
       <div className="relative z-0 mx-auto w-3/4">
         <ProfilePicture imageUrl={user.profile_picture} />
       </div>
