@@ -4,7 +4,9 @@ import tw from "twin.macro";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
+import { describe_date } from "../../utils";
 import ProfilePicture from "../members/ProfilePicture";
+import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
   event: Event;
@@ -18,19 +20,19 @@ export default function EventList({ event: initialEvent }: EventListProps) {
   }, [event])
 
   return (
-    <div className={`w-full shadow p-4 flex transition-[height]`}>
-      <Calendar className="h-20 w-32 mr-3" />
+    <div className="w-full shadow p-4 flex">
+      <CalendarDate dateStr={event.event_date} />
       <div>
         <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
-        <h6 className="text-xs text-gray-400 mb-3">Organized by {getName(event.organiser)}</h6>
+        <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <p className={`text-sm whitespace-pre-line truncate`}>{event.description}</p>
         <div className="mt-4">
           <h2>Attendees</h2>
           <div className="flex my-2">
             {event.attendees.length > 0
               ? event.attendees.map(user => (
-                <div className="w-10 h-10">
-                  <ProfilePicture imageUrl = {user.profile_picture} />
+                <div className="w-10 h-10" key={user.id}>
+                  <ProfilePicture imageUrl={user.profile_picture} />
                 </div>
               ))
               : <p className="text-gray-400 h-10">None yet!</p>
