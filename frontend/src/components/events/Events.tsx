@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../api";
 import { Event } from "../../models";
 import Loading from "../Loading";
+import EventList from "./EventList";
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([])
@@ -17,7 +18,9 @@ export default function Events() {
 
   return (
     <Loading loading={isLoading}>
-      <div>{eventList.map(event => <p key={event.id}>{JSON.stringify(event)}</p>)}</div>
+      <div>
+        {eventList.map(event => <EventList key={event.id} event={event} />)}
+      </div>
     </Loading>
   )
 }

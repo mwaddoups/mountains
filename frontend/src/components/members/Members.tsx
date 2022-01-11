@@ -43,4 +43,4 @@ export default function Members() {
   )
 }
 
-const SearchInput = tw.input`w-full m-2 shadow p-2 text-sm`
+const SearchInput = tw.input`w-full shadow p-2 text-sm`

@@ -23,7 +23,7 @@ export default function Platform() {
       <div className="w-32 flex-none grow bg-teal-600 text-gray-100">
         <Sidebar />
       </div>
-      <main className="ml-5 flex-auto w-full my-3">
+      <main className="ml-10 flex-auto w-full my-3">
         <Outlet context={authContext} />
       </main>
     </div>
