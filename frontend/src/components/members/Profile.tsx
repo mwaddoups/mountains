@@ -9,6 +9,7 @@ import { useAuth } from "../Layout";
 import ProfilePicture from "./ProfilePicture";
 import Loading from "../Loading";
 import Badges from "./Badges";
+import ExperienceRecord from "./ExperienceRecord";
 
 interface ProfileButtonProps {
   $loading?: boolean;
@@ -60,9 +61,7 @@ export default function Profile() {
           </div>
           <div>
             <h2 className="text-3xl font-medium">Experience</h2>
-            <ul>
-              <li>Hillwalking - {user?.experience?.hillwalking}</li>
-            </ul>
+            {user?.experience?.map(exp => <ExperienceRecord exp={exp} />)}
           </div>
         </div>
         <div className="ml-auto rounded shadow ">

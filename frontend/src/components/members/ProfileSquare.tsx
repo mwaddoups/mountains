@@ -11,7 +11,7 @@ interface ProfileSquareProps {
 
 export default function ProfileSquare({user}: ProfileSquareProps) {
   return (
-    <Link to={`${user.id}`} className={`inline-block w-48 p-2 shadow mr-2 mt-2`}>
+    <Link to={`${user.id}`} className={`inline-block w-48 p-2 shadow rounded-lg mr-2 mt-2`}>
       <div className="mx-auto w-3/4">
         <ProfilePicture imageUrl={user.profile_picture} />
       </div>

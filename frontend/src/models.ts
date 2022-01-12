@@ -8,14 +8,16 @@ export type User = {
   is_committee: boolean,
 }
 
-export type Experiences = {
-  hillwalking: number,
+export type Experience = {
+  activity: "HW" | "WW" | "SC" | "IC" | "IB" | "OS" | "OT" | "WC" | "ST",
+  competency: 0 | 1 | 2 | 3,
+  info: string,
 }
 
 export interface FullUser extends User {
   mobile_number: string,
   about: string,
-  experience: Experiences | null
+  experience: Array<Experience> | null
 }
 
 

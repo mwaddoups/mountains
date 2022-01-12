@@ -59,18 +59,28 @@ class User(AbstractUser):
     objects = UserManager()
 
 class Experience(models.Model):
+    # Update these lists on the frontend too!
     EXP_LEVELS = (
         (0, 'No Experience'),
         (1, 'Beginner'),
-        (2, 'Second'),
-        (3, 'Leader'),
+        (2, 'Competent'),
+        (3, 'Experienced'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='experience', primary_key=True)
-    hillwalking = models.IntegerField(choices=EXP_LEVELS)
-    scrambling = models.IntegerField(choices=EXP_LEVELS)
-    trad_climbing = models.IntegerField(choices=EXP_LEVELS)
-    winter_walking = models.IntegerField(choices=EXP_LEVELS)
-    winter_climbing = models.IntegerField(choices=EXP_LEVELS)
-    ski_touring = models.IntegerField(choices=EXP_LEVELS)
-    trail_running = models.IntegerField(choices=EXP_LEVELS)
-    indoor_climbing = models.IntegerField(choices=EXP_LEVELS)
+    ACTIVITIES = (
+        ('HW', 'Hillwalking'),
+        ('WW', 'Winter Walking'),
+        ('SC', 'Scrambling'),
+        ('IC', 'Indoor Climbing'),
+        ('IB', 'Indoor Bouldering'),
+        ('OS', 'Sport Climbing'),
+        ('OT', 'Trad Climbing'),
+        ('WC', 'Winter Climbing'),
+        ('ST', 'Ski Touring')
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='experience')
+    activity = models.TextField(choices=ACTIVITIES)
+    competency = models.IntegerField(choices=EXP_LEVELS)
+    info = models.TextField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'activity')

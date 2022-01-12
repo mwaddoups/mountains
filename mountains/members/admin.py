@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import Experience, User
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff', 'is_superuser', 'is_approved')
@@ -23,4 +23,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('user', 'activity', 'competency')
+    ordering = ('user', )
+
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Experience, ExperienceAdmin)
