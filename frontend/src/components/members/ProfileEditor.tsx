@@ -70,8 +70,7 @@ export default function ProfileEditor() {
         </div>
         <label className={labelStyles} htmlFor="about">Bio</label>
         <p className="text-sm text-gray-700 italic mb-2 ml-2">
-          Write about yourself and what brings you to our club! 
-          {!approved && <span>This will be visible to all members once you are approved, but you can change it later on.</span>}
+          Write about yourself and what brings you to our club! {!approved && <span> This will be visible to all members once you are approved, but you can change it later on.</span>}
         </p>
         <textarea className={inputStyles + " resize-none h-80"} id="about" 
           value={about} onChange={event => setAbout(event.target.value)} />

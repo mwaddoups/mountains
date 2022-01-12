@@ -8,13 +8,24 @@ export default function Layout() {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
+  const logout = useCallback(() => {
+    console.log('Logging out...')
+    localStorage.removeItem('token');
+    setAuthToken(null);
+    setCurrentUser(null);
+  }, [setAuthToken])
+
   const refreshUser = useCallback(async () => {
     if (authToken) {
       console.log(`Fetching user for ${authToken}...`);
-      const res = await api.get('users/self');
-      setCurrentUser(res.data);
+      try {
+        const res = await api.get('users/self');
+        setCurrentUser(res.data);
+      } catch (err) {
+        logout();
+      }
     }
-  }, [authToken])
+  }, [authToken, logout])
 
   useEffect(() => {
     if (authToken) {
@@ -28,13 +39,6 @@ export default function Layout() {
     setAuthToken(token);
     await refreshUser();
   }, [refreshUser, setAuthToken])
-
-  const logout = useCallback(() => {
-    console.log('Logging out...')
-    localStorage.removeItem('token');
-    setAuthToken(null);
-    setCurrentUser(null);
-  }, [setAuthToken])
 
   const authContext = {currentUser, authToken, storeAuth, logout, refreshUser}
 
