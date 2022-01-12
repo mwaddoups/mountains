@@ -22,6 +22,7 @@ const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
 
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
+  const [editingExperience, setEditingExperience] = useState(false);
   const { memberId } = useParams();
   const { currentUser } = useAuth();
 
@@ -61,9 +62,12 @@ export default function Profile() {
               : <p className="italic text-gray-500"> Nothing here yet!</p>}
           </div>
           <div>
-            <h2 className="text-3xl font-medium">Experience</h2>
+            <div className="flex">
+              <h2 className="text-3xl font-medium mr-3">Experience</h2>
+              {isUser && <ProfileButton onClick={() => setEditingExperience(!editingExperience)}>Edit</ProfileButton>}
+            </div>
               {user?.experience
-                ? <ExperienceRecord experiences={user.experience} />
+                ? <ExperienceRecord experiences={user.experience} editable={editingExperience} />
                 : <p className="italic text-gray-500">Nothing here yet!</p>
               }
           </div>

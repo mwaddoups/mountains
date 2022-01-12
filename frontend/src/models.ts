@@ -11,7 +11,7 @@ export type User = {
 export type Experience = {
   activity: "HW" | "WW" | "SC" | "IC" | "IB" | "OS" | "OT" | "WC" | "ST",
   competency: 0 | 1 | 2 | 3,
-  info: string,
+  info: string | undefined,
 }
 
 export interface FullUser extends User {

@@ -1,12 +1,20 @@
 from rest_framework import viewsets, permissions, generics, status
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
-from .models import User
-from .serializers import ProfilePictureSerializer, SmallUserSerializer, UserSerializer
+from .models import Experience, User
+from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
+
+class IsUserOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, user_obj):
+        return user_obj.id == request.user.id
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAdminUser, 
+        permissions.IsAuthenticated & IsUserOwner
+    ]
 
     def create(self, request):
         response = {'message': 'User creation not allowed on this path.'}
@@ -41,3 +49,16 @@ class SelfUserView(generics.GenericAPIView):
     def get(self, request):
         serialized = UserSerializer(request.user, context={'request': request})
         return Response(serialized.data)
+
+
+class IsExperienceOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, experience_obj):
+        return experience_obj.user.id == request.user.id
+
+class ExperienceViewSet(viewsets.ModelViewSet):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer
+    permission_classes = [
+        permissions.IsAdminUser, 
+        permissions.IsAuthenticated & IsExperienceOwner
+    ]

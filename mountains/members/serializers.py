@@ -11,7 +11,7 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    experience = ExperienceSerializer(many=True)
+    experience = ExperienceSerializer(many=True, read_only=True)
     
     class Meta:
         model = User
@@ -19,7 +19,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'id', 'first_name', 'last_name', 'mobile_number', 
             'about', 'experience', 'profile_picture', 'is_approved', 'is_committee'
         ]
-        read_only_fields = ['profile_picture']
+        read_only_fields = ['profile_picture', 'experience']
 
 class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

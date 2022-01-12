@@ -19,13 +19,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from members.views import UserViewSet, SelfUserView, ProfileUpdateView
+from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView
 from events.views import EventViewSet
 from social.views import FeedPostViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'events', EventViewSet)
+router.register(r'experiences', ExperienceViewSet)
 router.register(r'posts', FeedPostViewSet)
 router.register(r'comments', CommentViewSet)
 
