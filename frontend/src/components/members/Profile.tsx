@@ -61,7 +61,10 @@ export default function Profile() {
           </div>
           <div>
             <h2 className="text-3xl font-medium">Experience</h2>
-            {user?.experience?.map(exp => <ExperienceRecord exp={exp} />)}
+              {user?.experience
+                ? <ExperienceRecord experiences={user.experience} />
+                : <p className="italic text-gray-500">Nothing here yet!</p>
+              }
           </div>
         </div>
         <div className="ml-auto rounded shadow ">
