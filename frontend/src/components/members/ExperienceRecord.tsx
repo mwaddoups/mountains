@@ -44,7 +44,7 @@ export default function ExperienceRecord({ experiences, editable }: ExperienceRe
     <div className="grid grid-cols-3 my-2">
       <ExperienceHeader>Activity</ExperienceHeader>
       <ExperienceHeader>Experience</ExperienceHeader>
-      <ExperienceHeader>Other Info</ExperienceHeader>
+      <ExperienceHeader>Ability and Other Info</ExperienceHeader>
       {activitySet}
     </div>
   )
