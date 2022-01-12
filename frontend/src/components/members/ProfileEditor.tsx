@@ -7,6 +7,7 @@ export default function ProfileEditor() {
   const {currentUser, refreshUser} = useAuth();
   const [firstName, setFirstName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
+  const [mobileNumber, setMobileNumber] = useState<string>('');
   const [about, setAbout] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false)
 
@@ -16,6 +17,7 @@ export default function ProfileEditor() {
   useEffect(() => {
     setFirstName(currentUser ? currentUser.first_name : '')
     setSurname(currentUser ? currentUser.last_name : '')
+    setMobileNumber(currentUser ? currentUser.mobile_number : '')
     setAbout(currentUser ? currentUser.about : '')
   }, [currentUser])
   
@@ -25,16 +27,17 @@ export default function ProfileEditor() {
     event.preventDefault();
     if (currentUser) {
       let newUser = Object.assign({}, currentUser);
-      newUser.first_name = firstName
-      newUser.last_name = surname
-      newUser.about = about
+      newUser.first_name = firstName;
+      newUser.last_name = surname;
+      newUser.about = about;
+      newUser.mobile_number = mobileNumber;
 
       api.put(`users/${currentUser.id}/`, newUser).then(res => {
         refreshUser();
         setSubmitted(true);
       })
     }
-  }, [about, currentUser, firstName, refreshUser, surname])
+  }, [about, currentUser, firstName, surname, mobileNumber, refreshUser])
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
@@ -68,10 +71,18 @@ export default function ProfileEditor() {
         <label className={labelStyles} htmlFor="about">Bio</label>
         <p className="text-sm text-gray-700 italic mb-2 ml-2">
           Write about yourself and what brings you to our club! 
-          {!approved && <span>This will be public once you are approved, but you can change it later on.</span>}
+          {!approved && <span>This will be visible to all members once you are approved, but you can change it later on.</span>}
         </p>
         <textarea className={inputStyles + " resize-none h-80"} id="about" 
           value={about} onChange={event => setAbout(event.target.value)} />
+        <label className={labelStyles} htmlFor="mobile">Mobile Number</label>
+        <p className="text-sm text-gray-700 italic mb-2 ml-2">
+          Optional. We make this visible to all members if you provide it as it's useful for organising walks and quickly 
+          getting in touch with people.
+        </p>
+        <input
+          className={inputStyles} type="string" id="firstName"
+          value={mobileNumber} onChange={(event => setMobileNumber(event.target.value))} />
         <div className="flex justify-between">
           <button
             className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"

@@ -50,6 +50,7 @@ export default function Profile() {
               </div>
             )}
           </div>
+          <p className="text-sm text-gray-500 font-bold tracking-wide">{user?.mobile_number}</p>
           <div className="pt-4">
             <Badges user={user} />
           </div>
