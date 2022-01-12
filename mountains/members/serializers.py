@@ -5,9 +5,9 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Experience
         fields = [
-           'activity',
-           'competency',
-           'info',
+            'activity',
+            'competency',
+            'info',
         ]
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

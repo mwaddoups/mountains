@@ -79,7 +79,7 @@ class Experience(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='experience')
     activity = models.TextField(choices=ACTIVITIES)
-    competency = models.IntegerField(choices=EXP_LEVELS)
+    competency = models.IntegerField(choices=EXP_LEVELS, null=False, blank=True, default=0)
     info = models.TextField(null=True, blank=True)
 
     class Meta:

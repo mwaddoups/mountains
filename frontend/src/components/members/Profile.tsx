@@ -16,7 +16,7 @@ interface ProfileButtonProps {
 }
 
 const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
-  tw`rounded-lg bg-blue-500 p-1.5 text-gray-100 text-sm`,
+  tw`rounded-lg bg-blue-400 p-1.5 text-gray-100 text-sm hover:bg-blue-600`,
   $loading && tw`bg-gray-500`,
 ])
 
@@ -33,7 +33,7 @@ export default function Profile() {
       let foundUser = response.data;
       setUser(foundUser);
     });
-  }, [setUser, memberId])
+  }, [setUser, memberId, editingExperience])
 
   return (
     <Loading loading={(!user)}>
@@ -64,8 +64,15 @@ export default function Profile() {
           <div>
             <div className="flex">
               <h2 className="text-3xl font-medium mr-3">Experience</h2>
-              {isUser && <ProfileButton onClick={() => setEditingExperience(!editingExperience)}>Edit</ProfileButton>}
+              {isUser && <ProfileButton
+                onClick={() => setEditingExperience(!editingExperience)}>
+                  {editingExperience ? "Finish Editing" : "Edit"}
+              </ProfileButton>}
             </div>
+            {editingExperience && <p className="text-xs text-gray-500">
+              This is just to give a rough idea of experience and ability, 
+              mainly either for leaders or to help people find others with similar experience.
+              </p>}
               {user?.experience
                 ? <ExperienceRecord experiences={user.experience} editable={editingExperience} />
                 : <p className="italic text-gray-500">Nothing here yet!</p>

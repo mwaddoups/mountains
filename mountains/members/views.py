@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import serializers, viewsets, permissions, generics, status
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from .models import Experience, User
@@ -6,7 +6,10 @@ from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUs
 
 class IsUserOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
-        return user_obj.id == request.user.id
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        else:
+            return user_obj.id == request.user.id
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -51,14 +54,22 @@ class SelfUserView(generics.GenericAPIView):
         return Response(serialized.data)
 
 
-class IsExperienceOwner(permissions.BasePermission):
-    def has_object_permission(self, request, view, experience_obj):
-        return experience_obj.user.id == request.user.id
-
 class ExperienceViewSet(viewsets.ModelViewSet):
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
-    permission_classes = [
-        permissions.IsAdminUser, 
-        permissions.IsAuthenticated & IsExperienceOwner
-    ]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request):
+        serializer = ExperienceSerializer(data=request.data)
+        if serializer.is_valid():
+            experience, created = Experience.objects.update_or_create(
+                user=request.user,
+                activity=serializer.validated_data['activity'],
+                defaults={
+                    'competency': serializer.validated_data.get('competency', None),
+                    'info': serializer.validated_data.get('info', None),
+                }
+            )
+            return Response(ExperienceSerializer(experience).data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
