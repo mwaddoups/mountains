@@ -18,13 +18,11 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'HOST': 'localhost',
-            'PORT': 5432,
-            'NAME': 'mountains',
-            'USER': os.environ['PG_USER'],
-            'PASSWORD': os.environ['PG_PASS'],
-        }
+        'HOST': 'localhost',
+        'PORT': 5432,
+        'NAME': 'mountains',
+        'USER': os.environ['PG_USER'],
+        'PASSWORD': os.environ['PG_PASS'],
     }
 }
 
