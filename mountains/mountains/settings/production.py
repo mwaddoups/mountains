@@ -30,6 +30,7 @@ EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
 ANYMAIL = {
     'MAILGUN_API_KEY': os.environ['MAILGUN_API_KEY'],
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
     'MAILGUN_SENDER_DOMAIN': 'mg.clydemc.org',
 }
 
