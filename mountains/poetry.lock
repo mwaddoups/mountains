@@ -81,6 +81,20 @@ Django = "*"
 djangorestframework = "*"
 
 [[package]]
+name = "gunicorn"
+version = "20.1.0"
+description = "WSGI HTTP Server for UNIX"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+eventlet = ["eventlet (>=0.24.1)"]
+gevent = ["gevent (>=1.4.0)"]
+setproctitle = ["setproctitle"]
+tornado = ["tornado (>=0.2)"]
+
+[[package]]
 name = "pillow"
 version = "9.0.0"
 description = "Python Imaging Library (Fork)"
@@ -115,7 +129,7 @@ python-versions = ">=3.5"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8"
-content-hash = "65df5775e7e6fa258b4ef56851e56c7486e029c4fb7cfe37d8b3c2a4c6d7a39e"
+content-hash = "1fba26d5c38ca8f345bccef7d6f1d6bdba59e6d18de9855c350dec2c9b155a8a"
 
 [metadata.files]
 asgiref = [
@@ -143,6 +157,10 @@ djangorestframework = [
 drfpasswordless = [
     {file = "drfpasswordless-1.5.7-py3-none-any.whl", hash = "sha256:48a672fb974a2a85dd9f279b9d8252008ea12a8bdd1b0c76da8c6b954fe2c8c6"},
     {file = "drfpasswordless-1.5.7.tar.gz", hash = "sha256:f5c9355c35b41e9666920647225a0e69c515d9397b2e4a3b2a503141a3b6eb91"},
+]
+gunicorn = [
+    {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
+    {file = "gunicorn-20.1.0.tar.gz", hash = "sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8"},
 ]
 pillow = [
     {file = "Pillow-9.0.0-cp310-cp310-macosx_10_10_universal2.whl", hash = "sha256:113723312215b25c22df1fdf0e2da7a3b9c357a7d24a93ebbe80bfda4f37a8d4"},
