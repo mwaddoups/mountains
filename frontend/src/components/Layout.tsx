@@ -20,6 +20,9 @@ export default function Layout() {
       console.log(`Fetching user for ${authToken}...`);
       try {
         const res = await api.get('users/self');
+        if (res.status !== 200) {
+          throw res.data;
+        }
         setCurrentUser(res.data);
       } catch (err) {
         logout();
