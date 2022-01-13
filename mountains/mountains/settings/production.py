@@ -1,4 +1,6 @@
 from .base import *
+from dotenv import load_dotenv
+load_dotenv()
 
 DEBUG = False
 SECURE_SSL_REDIRECT = True
