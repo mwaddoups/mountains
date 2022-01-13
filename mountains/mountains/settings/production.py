@@ -26,4 +26,12 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+
+ANYMAIL = {
+    'MAILGUN_API_KEY': os.environ['MAILGUN_API_KEY'],
+    'MAILGUN_SENDER_DOMAIN': 'mg.clydemc.org',
+}
+
+USE_X_FORWARDED_HOST = True
+FORCE_SCRIPT_NAME = "/api"
