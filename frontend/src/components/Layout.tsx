@@ -3,14 +3,17 @@ import { Outlet, useOutletContext } from "react-router-dom";
 import api from "../api";
 import { FullUser, AuthContext } from "../models";
 import Navigation from "./Navigation";
+import Cookies from "universal-cookie";
 
 export default function Layout() {
-  const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem('token'));
+  const cookies = new Cookies();
+  const [authToken, setAuthToken] = useState<string | null>(cookies.get('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
   const logout = useCallback(() => {
     console.log('Logging out...')
-    localStorage.removeItem('token');
+    const cookies = new Cookies();
+    cookies.remove('token');
     setAuthToken(null);
     setCurrentUser(null);
   }, [setAuthToken])
@@ -38,7 +41,10 @@ export default function Layout() {
 
   const storeAuth = useCallback(async token => {
     console.log('Storing authorization token...')
-    localStorage.setItem('token', token);
+    const cookies = new Cookies();
+    cookies.set('token', token, {
+      expires: new Date(new Date().setDate((new Date()).getDate() + 90))
+    });
     setAuthToken(token);
     await refreshUser();
   }, [refreshUser, setAuthToken])
