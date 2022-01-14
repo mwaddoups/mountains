@@ -44,6 +44,8 @@ export default function Layout() {
     const cookies = new Cookies();
     cookies.set('token', token, {
       path: '/',
+      secure: true,
+      sameSite: "strict",
       expires: new Date(new Date().setDate((new Date()).getDate() + 90))
     });
     setAuthToken(token);
