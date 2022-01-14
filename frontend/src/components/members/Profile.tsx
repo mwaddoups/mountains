@@ -29,7 +29,7 @@ export default function Profile() {
   const isUser = currentUser && user && (currentUser.id === user.id);
 
   useEffect(() => {
-    api.get(`users/${memberId}`).then(response => {
+    api.get(`users/${memberId}/`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
     });

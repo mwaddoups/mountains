@@ -22,7 +22,7 @@ export default function Layout() {
     if (authToken) {
       console.log(`Fetching user for ${authToken}...`);
       try {
-        const res = await api.get('users/self');
+        const res = await api.get('users/self/');
         if (res.status !== 200) {
           throw res.data;
         }
