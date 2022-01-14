@@ -31,6 +31,6 @@ const colorVariants = {
 }
 
 const ProfileBadge = styled.span(({$badgeColor}: ProfileBadgeProps) => [
- tw`rounded-lg m-1 px-3 py-0.5 text-sm flex-initial truncate`,
+ tw`rounded-lg m-1 px-3 py-0.5 text-sm flex-initial truncate block sm:inline-block`,
  colorVariants[$badgeColor], 
 ])

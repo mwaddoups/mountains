@@ -20,7 +20,7 @@ import Home from "./components/Home";
 
 function App() {
   return (
-    <div className="container mx-auto px-5 lg:px-20">
+    <div className="container mx-auto pr-2 lg:px-20">
       <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
