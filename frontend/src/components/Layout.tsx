@@ -43,6 +43,7 @@ export default function Layout() {
     console.log('Storing authorization token...')
     const cookies = new Cookies();
     cookies.set('token', token, {
+      path: '/',
       expires: new Date(new Date().setDate((new Date()).getDate() + 90))
     });
     setAuthToken(token);
