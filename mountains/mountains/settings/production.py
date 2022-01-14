@@ -38,3 +38,6 @@ USE_X_FORWARDED_HOST = True
 FORCE_SCRIPT_NAME = "/api"
 DEFAULT_FROM_EMAIL = "noreply@clydemc.org"
 SERVER_EMAIL = "noreply-server@clydemc.org"
+
+MEDIA_ROOT = '/var/www/html/media'
+
