@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import serializers, viewsets, permissions, generics, status
 from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
@@ -61,8 +62,18 @@ class SelfUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        serialized = UserSerializer(request.user, context={'request': request})
-        return Response(serialized.data)
+        """
+        As a bit of a hack, this also handles token expiry.
+        """
+        token = request.user.auth_token
+        now = datetime.datetime.now(datetime.timezone.utc)
+        if (now - token.created).days > 90:
+            print('Expiring token!')
+            token.delete()
+            return Response({"details": "Token deleted, please re-login."}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            serialized = UserSerializer(request.user, context={'request': request})
+            return Response(serialized.data)
 
 
 class ExperienceViewSet(viewsets.ModelViewSet):
