@@ -103,6 +103,7 @@ interface ProfileUploaderButtonProps {
 function ProfileUploaderButton({ setPictureChanged }: ProfileUploaderButtonProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [errorText, setErrorText] = useState('');
 
   const onButtonClick = useCallback(() => {
     fileInput?.current?.click();
@@ -110,22 +111,31 @@ function ProfileUploaderButton({ setPictureChanged }: ProfileUploaderButtonProps
 
   const onChangeFile = useCallback(event => {
     setLoading(true);
+    setErrorText('');
     event.stopPropagation();
     event.preventDefault();
     const file = event.target.files[0];
-    console.log(file);
     let form = new FormData();
     form.append('file', file);
     api.patch('users/profile/', form).then(res => {
       setLoading(false);
       setPictureChanged(true);
+    }).catch(err => {
+      const errorText = err?.response?.data?.profile_picture || "Unknown error. Refresh and try again!"
+      setErrorText(errorText)
+      setLoading(false);
     });
-  }, [setLoading])
+  }, [setLoading, setPictureChanged, setErrorText])
 
   return (
     <>
     <input type="file" ref={fileInput} className="hidden" onChange={onChangeFile} />
     <ProfileButton onClick={onButtonClick} $loading={loading}>Upload profile picture</ProfileButton>
+    {errorText && (
+      <div className="w-32 lg:w-64">
+        {errorText && <p className="block text-center text-xs text-red-500 italic">{errorText}</p>}
+      </div>
+    )}
     </>
   )
 }
