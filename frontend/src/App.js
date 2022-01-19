@@ -18,10 +18,12 @@ import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
 import Photos from "./components/Photos";
+import CookieConsent from "react-cookie-consent";
 
 function App() {
   return (
     <div className="container mx-auto pr-2 lg:px-20">
+      <CookieConsent>This website uses cookies to manage our user experience.</CookieConsent>
       <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
