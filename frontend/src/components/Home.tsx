@@ -15,7 +15,7 @@ export default function Home() {
           it's similar to Whatsapp but allows us to have multiple groups for different chats (avoiding the chaos)!
           You can download the app both on your phone and on your laptop.
         </Paragraph>
-        <Paragraph><a target="_blank" className="text-blue-700 hover:text-blue-400" href="https://discord.gg/98K3CafRxk">Join our discord server here!</a></Paragraph>
+        <Paragraph><a target="_blank" rel="noreferrer" className="text-blue-700 hover:text-blue-400" href="https://discord.gg/98K3CafRxk">Join our discord server here!</a></Paragraph>
         <Paragraph>
           You can see our events, members and other information using the sidebar on the side.
         </Paragraph>

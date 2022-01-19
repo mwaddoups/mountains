@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, House, Newspaper, PeopleFill } from "react-bootstrap-icons";
+import { Calendar, House, Images, Newspaper, PeopleFill } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 
 
@@ -22,6 +22,9 @@ export default function Sidebar() {
       </NavLink>
       <NavLink to="members" className={linkStyler}>
         <span className="sm:flex"><PeopleFill className={iconStyles} />Members</span>
+      </NavLink>
+      <NavLink to="photos" className={linkStyler}>
+        <span className="sm:flex"><Images className={iconStyles} />Photos</span>
       </NavLink>
       <div className="mt-20"></div>
     </nav>

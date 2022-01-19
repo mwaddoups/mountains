@@ -17,6 +17,7 @@ import Profile from "./components/members/Profile";
 import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
+import Photos from "./components/Photos";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
                   <Route path=":memberId" element={<Profile />} />
                 </Route>
                 <Route path="events" element={<Events />} />
+                <Route path="photos" element={<Photos />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
