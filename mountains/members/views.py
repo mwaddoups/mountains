@@ -1,5 +1,5 @@
 from rest_framework import serializers, viewsets, permissions, generics, status
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from .models import Experience, User
 from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
@@ -10,6 +10,10 @@ class IsUserOwner(permissions.BasePermission):
             return True
         else:
             return user_obj.id == request.user.id
+
+class IsCommittee(permissions.BasePermission):
+    def has_object_permission(self, request, view, user_obj):
+        return request.user.is_committee
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -26,6 +30,14 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return SmallUserSerializer
         return UserSerializer
+
+    @action(methods=['post'], detail=True, permission_classes = [IsCommittee])
+    def approve(self, request, pk=None):
+        target_user = self.get_object()
+        target_user.is_approved = True
+        target_user.save()
+
+        return Response({'is_approved': True})
 
 class ProfileUpdateView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]

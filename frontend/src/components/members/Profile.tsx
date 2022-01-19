@@ -10,12 +10,13 @@ import ProfilePicture from "./ProfilePicture";
 import Loading from "../Loading";
 import Badges from "./Badges";
 import ExperienceRecord from "./ExperienceRecord";
+import ApprovalButton from "./ApprovalButton";
 
 interface ProfileButtonProps {
   $loading?: boolean;
 }
 
-const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
+export const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
   tw`rounded-lg bg-blue-400 p-1.5 text-gray-100 text-xs lg:text-sm hover:bg-blue-600`,
   $loading && tw`bg-gray-500`,
 ])
@@ -23,7 +24,7 @@ const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   const [editingExperience, setEditingExperience] = useState(false);
-  const [pictureChanged, setPictureChanged] = useState(false);
+  const [needsRefresh, setNeedsRefresh] = useState(false);
   const { memberId } = useParams();
   const { currentUser } = useAuth();
 
@@ -33,12 +34,13 @@ export default function Profile() {
     api.get(`users/${memberId}/`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
-      setPictureChanged(false);
+      setNeedsRefresh(false);
     });
-  }, [setUser, memberId, editingExperience, pictureChanged, setPictureChanged])
+  }, [setUser, memberId, editingExperience, needsRefresh, setNeedsRefresh])
 
   return (
     <Loading loading={(!user)}>
+      <ApprovalButton user={user} setNeedsRefresh={setNeedsRefresh} />
       <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow block flex-auto flex lg:block items-center">
           <div className="w-32 lg:w-64 lg:h-64">
@@ -46,7 +48,7 @@ export default function Profile() {
           </div>
           <div className="flex justify-center h-8 m-2">
             {isUser && (
-              <ProfileUploaderButton setPictureChanged={setPictureChanged}/>
+              <ProfileUploaderButton setNeedsRefresh={setNeedsRefresh}/>
             )}
           </div>
         </div>
@@ -70,7 +72,7 @@ export default function Profile() {
           <div className="h-40 min-h-40 mt-4">
             <h2 className="text-xl lg:text-3xl font-medium">About</h2>
             {user?.about 
-              ? <p className="text-sm lg:text-base">{user.about}</p> 
+              ? <p className="text-sm lg:text-base whitespace-pre-line">{user.about}</p> 
               : <p className="italic text-gray-500"> Nothing here yet!</p>}
           </div>
           <div>
@@ -97,10 +99,10 @@ export default function Profile() {
 }
 
 interface ProfileUploaderButtonProps {
-  setPictureChanged: (a: boolean) => void;
+  setNeedsRefresh: (a: boolean) => void;
 }
 
-function ProfileUploaderButton({ setPictureChanged }: ProfileUploaderButtonProps) {
+function ProfileUploaderButton({ setNeedsRefresh }: ProfileUploaderButtonProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorText, setErrorText] = useState('');
@@ -119,13 +121,13 @@ function ProfileUploaderButton({ setPictureChanged }: ProfileUploaderButtonProps
     form.append('file', file);
     api.patch('users/profile/', form).then(res => {
       setLoading(false);
-      setPictureChanged(true);
+      setNeedsRefresh(true);
     }).catch(err => {
       const errorText = err?.response?.data?.profile_picture || "Unknown error. Refresh and try again!"
       setErrorText(errorText)
       setLoading(false);
     });
-  }, [setLoading, setPictureChanged, setErrorText])
+  }, [setLoading, setNeedsRefresh, setErrorText])
 
   return (
     <>
