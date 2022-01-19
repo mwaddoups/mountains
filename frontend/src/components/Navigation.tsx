@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { List } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getName } from "../methods/user";
 import { AuthContext } from "../models";
 import ProfilePicture from "./members/ProfilePicture";
@@ -12,6 +12,11 @@ interface NavigationProps {
 export default function Navigation({ authContext }: NavigationProps) {
   const [menuOpenMobile, setMenuOpenMobile] = useState(false);
   const {currentUser, logout} = authContext;
+
+  // Collapse the menu on navigation
+  const location = useLocation();
+  useEffect(() => setMenuOpenMobile(false), [location])
+
 
   const linkStyles = "block h-full p-4 hover:bg-gray-200 flex-none";
 
