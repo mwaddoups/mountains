@@ -43,7 +43,7 @@ export default function Profile() {
       <ApprovalButton user={user} setNeedsRefresh={setNeedsRefresh} />
       <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow block flex-auto flex lg:block items-center">
-          <div className="w-32 lg:w-64 lg:h-64">
+          <div className="w-32 h-32 lg:w-64 lg:h-64">
             <ProfilePicture user={user} />
           </div>
           <div className="flex justify-center h-8 m-2">
@@ -69,13 +69,13 @@ export default function Profile() {
           <div className="pt-4 flex">
             <Badges user={user} />
           </div>
-          <div className="h-40 min-h-40 mt-4">
+          <div className="min-h-[10rem] mt-4">
             <h2 className="text-xl lg:text-3xl font-medium">About</h2>
             {user?.about 
               ? <p className="text-sm lg:text-base whitespace-pre-line">{user.about}</p> 
               : <p className="italic text-gray-500"> Nothing here yet!</p>}
           </div>
-          <div>
+          <div className="mt-4">
             <div className="flex">
               <h2 className="text-xl lg:text-3xl font-medium mr-3">Experience</h2>
               {isUser && <ProfileButton
