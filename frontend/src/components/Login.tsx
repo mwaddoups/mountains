@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api";
 
 interface LoginProps {
@@ -51,6 +52,8 @@ export default function Login({ setAuthToken }: LoginProps) {
       <button 
         className="block mx-auto rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
         onClick={waitingForToken ? sendLogin : requestToken}>Login/Signup</button>
+      <p className="text-sm italic text-gray-500 text-center mt-4">By accessing this area of our site you consent 
+        to storing of your data as in our <span className="text-blue-800 hover:text-blue-500"><Link to="/privacy">Privacy Policy</Link></span>.</p>
     </form>
   )
 }

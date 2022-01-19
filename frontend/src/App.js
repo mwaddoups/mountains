@@ -19,6 +19,7 @@ import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
 import Photos from "./components/Photos";
 import CookieConsent from "react-cookie-consent";
+import Privacy from "./components/Privacy";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
+              <Route path="privacy" element={<Privacy />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="feed" element={<Feed />} />
