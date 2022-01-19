@@ -33,7 +33,7 @@ export default function EventList({ event: initialEvent }: EventListProps) {
               ? event.attendees.map(user => (
                 <div className="w-10 h-10 mr-1" key={user.id}>
                   <Link to={`../members/${user.id}`}>
-                    <ProfilePicture imageUrl={user.profile_picture} />
+                    <ProfilePicture user={user} />
                   </Link>
                 </div>
               ))

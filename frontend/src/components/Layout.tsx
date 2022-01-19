@@ -7,7 +7,7 @@ import Cookies from "universal-cookie";
 import ReactGA from 'react-ga';
 
 export default function Layout() {
-  //usePageTracking();
+  usePageTracking();
 
   const cookies = new Cookies();
   const [authToken, setAuthToken] = useState<string | null>(cookies.get('token'));

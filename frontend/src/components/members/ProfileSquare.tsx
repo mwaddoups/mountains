@@ -13,7 +13,7 @@ export default function ProfileSquare({user}: ProfileSquareProps) {
   return (
     <Link to={`${user.id}`} className="inline-block w-full sm:w-48 p-2 shadow rounded-lg mr-2 mt-2 flex sm:block items-center justify-between">
       <div className="w-16 sm:mx-auto sm:w-3/4 flex-none">
-        <ProfilePicture imageUrl={user.profile_picture} />
+        <ProfilePicture user={user} />
       </div>
       <div className="m-2 sm:mx-auto text-center sm:mt-2">
         <h1 className="font-light">{getName(user)}</h1> 

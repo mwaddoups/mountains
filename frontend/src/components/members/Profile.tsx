@@ -44,7 +44,7 @@ export default function Profile() {
       <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow block flex-auto flex lg:block items-center">
           <div className="w-32 lg:w-64 lg:h-64">
-            <ProfilePicture imageUrl={user?.profile_picture} />
+            <ProfilePicture user={user} />
           </div>
           <div className="flex justify-center h-8 m-2">
             {isUser && (

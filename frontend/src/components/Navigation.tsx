@@ -40,7 +40,7 @@ export default function Navigation({ authContext }: NavigationProps) {
         <>
         <Link to={`/platform/members/${currentUser.id}`} className={linkStyles + " lg:ml-auto flex"}>
           <span className="mr-2">{getName(currentUser)}</span>
-          <div className="w-7 h-7"><ProfilePicture imageUrl={currentUser.profile_picture} /></div>
+          <div className="w-7 h-7"><ProfilePicture user={currentUser} /></div>
         </Link>
         <Link to="/" onClick={logout} className={linkStyles}>Logout</Link>
         </>
