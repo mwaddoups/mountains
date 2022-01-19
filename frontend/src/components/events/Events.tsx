@@ -19,6 +19,7 @@ export default function Events() {
   return (
     <Loading loading={isLoading}>
       <div>
+        <h1 className="text-xl text-gray-500 italic mb-3">We are still working on the event listings - here's how they might look in future!</h1>
         {eventList.map(event => <EventList key={event.id} event={event} />)}
       </div>
     </Loading>
