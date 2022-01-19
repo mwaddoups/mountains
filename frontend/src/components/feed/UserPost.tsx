@@ -14,7 +14,7 @@ interface UserPostProps {
 export default function UserPost({user, posted, text}: UserPostProps) {
   return (
     <div className="flex">
-      <div className="w-8 h-8">
+      <div className="w-8 h-8 flex-none">
         <Link to={`../members/${user.id}`}>
           <ProfilePicture imageUrl={user.profile_picture} />
         </Link>
