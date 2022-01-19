@@ -2,6 +2,7 @@ import datetime
 from rest_framework import serializers, viewsets, permissions, generics, status
 from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
+from django.core.mail import send_mail
 from .models import Experience, User
 from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
 
@@ -37,6 +38,29 @@ class UserViewSet(viewsets.ModelViewSet):
         target_user = self.get_object()
         target_user.is_approved = True
         target_user.save()
+
+        email_body =  (
+            "Thank you for registering!\n\n"
+            "You have now been approved and should have full access to our site at http://clydemc.org.\n"
+            "There are more details on there about joining our Discord channel and getting involved.\n\n"
+            "See you there!"
+        )
+        email_html =  (
+            "<h1>Thank you for registering!</h1>\n"
+            "<p>You have now been approved and should have full access to our site at <a href='http://clydemc.org'>http://clydemc.org</a>.</p>\n"
+            "<p>There are more details on there about joining our Discord channel and getting involved.</p>\n"
+            "<p>See you there!</p>"
+        )
+
+        send_mail(
+            "Clyde Mountaineering Club - Approved",
+            email_body,
+            "noreply@clydemc.org",
+            [target_user.email],
+            fail_silently=True,
+            html_message=email_html,
+        )
+
 
         return Response({'is_approved': True})
 
