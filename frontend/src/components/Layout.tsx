@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useOutletContext } from "react-router-dom";
 import api from "../api";
 import { FullUser, AuthContext } from "../models";
 import Navigation from "./Navigation";
 import Cookies from "universal-cookie";
+import ReactGA from 'react-ga';
 
 export default function Layout() {
+  //usePageTracking();
+
   const cookies = new Cookies();
   const [authToken, setAuthToken] = useState<string | null>(cookies.get('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
@@ -67,4 +70,22 @@ export default function Layout() {
 
 export function useAuth() {
   return useOutletContext<AuthContext>();
+}
+
+const usePageTracking = () => {
+  const location = useLocation();
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (window.location.href.includes("clydemc")) {
+      ReactGA.initialize('UA-28467382-3');
+      setInitialized(true);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (initialized) {
+      ReactGA.pageview(location.pathname + location.search);
+    }
+  }, [initialized, location])
 }
