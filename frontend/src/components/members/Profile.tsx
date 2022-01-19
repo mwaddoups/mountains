@@ -23,6 +23,7 @@ const ProfileButton = styled.button(({ $loading }: ProfileButtonProps) => [
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   const [editingExperience, setEditingExperience] = useState(false);
+  const [pictureChanged, setPictureChanged] = useState(false);
   const { memberId } = useParams();
   const { currentUser } = useAuth();
 
@@ -32,8 +33,9 @@ export default function Profile() {
     api.get(`users/${memberId}/`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
+      setPictureChanged(false);
     });
-  }, [setUser, memberId, editingExperience])
+  }, [setUser, memberId, editingExperience, pictureChanged, setPictureChanged])
 
   return (
     <Loading loading={(!user)}>
@@ -44,7 +46,7 @@ export default function Profile() {
           </div>
           <div className="flex justify-center h-8 m-2">
             {isUser && (
-              <ProfileUploaderButton />
+              <ProfileUploaderButton setPictureChanged={setPictureChanged}/>
             )}
           </div>
         </div>
@@ -94,8 +96,11 @@ export default function Profile() {
   )
 }
 
+interface ProfileUploaderButtonProps {
+  setPictureChanged: (a: boolean) => void;
+}
 
-function ProfileUploaderButton() {
+function ProfileUploaderButton({ setPictureChanged }: ProfileUploaderButtonProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -111,7 +116,10 @@ function ProfileUploaderButton() {
     console.log(file);
     let form = new FormData();
     form.append('file', file);
-    api.patch('users/profile/', form).then(res => setLoading(false));
+    api.patch('users/profile/', form).then(res => {
+      setLoading(false);
+      setPictureChanged(true);
+    });
   }, [setLoading])
 
   return (
