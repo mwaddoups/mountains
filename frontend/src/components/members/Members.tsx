@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import tw from "twin.macro";
 import api from "../../api";
 import { User } from "../../models";
+import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import ProfileSquare from "./ProfileSquare";
 
@@ -12,6 +13,7 @@ export default function Members() {
   ))
   const [isLoading, setIsLoading] = useState(true);
   const [searchString, setSearchString] = useState('');
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     setIsLoading(true);
@@ -22,16 +24,18 @@ export default function Members() {
   }, [setIsLoading, setUserList])
   
   let filteredUsers = useMemo(() => {
+    // Only committee can see unapproved users
+    let approvedUsers = userList.filter(user => user.is_approved || currentUser?.is_committee)
     if (!searchString) {
-      return userList
+      return approvedUsers
     } else {
       const searchKeywords = searchString.split(" ");
-      return userList.filter(user => searchKeywords.filter(k => k).some(keyword => (
+      return approvedUsers.filter(user => searchKeywords.filter(k => k).some(keyword => (
           user.first_name.includes(keyword) || user.last_name.includes(keyword)
         )
       ))
     }
-  }, [searchString, userList])
+  }, [searchString, userList, currentUser])
 
   return (
     <Loading loading={isLoading}>
