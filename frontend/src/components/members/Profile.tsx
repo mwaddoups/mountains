@@ -26,7 +26,7 @@ export default function Profile() {
   const [editingExperience, setEditingExperience] = useState(false);
   const [needsRefresh, setNeedsRefresh] = useState(false);
   const { memberId } = useParams();
-  const { currentUser } = useAuth();
+  const { currentUser, refreshUser } = useAuth();
 
   const isUser = currentUser && user && (currentUser.id === user.id);
 
@@ -34,9 +34,12 @@ export default function Profile() {
     api.get(`users/${memberId}/`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
+      if (isUser) {
+        refreshUser();
+      }
       setNeedsRefresh(false);
     });
-  }, [setUser, memberId, editingExperience, needsRefresh, setNeedsRefresh])
+  }, [setUser, memberId, editingExperience, needsRefresh, setNeedsRefresh, isUser, refreshUser])
 
   return (
     <Loading loading={(!user)}>
