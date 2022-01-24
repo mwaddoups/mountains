@@ -10,9 +10,8 @@ interface BadgesProps {
 export default function Badges({ user }: BadgesProps) {
   return (
     <>
-      {user?.is_approved
-        ? <ProfileBadge $badgeColor="green">Approved</ProfileBadge>
-        : <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
+      {user?.is_approved 
+        || <ProfileBadge $badgeColor="red">Unapproved</ProfileBadge>
       }
       {user?.is_committee
         && <ProfileBadge $badgeColor="purple">Committee</ProfileBadge>}
