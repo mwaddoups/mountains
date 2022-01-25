@@ -15,7 +15,6 @@ const Italic = tw.p`text-gray-700 text-xs italic`
 
 export default function Privacy() {
   const [policy, setPolicy] = useState('');
-  window.scrollTo(0, 0);
 
   useEffect(() => {
     async function f() {
@@ -24,6 +23,8 @@ export default function Privacy() {
       return text;
     }
     f().then(text => setPolicy(text))
+    
+    window.scrollTo(0, 0);
   }, [])
 
   return (

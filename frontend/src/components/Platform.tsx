@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 import { useAuth } from "./Layout";
@@ -9,6 +9,8 @@ import Sidebar from "./Sidebar";
 export default function Platform() {
   const authContext = useAuth()
   const { authToken, currentUser, storeAuth } = authContext;
+
+  useEffect(() => window.scrollTo(0, 0), []);
 
   let missingPicture = useMemo(() => !(currentUser?.profile_picture), [currentUser])
 
