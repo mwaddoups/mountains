@@ -37,7 +37,8 @@ export default function Home() {
           members will then see your post and you should be able to fill seats, split petrol and everything else.
         </Paragraph>
         <Paragraph>
-          Please note that any events organized in this way 
+          Please note that any events organized in this way are not official club events - so make sure you understand the risks 
+          and know how to look after yourself if conditions aren't as expected.
         </Paragraph>
       </Section>
       <Section id="feedback">
