@@ -25,7 +25,19 @@ export default function Members() {
   
   let filteredUsers = useMemo(() => {
     // Only committee can see unapproved users
-    let approvedUsers = userList.filter(user => user.is_approved || currentUser?.is_committee)
+    let approvedUsers = userList.filter(
+      user => user.is_approved || currentUser?.is_committee
+    ).sort(
+      (lowerUser, higherUser) => {
+        if (lowerUser.is_approved && !higherUser.is_approved) {
+          return -1
+        } else if (!lowerUser.is_approved && higherUser.is_approved) {
+          return 1
+        } else {
+          return lowerUser.id - higherUser.id
+        }
+      }
+    )
     if (!searchString) {
       return approvedUsers
     } else {
