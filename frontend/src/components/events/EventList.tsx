@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import tw from "twin.macro";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
+import { useAuth } from "../Layout";
 import ProfilePicture from "../members/ProfilePicture";
 import CalendarDate from "./CalendarDate";
 
@@ -14,6 +15,11 @@ interface EventListProps {
 
 export default function EventList({ event: initialEvent }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
+
+  const { currentUser } = useAuth();
+  const isAttending = useMemo(() => (
+    currentUser && event.attendees.map(user => user.id).includes(currentUser.id)
+  ), [event, currentUser])
 
   const toggleAttendance = useCallback(() => {
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
@@ -27,7 +33,7 @@ export default function EventList({ event: initialEvent }: EventListProps) {
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <p className={`text-sm whitespace-pre-line truncate`}>{event.description}</p>
         <div className="mt-4">
-          <h2>Attendees</h2>
+          <h2>Attendees ({event.attendees.length} total)</h2>
           <div className="flex flex-wrap w-full my-2">
             {event.attendees.length > 0
               ? event.attendees.map(user => (
@@ -40,7 +46,7 @@ export default function EventList({ event: initialEvent }: EventListProps) {
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
-          <AttendButton onClick={toggleAttendance}>Attend</AttendButton>
+          <AttendButton onClick={toggleAttendance}>{isAttending ? "Leave" : "Attend"}</AttendButton>
         </div>
       </div>
     </div>
