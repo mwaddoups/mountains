@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { ArrowDown, ArrowUp } from "react-bootstrap-icons";
 import tw from "twin.macro";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
 import { useAuth } from "../Layout";
-import ProfilePicture from "../members/ProfilePicture";
+import AttendeeList from "./AttendeeList";
 import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
@@ -15,6 +15,7 @@ interface EventListProps {
 
 export default function EventList({ event: initialEvent }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
+  const [expandedAttendees, setExpandedAttendees] = useState(false);
 
   const { currentUser } = useAuth();
   const isAttending = useMemo(() => (
@@ -28,21 +29,20 @@ export default function EventList({ event: initialEvent }: EventListProps) {
   return (
     <div className="w-full shadow p-4 flex">
       <CalendarDate dateStr={event.event_date}/>
-      <div>
+      <div className="w-full">
         <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <p className={`text-sm whitespace-pre-line truncate`}>{event.description}</p>
         <div className="mt-4">
-          <h2>Attendees ({event.attendees.length} total)</h2>
-          <div className="flex flex-wrap w-full my-2">
+          <div className="flex">
+            <h2>Attendees ({event.attendees.length} total)</h2>
+            <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
+              {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
+            </button>
+          </div>
+          <div className="w-full my-2">
             {event.attendees.length > 0
-              ? event.attendees.map(user => (
-                <div className="w-10 h-10 mr-1" key={user.id}>
-                  <Link to={`../members/${user.id}`}>
-                    <ProfilePicture user={user} />
-                  </Link>
-                </div>
-              ))
+              ? <AttendeeList attendees={event.attendees} expanded={expandedAttendees} />
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
