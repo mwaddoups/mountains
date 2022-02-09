@@ -9,7 +9,7 @@ interface CalendarDateProps {
 export default function CalendarDate({ dateStr }: CalendarDateProps) {
   const date = new Date(dateStr);
   return (
-    <div className="relative h-20 w-20 mr-5">
+    <div className="relative h-20 w-20 mr-5 mb-10">
       <Calendar className="h-full w-full static text-gray-500" />
       <div className="absolute left-0 right-0 top-0 mt-4 mx-auto text-center">
         <div className="font-bold text-3xl">{dateFormat(date, "d")}</div>

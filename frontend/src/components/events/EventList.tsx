@@ -27,7 +27,7 @@ export default function EventList({ event: initialEvent }: EventListProps) {
   }, [event])
 
   return (
-    <div className="w-full shadow p-4 flex">
+    <div className="w-full shadow p-4 md:flex">
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
         <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
