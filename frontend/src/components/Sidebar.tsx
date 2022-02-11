@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, House, Images, Newspaper, PeopleFill } from "react-bootstrap-icons";
+import { Calendar, Discord, House, Images, Newspaper, PeopleFill } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 
 
@@ -26,6 +26,10 @@ export default function Sidebar() {
       <NavLink to="photos" className={linkStyler}>
         <span className="sm:flex"><Images className={iconStyles} />Photos</span>
       </NavLink>
+      <a target="_blank" rel="noreferrer" className={linkStyles} 
+        href="https://discord.gg/98K3CafRxk">
+        <span className="sm:flex"><Discord className={iconStyles} />Discord</span>
+      </a>
       <div className="mt-20"></div>
     </nav>
   )
