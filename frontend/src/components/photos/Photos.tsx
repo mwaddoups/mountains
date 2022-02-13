@@ -20,11 +20,11 @@ export default function Photos() {
 
   return (
     <div>
-      <div>
+      <div className="rounded shadow p-4">
         <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
       </div>
       <Loading loading={needsRefresh}>
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap rounded shadow p-1">
           {photos.map((photo, ix) => <GalleryPhoto 
             key={photo.id} photo={photo} 
             onClick={() => setHighlightedPhoto(ix)} />)}

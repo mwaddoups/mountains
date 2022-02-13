@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Disc } from "react-bootstrap-icons";
 import api from "../../api";
 
 interface PhotoUploaderProps {
@@ -10,6 +11,7 @@ export default function PhotoUploader({ setNeedsRefresh }: PhotoUploaderProps) {
   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const onButtonClick = useCallback(() => {
+    setFileList(null);
     fileInput?.current?.click();
   }, [fileInput])
 
@@ -23,7 +25,9 @@ export default function PhotoUploader({ setNeedsRefresh }: PhotoUploaderProps) {
   return (
     <>
       <input type="file" ref={fileInput} className="hidden" onChange={onChangeFile} multiple />
-      <button onClick={onButtonClick}>Upload Photos</button>
+      <button 
+        className="w-full rounded-lg bg-blue-400 p-1.5 text-gray-100 text-xs lg:text-sm hover:bg-blue-600"
+        onClick={onButtonClick}>Upload Photos</button>
       <div>
         {fileList && Array.from(fileList).map((file, ix) => <SinglePhotoUploader file={file} key={ix} />)}
       </div>
@@ -54,13 +58,13 @@ function SinglePhotoUploader({ file }: SinglePhotoUploaderProps) {
   }, [file])
 
   return (
-    <div className="flex">
-      <p>{file.name}</p>
+    <div className="grid grid-cols-2 w-full p-2 ml-10">
+      <p className="text-2xs lg:text-xs text-gray-500">{file.name}</p>
       {finished
         ? (errorText 
-          ? <p>{errorText}</p> 
-          : <p>Done!</p>)
-        : <p>Loading...</p>
+          ? <p className="text-2xs lg:text-xs text-red-500">{errorText}</p> 
+          : <p className="text-2xs lg:text-xs text-green-500">Done!</p>)
+        : <p className="text-2xs lg:text-xs text-gray-500">Uploading... <Disc className="animate-spin origin-center inline-block" /></p>
       }
       <p></p>
 
