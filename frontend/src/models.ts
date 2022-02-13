@@ -6,6 +6,7 @@ export type User = {
   profile_picture: string | undefined,
   is_approved: boolean,
   is_committee: boolean,
+  mobile_number: string,
 }
 
 export type Experience = {
@@ -15,7 +16,6 @@ export type Experience = {
 }
 
 export interface FullUser extends User {
-  mobile_number: string,
   about: string,
   experience: Array<Experience> | null
 }

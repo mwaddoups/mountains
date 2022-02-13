@@ -26,7 +26,7 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = [
             'id', 'url', 'first_name', 'last_name', 'profile_picture', 
-            'is_approved', 'is_committee'
+            'is_approved', 'is_committee', 'mobile_number'
         ]
         read_only_fields = ['profile_picture']
 
