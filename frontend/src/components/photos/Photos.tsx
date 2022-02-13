@@ -20,7 +20,7 @@ export default function Photos() {
 
   return (
     <div>
-      <div className="rounded shadow p-4">
+      <div className="mb-1 lg:mb-2">
         <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
       </div>
       <Loading loading={needsRefresh}>
