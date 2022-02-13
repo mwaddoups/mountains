@@ -17,7 +17,7 @@ import Profile from "./components/members/Profile";
 import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
-import Photos from "./components/Photos";
+import Photos from "./components/photos/Photos";
 import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 

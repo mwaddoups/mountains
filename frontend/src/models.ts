@@ -49,6 +49,13 @@ export type Comment = {
   text: string,
 }
 
+export type Photo = {
+  id: number,
+  uploader: User,
+  uploaded: string,
+  photo: string,
+}
+
 export type AuthContext = { 
   authToken: string | null,
   currentUser: FullUser | null,
