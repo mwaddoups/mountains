@@ -23,9 +23,12 @@ export default function Photos() {
         <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
       </div>
       <Loading loading={needsRefresh}>
-        <div>
-          {photos.map(photo => <p key={photo.id}>{photo.photo}</p>)}
-          
+        <div className="flex flex-wrap">
+          {photos.map(photo => (
+            <img 
+              className="w-40 p-2 flex-1"
+              key={photo.id} src={photo.photo} alt="Trip" />
+          ))}
         </div>
       </Loading>
     </div>
