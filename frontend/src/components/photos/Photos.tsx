@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
@@ -18,8 +18,26 @@ export default function Photos() {
       setAlbum(res.data);
       setNeedsRefresh(false);
     })
-
   }, [needsRefresh, setAlbum, albumId])
+
+  const stepBack = useCallback(() => (highlightedPhoto !== null) && setHighlightedPhoto(Math.max(0, highlightedPhoto - 1)), [highlightedPhoto])
+  const stepForward = useCallback(() => (highlightedPhoto !== null) && album && setHighlightedPhoto(Math.min(album?.photos.length - 1, highlightedPhoto + 1)), [highlightedPhoto, album])
+
+  const highlightedRef = useRef<HTMLDivElement>(null);
+  useEffect(() => highlightedRef.current?.focus());
+  const handleKeys = useCallback(event => {
+    if (album && (highlightedPhoto !== null)) {
+      if (event.keyCode === 37) {
+        // Left
+        stepBack()
+      } else if (event.keyCode === 39) {
+        // Right
+        stepForward()
+      }
+    }
+
+  }, [highlightedPhoto, album, stepBack, stepForward])
+
 
 
   return (
@@ -40,7 +58,10 @@ export default function Photos() {
       </Loading>
       {(highlightedPhoto !== null) && (
         <div 
+          ref={highlightedRef}
+          tabIndex={-1}
           onClick={() => setHighlightedPhoto(null)}
+          onKeyDown={handleKeys}
           className="fixed inset-0 w-full h-screen bg-black flex justify-center align-center">
           <img 
             className="p-4 rounded w-full object-contain"
