@@ -56,6 +56,13 @@ export type Photo = {
   photo: string,
 }
 
+export type Album = {
+  id: number,
+  name: string,
+  created: string,
+  photos: Array<Photo>,
+}
+
 export type AuthContext = { 
   authToken: string | null,
   currentUser: FullUser | null,

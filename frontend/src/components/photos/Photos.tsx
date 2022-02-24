@@ -1,31 +1,39 @@
 import React, { useEffect, useState } from "react";
+import { ArrowLeft } from "react-bootstrap-icons";
+import { Link, useParams } from "react-router-dom";
 import api from "../../api";
-import { Photo } from "../../models";
+import { Album, Photo } from "../../models";
 import Loading from "../Loading";
 import PhotoUploader from "./PhotoUploader";
 
 export default function Photos() {
   const [needsRefresh, setNeedsRefresh] = useState(true);
-  const [photos, setPhotos] = useState<Array<Photo>>([]);
+  const [album, setAlbum] = useState<Album | null>(null);
   const [highlightedPhoto, setHighlightedPhoto] = useState<number | null>(null);
 
+  const { albumId } = useParams();
+
   useEffect(() => {
-    api.get('photos/').then(res => {
-      setPhotos(res.data);
+    api.get(`albums/${albumId}/`).then(res => {
+      setAlbum(res.data);
       setNeedsRefresh(false);
     })
 
-  }, [needsRefresh, setPhotos])
+  }, [needsRefresh, setAlbum])
 
 
   return (
     <div>
-      <div className="mb-1 lg:mb-2">
-        <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
-      </div>
       <Loading loading={needsRefresh}>
+        <div className="flex items-center mb-3 text-3xl text-gray-500">
+          <Link to=".."><ArrowLeft /></Link>
+          <h1 className="w-1/2 ml-5 flex-none">{album?.name}</h1>
+          <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
+        </div>
+        <div className="mb-1 lg:mb-2">
+        </div>
         <div className="flex flex-wrap rounded shadow p-1">
-          {photos.map((photo, ix) => <GalleryPhoto 
+          {album?.photos.map((photo, ix) => <GalleryPhoto 
             key={photo.id} photo={photo} 
             onClick={() => setHighlightedPhoto(ix)} />)}
         </div>
@@ -36,7 +44,7 @@ export default function Photos() {
           className="fixed inset-0 w-full h-screen bg-black flex justify-center align-center">
           <img 
             className="p-4 rounded w-full object-contain"
-            src={photos[highlightedPhoto].photo} alt="Mountains" />
+            src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
         </div>
       )}
     </div>

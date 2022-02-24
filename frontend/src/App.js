@@ -17,9 +17,10 @@ import Profile from "./components/members/Profile";
 import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
-import Photos from "./components/photos/Photos";
+import Albums from "./components/photos/Albums";
 import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
+import Photos from "./components/photos/Photos";
 
 function App() {
   return (
@@ -42,7 +43,10 @@ function App() {
                   <Route index element={<Events />} />
                   <Route path=":eventId" element={<Events />} />
                 </Route>
-                <Route path="photos" element={<Photos />} />
+                <Route path="photos" element={<MemberContext />}>
+                  <Route index element={<Albums />} />
+                  <Route path=":albumId" element={<Photos />} />
+                </Route>
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

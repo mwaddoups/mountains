@@ -22,8 +22,8 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'created', 'photos']
-        read_only_fields = ['id', 'created', 'photo']
+        fields = ['id', 'name', 'created', 'photos']
+        read_only_fields = ['id', 'name', 'created', 'photos']
 
 class AlbumDetailSerializer(AlbumSerializer):
     photos = PhotoSerializer(many=True)
