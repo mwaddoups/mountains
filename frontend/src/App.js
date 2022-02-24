@@ -38,7 +38,10 @@ function App() {
                   <Route path="edit" element={<ProfileEditor />} />
                   <Route path=":memberId" element={<Profile />} />
                 </Route>
-                <Route path="events" element={<Events />} />
+                <Route path="events" element={<MemberContext />}>
+                  <Route index element={<Events />} />
+                  <Route path=":eventId" element={<Events />} />
+                </Route>
                 <Route path="photos" element={<Photos />} />
               </Route>
             </Route>

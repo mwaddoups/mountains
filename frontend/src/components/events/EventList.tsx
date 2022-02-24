@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ArrowDown, ArrowUp } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import tw from "twin.macro";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -10,10 +11,11 @@ import AttendeeList from "./AttendeeList";
 import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
-  event: Event;
+  eventRef: ((node: any) => void) | null,
+  event: Event,
 }
 
-export default function EventList({ event: initialEvent }: EventListProps) {
+export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
 
@@ -29,10 +31,12 @@ export default function EventList({ event: initialEvent }: EventListProps) {
   const isInPast = new Date(event.event_date) < new Date();
 
   return (
-    <div className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
+    <div ref={eventRef} className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
-        <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
+        <h1 className="text-lg font-semibold tracking-tight">
+          <span className="hover:underline"><Link to={`../${event.id}`}>{event.title}</Link></span>
+        </h1>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <p className={`text-sm whitespace-pre-line truncate`}>{event.description}</p>
         <div className="mt-4">
