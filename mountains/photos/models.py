@@ -15,7 +15,11 @@ class Album(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-      return f'{self.name} ({self.created})'
+        return f'{self.name} ({self.created})'
+      
+    def sample_photos(self):
+        return Photo.objects.all().filter(album=self)[:5]
+    
 
 
 class Photo(models.Model):

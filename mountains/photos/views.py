@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from .models import Photo, Album
-from .serializers import PhotoSerializer, AlbumSerializer
+from .serializers import AlbumDetailSerializer, PhotoSerializer, AlbumSerializer
 
 class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
@@ -9,5 +9,9 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return AlbumDetailSerializer
+        return AlbumSerializer
