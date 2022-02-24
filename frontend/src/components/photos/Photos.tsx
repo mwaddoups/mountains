@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft, ArrowLeftCircleFill, ArrowRightCircleFill } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Album, Photo } from "../../models";
@@ -62,10 +62,12 @@ export default function Photos() {
           tabIndex={-1}
           onClick={() => setHighlightedPhoto(null)}
           onKeyDown={handleKeys}
-          className="fixed inset-0 w-full h-screen bg-black flex justify-center align-center">
+          className="fixed inset-0 w-full h-screen bg-black flex flex-wrap justify-center align-center">
           <img 
             className="p-4 rounded w-full object-contain"
             src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
+          <div className="text-gray-100 hover:text-blue-300 ml-2 text-2xl" onClick={e => {e.stopPropagation(); stepBack();}}><ArrowLeftCircleFill /></div>
+          <div className="text-gray-100 hover:text-blue-300 ml-auto mr-2 text-2xl" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
         </div>
       )}
     </div>
