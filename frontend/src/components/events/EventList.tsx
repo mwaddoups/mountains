@@ -26,8 +26,10 @@ export default function EventList({ event: initialEvent }: EventListProps) {
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
   }, [event])
 
+  const isInPast = new Date(event.event_date) < new Date();
+
   return (
-    <div className="w-full shadow p-4 md:flex">
+    <div className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
         <h1 className="text-lg font-semibold tracking-tight">{event.title}</h1>
