@@ -27,7 +27,7 @@ export default function Albums() {
                 <h2 className="text-2xl">{album.name}</h2>
                 <div className="flex mt-2">
                   {album.contributors.map(user => (
-                    <Link to={`../members/${user.id}`}>
+                    <Link to={`/platform/members/${user.id}`}>
                       <div className="mr-1 w-10 h-10"><ProfilePicture user={user} /></div>
                     </Link>
                   ))}
