@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../../api";
 import { Album } from "../../models";
 import Loading from "../Loading";
+import ProfilePicture from "../members/ProfilePicture";
 
 export default function Albums() {
   const [albums, setAlbums] = useState<Array<Album>>([]);
@@ -24,6 +25,13 @@ export default function Albums() {
             <div className="h-40 mb-4 p-4 rounded shadow w-full flex items-center justify-between">
               <div>
                 <h2 className="text-2xl">{album.name}</h2>
+                <div className="flex mt-2">
+                  {album.contributors.map(user => (
+                    <Link to={`../members/${user.id}`}>
+                      <div className="mr-1 w-10 h-10"><ProfilePicture user={user} /></div>
+                    </Link>
+                  ))}
+                </div>
               </div>
               <div className="flex">
                 {album.photos.map((photo, jx) => (

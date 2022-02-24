@@ -19,6 +19,12 @@ class Album(models.Model):
       
     def sample_photos(self):
         return Photo.objects.all().filter(album=self)[:5]
+
+    def contributors(self):
+        all_photos = Photo.objects.all().filter(album=self)
+        all_users = all_photos.values('uploader')
+        unique_users = set(u['uploader'] for u in all_users)
+        return User.objects.filter(pk__in=unique_users)
     
 
 

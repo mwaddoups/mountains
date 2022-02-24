@@ -61,6 +61,7 @@ export type Album = {
   name: string,
   created: string,
   photos: Array<Photo>,
+  contributors: Array<User>
 }
 
 export type AuthContext = { 
