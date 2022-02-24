@@ -51,7 +51,7 @@ export type Comment = {
 
 export type Photo = {
   id: number,
-  uploader: User,
+  uploader: string,  // Hyperlink to user
   uploaded: string,
   photo: string,
 }

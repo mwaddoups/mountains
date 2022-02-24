@@ -13,3 +13,9 @@ DATABASES = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# We include session authentication
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = tuple(
+    ['rest_framework.authentication.SessionAuthentication'] +
+    list(REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'])
+)

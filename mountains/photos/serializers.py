@@ -1,10 +1,8 @@
 from members.serializers import SmallUserSerializer
 from rest_framework import serializers
-from .models import Photo
+from .models import Photo, Album
 
 class PhotoSerializer(serializers.HyperlinkedModelSerializer):
-    uploader = SmallUserSerializer(read_only=True)
-
     def create(self, validated_data):
         photo = self.context['request'].data['file']
         return Photo.objects.create(
@@ -17,3 +15,12 @@ class PhotoSerializer(serializers.HyperlinkedModelSerializer):
         model = Photo
         fields = ['id', 'uploader', 'uploaded', 'photo']
         read_only_fields = ['uploader', 'uploaded', 'photo']
+
+
+class AlbumSerializer(serializers.HyperlinkedModelSerializer):
+    photos = PhotoSerializer(many=True)
+
+    class Meta:
+        model = Album
+        fields = ['id', 'created', 'photos']
+        read_only_fields = ['id', 'created', 'photo']

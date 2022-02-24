@@ -3,7 +3,7 @@ from .models import FeedPost, EventPost, Comment
 
 class FeedPostAdmin(admin.ModelAdmin):
     list_display = ('id', 'posted', 'user', 'text')
-    ordering = ('posted',)
+    ordering = ('-posted',)
 
 admin.site.register(FeedPost, FeedPostAdmin)
 admin.site.register(Comment)
