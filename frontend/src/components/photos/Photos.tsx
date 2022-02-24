@@ -19,7 +19,7 @@ export default function Photos() {
       setNeedsRefresh(false);
     })
 
-  }, [needsRefresh, setAlbum])
+  }, [needsRefresh, setAlbum, albumId])
 
 
   return (
@@ -28,8 +28,8 @@ export default function Photos() {
         <div className="flex items-center mb-3 text-3xl text-gray-500">
           <Link to=".."><ArrowLeft /></Link>
           <h1 className="w-1/2 ml-5 flex-none">{album?.name}</h1>
-          <PhotoUploader setNeedsRefresh={setNeedsRefresh} />
         </div>
+        {album && <PhotoUploader setNeedsRefresh={setNeedsRefresh} albumId={album.id} />}
         <div className="mb-1 lg:mb-2">
         </div>
         <div className="flex flex-wrap rounded shadow p-1">
