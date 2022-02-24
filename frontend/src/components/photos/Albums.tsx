@@ -21,8 +21,15 @@ export default function Albums() {
       <div>
         {albums.map((album, ix) =>(
           <Link to={`${album.id}/`} key={ix}>
-            <div className="p-4 rounded shadow">
-              <h2>{album.name}</h2>
+            <div className="h-40 mb-4 p-4 rounded shadow w-full flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl">{album.name}</h2>
+              </div>
+              <div className="flex">
+                {album.photos.map((photo, jx) => (
+                  <img className="h-20 -ml-12 rounded p-1 opacity-80" src={photo.photo} key={jx} alt="album preview" />
+                ))}
+              </div>
             </div>
           </Link>
         ))}
