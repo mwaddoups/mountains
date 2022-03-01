@@ -9,6 +9,7 @@ export default function ProfileEditor() {
   const [surname, setSurname] = useState<string>('');
   const [mobileNumber, setMobileNumber] = useState<string>('');
   const [about, setAbout] = useState<string>('');
+  const [emergencyContact, setEmergencyContact] = useState<string>('');
   const [submitted, setSubmitted] = useState<boolean>(false)
 
 
@@ -19,6 +20,7 @@ export default function ProfileEditor() {
     setSurname(currentUser ? currentUser.last_name : '')
     setMobileNumber(currentUser ? currentUser.mobile_number : '')
     setAbout(currentUser ? currentUser.about : '')
+    setEmergencyContact(currentUser ? (currentUser?.in_case_emergency || '') : '')
   }, [currentUser])
   
   const approved = currentUser?.is_approved;
@@ -31,13 +33,14 @@ export default function ProfileEditor() {
       newUser.last_name = surname;
       newUser.about = about;
       newUser.mobile_number = mobileNumber;
+      newUser.in_case_emergency = emergencyContact;
 
       api.put(`users/${currentUser.id}/`, newUser).then(res => {
         refreshUser();
         setSubmitted(true);
       })
     }
-  }, [about, currentUser, firstName, surname, mobileNumber, refreshUser])
+  }, [about, currentUser, firstName, surname, mobileNumber, refreshUser, emergencyContact])
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
@@ -80,8 +83,19 @@ export default function ProfileEditor() {
           getting in touch with people.
         </p>
         <input
-          className={inputStyles} type="string" id="firstName"
+          className={inputStyles} type="string" id="mobile"
           value={mobileNumber} onChange={(event => setMobileNumber(event.target.value))} />
+        {approved && (
+          <>
+            <label className={labelStyles} htmlFor="emergencyContact">Emergency Contact</label>
+            <p className="text-sm text-gray-700 italic mb-2 ml-2">
+              Please provide if joining for an event - include phone number and relationship/other notes.
+            </p>
+            <input
+              className={inputStyles} type="string" id="emergencyContact"
+              value={emergencyContact} onChange={(event => setEmergencyContact(event.target.value))} />
+          </>
+        )}
         <div className="flex justify-between">
           <button
             className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"

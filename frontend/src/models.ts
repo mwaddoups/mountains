@@ -16,8 +16,9 @@ export type Experience = {
 }
 
 export interface FullUser extends User {
-  about: string,
-  experience: Array<Experience> | null
+  about: string;
+  experience: Array<Experience> | null;
+  in_case_emergency: string | undefined;
 }
 
 

@@ -10,16 +10,7 @@ class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
             'info',
         ]
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    experience = ExperienceSerializer(many=True, read_only=True)
-    
-    class Meta:
-        model = User
-        fields = [
-            'id', 'first_name', 'last_name', 'mobile_number', 
-            'about', 'experience', 'profile_picture', 'is_approved', 'is_committee'
-        ]
-        read_only_fields = ['profile_picture', 'experience']
+
 
 class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -29,6 +20,22 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
             'is_approved', 'is_committee', 'mobile_number'
         ]
         read_only_fields = ['profile_picture']
+
+class UserSerializer(SmallUserSerializer):
+    experience = ExperienceSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = SmallUserSerializer.Meta.model
+        fields = SmallUserSerializer.Meta.fields + [
+            'about', 'experience'
+        ]
+        read_only_fields = SmallUserSerializer.Meta.read_only_fields + ['experience']
+
+class FullUserSerializer(UserSerializer):
+    class Meta:
+        model = UserSerializer.Meta.model
+        fields = UserSerializer.Meta.fields + ['in_case_emergency']
+        read_only_fields = UserSerializer.Meta.read_only_fields
 
 class ProfilePictureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

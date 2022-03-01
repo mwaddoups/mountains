@@ -4,9 +4,9 @@ from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from .models import Experience, User
-from .serializers import ExperienceSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
+from .serializers import ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
 
-class IsUserOwner(permissions.BasePermission):
+class IsUserOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAdminUser | (permissions.IsAuthenticated & IsUserOwner) 
+        permissions.IsAdminUser | (permissions.IsAuthenticated & IsUserOwnerOrReadOnly) 
     ]
 
     def create(self, request):
@@ -31,6 +31,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return SmallUserSerializer
+        elif self.request.user.is_committee or self.request.user.id == self.get_object().id:
+            return FullUserSerializer
         return UserSerializer
 
     @action(methods=['post'], detail=True, permission_classes = [IsCommittee])
@@ -96,7 +98,7 @@ class SelfUserView(generics.GenericAPIView):
             token.delete()
             return Response({"details": "Token deleted, please re-login."}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            serialized = UserSerializer(request.user, context={'request': request})
+            serialized = FullUserSerializer(request.user, context={'request': request})
             return Response(serialized.data)
 
 
