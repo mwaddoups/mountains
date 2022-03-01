@@ -33,9 +33,9 @@ export default function Albums() {
                   ))}
                 </div>
               </div>
-              <div className="flex">
+              <div className="flex hidden md:block">
                 {album.photos.map((photo, jx) => (
-                  <img className="h-20 -ml-12 rounded p-1 opacity-80" src={photo.photo} key={jx} alt="album preview" />
+                  <img className="h-20 -ml-6 -ml-12 rounded p-1 opacity-80" src={photo.photo} key={jx} alt="album preview" />
                 ))}
               </div>
             </div>
