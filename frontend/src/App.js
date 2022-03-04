@@ -21,6 +21,7 @@ import Albums from "./components/photos/Albums";
 import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
+import KitList from "./components/KitList";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
                   <Route index element={<Albums />} />
                   <Route path=":albumId" element={<Photos />} />
                 </Route>
+                <Route path="kitlist" element={<KitList />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
