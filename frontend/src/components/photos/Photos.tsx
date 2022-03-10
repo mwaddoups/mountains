@@ -62,12 +62,14 @@ export default function Photos() {
           tabIndex={-1}
           onClick={() => setHighlightedPhoto(null)}
           onKeyDown={handleKeys}
-          className="fixed inset-0 w-full h-screen bg-black flex flex-wrap justify-center align-center">
-          <img 
-            className="p-4 rounded w-full object-contain"
-            src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
-          <div className="text-gray-100 hover:text-blue-300 ml-2 text-2xl" onClick={e => {e.stopPropagation(); stepBack();}}><ArrowLeftCircleFill /></div>
-          <div className="text-gray-100 hover:text-blue-300 ml-auto mr-2 text-2xl" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
+          className="fixed inset-0 w-full h-screen bg-black flex justify-center align-center items-center">
+          <div className="text-gray-100 hover:text-blue-300 ml-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepBack();}}><ArrowLeftCircleFill /></div>
+          <div className="p-4 flex-grow">
+            <img 
+              className="p-4 object-contain mx-auto my-auto"
+              src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
+          </div>
+          <div className="text-gray-100 hover:text-blue-300 mr-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
         </div>
       )}
     </div>
@@ -83,7 +85,7 @@ interface GalleryPhotoProps {
 function GalleryPhoto({ photo, onClick }: GalleryPhotoProps) {
   return (
     <img 
-      className="w-40 p-2 flex-1 object-contain"
+      className="w-40 p-2 flex-1 object-contain max-h-80 rounded-lg"
       onClick={onClick}
       src={photo.photo} alt="Mountains" />
   )
