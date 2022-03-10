@@ -33,7 +33,6 @@ class Photo(models.Model):
     uploaded = models.DateTimeField(auto_now_add=True)
     photo = ResizedImageField(
       size=[1200, 630],
-      crop=['middle', 'center'],
       quality=70,
       upload_to=get_photos_filename
     )
