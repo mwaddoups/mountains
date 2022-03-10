@@ -6,6 +6,7 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
+import ClydeMarkdown from "../ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
 import CalendarDate from "./CalendarDate";
@@ -34,11 +35,11 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     <div ref={eventRef} className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
-        <h1 className="text-lg font-semibold tracking-tight">
+        <h1 className={"text-lg font-semibold tracking-tight " + (isInPast ? "text-gray-500" : "text-teal-900")}>
           <span className="hover:underline"><Link to={`../${event.id}`}>{event.title}</Link></span>
         </h1>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
-        <p className={`text-sm whitespace-pre-line truncate`}>{event.description}</p>
+        <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">
           <div className="flex">
             <h2>Attendees ({event.attendees.length} total)</h2>

@@ -11,6 +11,7 @@ const SubHeading = tw.h2`text-2xl mb-2 font-bold tracking-tight`
 const SmallHeading = tw.h3`text-lg mb-2 font-bold tracking-tight`
 const Bolded = tw.p`text-gray-700 font-bold italic`
 const Italic = tw.p`text-gray-700 text-xs italic`
+const Link = tw.a`text-blue-700 hover:text-blue-400`
 
 interface ClydeMarkdownProps {
   children: React.ReactNode
@@ -29,6 +30,7 @@ export default function ClydeMarkdown({ children }: ClydeMarkdownProps) {
         h3: SmallHeading,
         strong: Bolded,
         em: Italic,
+        a: Link,
       }}>
       {children.toString()}
     </ReactMarkdown>
