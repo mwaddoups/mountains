@@ -85,7 +85,7 @@ interface GalleryPhotoProps {
 function GalleryPhoto({ photo, onClick }: GalleryPhotoProps) {
   return (
     <img 
-      className="w-40 p-2 flex-1 object-contain max-h-80 rounded-lg"
+      className="w-60 p-2 flex-1 object-contain max-h-40 rounded-lg"
       onClick={onClick}
       src={photo.photo} alt="Mountains" />
   )
