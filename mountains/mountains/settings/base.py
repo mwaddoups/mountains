@@ -77,7 +77,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://www.clydemc.org',
-    'https://clydemc.org'
+    'https://clydemc.org',
     'http://www.clydemc.org',
     'http://clydemc.org',
 ]
