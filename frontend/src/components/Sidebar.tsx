@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Discord, House, Images, ListCheck, Newspaper, PeopleFill } from "react-bootstrap-icons";
+import { Calendar, Discord, House, Images, ListCheck, PeopleFill } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 
 
