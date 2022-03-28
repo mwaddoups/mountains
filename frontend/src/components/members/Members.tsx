@@ -33,6 +33,10 @@ export default function Members() {
           return -1
         } else if (!lowerUser.is_approved && higherUser.is_approved) {
           return 1
+        } else if (lowerUser.is_committee && !higherUser.is_committee) {
+          return -1
+        } else if (!lowerUser.is_committee && higherUser.is_committee) {
+          return 1
         } else {
           return lowerUser.id - higherUser.id
         }
