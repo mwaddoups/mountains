@@ -4,10 +4,17 @@ from rest_framework.response import Response
 from .models import Event
 from .serializers import EventSerializer
 
+class IsCommitteeOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, user_obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        else:
+            return request.user.is_committee
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('-event_date')
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsCommitteeOrReadOnly)]
 
     @action(methods=['patch'], detail=True, permission_classes=[permissions.IsAuthenticated])
     def attend(self, request, pk=None):

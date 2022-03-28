@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowDown, ArrowUp } from "react-bootstrap-icons";
+import { ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import tw from "twin.macro";
 import api from "../../api";
@@ -35,9 +35,14 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     <div ref={eventRef} className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
-        <h1 className={"text-lg font-semibold tracking-tight " + (isInPast ? "text-gray-500" : "text-teal-900")}>
-          <span className="hover:underline"><Link to={`../${event.id}`}>{event.title}</Link></span>
-        </h1>
+        <div className="flex items-center">
+          <h1 className={"text-lg font-semibold tracking-tight " + (isInPast ? "text-gray-500" : "text-teal-900")}>
+            <span className="hover:underline"><Link to={`../${event.id}`}>{event.title}</Link></span>
+          </h1>
+          {currentUser?.is_committee && (
+            <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2" /></Link>
+          )}
+        </div>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">

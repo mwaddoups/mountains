@@ -22,6 +22,7 @@ import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
 import Committee from "./components/Committee";
+import EventEditor from "./components/events/EventEditor";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
                 <Route path="events" element={<MemberContext />}>
                   <Route index element={<Events />} />
                   <Route path=":eventId" element={<Events />} />
+                  <Route path="new" element={<EventEditor />} />
+                  <Route path=":eventId/edit" element={<EventEditor />} />
                 </Route>
                 <Route path="photos" element={<MemberContext />}>
                   <Route index element={<Albums />} />

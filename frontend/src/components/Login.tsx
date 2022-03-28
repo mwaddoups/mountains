@@ -39,8 +39,8 @@ export default function Login({ setAuthToken }: LoginProps) {
       'auth/token/', { email, token }
     ).then(response => {
       setErrorText('');
-      setAuthToken(response.data.token);
       setLoading(false);
+      setAuthToken(response.data.token);
     }).catch(err => {
       console.log(err);
       setLoading(false);

@@ -99,7 +99,7 @@ export default function ProfileEditor() {
           <button
             className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
             type="submit">
-              {approved ? "Update" : "Submit for verification"}
+              {approved ? "Update" : "Submit"}
           </button>
           <Link to={currentUser ? `../${currentUser.id}` : ''}>
             <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>

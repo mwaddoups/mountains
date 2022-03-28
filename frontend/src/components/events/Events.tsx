@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event } from "../../models";
+import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList from "./EventList";
 
@@ -11,7 +12,10 @@ export default function Events() {
 
   // Slightly complex logic needed to get the selectedEvent from the param
   const [selectedEvent, setSelectedEvent] = useState<HTMLDivElement | null>(null);
+
   const { eventId } = useParams();
+
+  const { currentUser } = useAuth();
   const selectedEventRef = useCallback(node => {
     if (node !== null) {
       setSelectedEvent(node);
@@ -33,6 +37,7 @@ export default function Events() {
   return (
     <Loading loading={isLoading}>
       <div>
+        {currentUser?.is_committee && <Link to="new"><button className="rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create event</button></Link>}
         {eventList.map(event => (
           <EventList 
             key={event.id} event={event} 
