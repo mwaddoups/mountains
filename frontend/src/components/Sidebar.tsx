@@ -14,9 +14,6 @@ export default function Sidebar() {
       <NavLink end to="." className={linkStyler}>
         <span className="sm:flex"><House className={iconStyles} />Home</span>
       </NavLink>
-      <NavLink end to="feed" className={linkStyler}>
-        <span className="sm:flex"><Newspaper className={iconStyles} />Feed</span>
-      </NavLink>
       <NavLink to="events" className={linkStyler}>
         <span className="sm:flex"><Calendar className={iconStyles} />Events</span>
       </NavLink>

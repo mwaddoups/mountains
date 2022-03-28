@@ -11,7 +11,6 @@ import Landing from "./components/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
 import Members from "./components/members/Members";
-import Feed from "./components/feed/Feed";
 import Events from "./components/events/Events";
 import Profile from "./components/members/Profile";
 import ProfileEditor from "./components/members/ProfileEditor";
@@ -34,7 +33,6 @@ function App() {
               <Route path="privacy" element={<Privacy />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
-                <Route path="feed" element={<Feed />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />
                   <Route path="edit" element={<ProfileEditor />} />
