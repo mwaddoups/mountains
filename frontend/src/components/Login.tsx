@@ -44,7 +44,7 @@ export default function Login({ setAuthToken }: LoginProps) {
     }).catch(err => {
       console.log(err);
       setLoading(false);
-      if (err.response.data.token) {
+      if (err.response.data.token || err.response.data.non_field_errors) {
         setErrorText("The token you entered did not match! Please check you've used the most recent token you've received, or refresh the page and try again. It can take a few minutes for a new token to arrive.")
       } else {
         setErrorText("An unknown error occured - please refresh and try again. If you continue to have issues, contact hello@clydemc.org.");

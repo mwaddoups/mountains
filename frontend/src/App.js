@@ -21,6 +21,7 @@ import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
+import Committee from "./components/Committee";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="privacy" element={<Privacy />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
+                <Route path="committee" element={<Committee />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />
                   <Route path="edit" element={<ProfileEditor />} />
