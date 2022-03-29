@@ -1,10 +1,10 @@
 import datetime
-from rest_framework import serializers, viewsets, permissions, generics, status
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from .models import Experience, User
-from .serializers import ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializer, UserSerializer
+from .serializers import ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
 
 class IsUserOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -30,10 +30,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return SmallUserSerializer
-        elif self.request.user.is_committee or self.request.user.id == self.get_object().id:
-            return FullUserSerializer
-        return UserSerializer
+            if self.request.user.is_committee:
+                return SmallUserSerializerCommittee
+            else:
+                return SmallUserSerializer
+        else: 
+            # In detail view, we get .get_object()
+            if self.request.user.is_committee or self.request.user.id == self.get_object().id:
+                return FullUserSerializer
+            else:
+                return UserSerializer
 
     @action(methods=['post'], detail=True, permission_classes = [IsCommittee])
     def approve(self, request, pk=None):

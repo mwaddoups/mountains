@@ -1,11 +1,9 @@
-from wsgiref import validate
 from rest_framework import serializers
 from .models import Event
-from members.serializers import SmallUserSerializer
-
+from members.serializers import SmallUserSerializer, SmallUserSerializerCommittee
 class EventSerializer(serializers.HyperlinkedModelSerializer):
   organiser = SmallUserSerializer(read_only=True)
-  attendees = SmallUserSerializer(many=True, read_only=True)
+  attendees = SmallUserSerializerCommittee(many=True, read_only=True)
 
   def create(self, validated_data):
     return Event.objects.create(

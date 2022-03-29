@@ -21,6 +21,12 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
         ]
         read_only_fields = ['profile_picture']
 
+class SmallUserSerializerCommittee(SmallUserSerializer):
+    class Meta:
+        model = SmallUserSerializer.Meta.model
+        fields = SmallUserSerializer.Meta.fields + ['in_case_emergency']
+        read_only_fields = SmallUserSerializer.Meta.read_only_fields + ['in_case_emergency']
+
 class UserSerializer(SmallUserSerializer):
     experience = ExperienceSerializer(many=True, read_only=True)
     

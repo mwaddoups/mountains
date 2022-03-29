@@ -7,6 +7,7 @@ export type User = {
   is_approved: boolean,
   is_committee: boolean,
   mobile_number: string,
+  in_case_emergency: string | undefined;
 }
 
 export type Experience = {
