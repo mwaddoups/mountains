@@ -14,7 +14,7 @@ export default function Landing() {
       <Section header="Join Us">
         <Paragraph>If you are interested in joining, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span> Once you are approved, you will have access to our internal site and our groups.</Paragraph>
         <Paragraph>As the club is still developing, we have yet to introduce official membership - but will be adding paid annual membership later on, with concessions for those who need it. Get involved now to have your say in how the club develops!</Paragraph>
-        <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.co.uk</Paragraph>
+        <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">
         <Paragraph>Once we start to run official events, you will see these here.</Paragraph>
