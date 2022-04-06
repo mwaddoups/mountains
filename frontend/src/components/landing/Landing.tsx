@@ -18,7 +18,7 @@ export default function Landing() {
           If you are interested in joining, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span> 
           Once you register, you will have access to our internal site and be able to join our Discord, and view more details of our upcoming events.
         </Paragraph>
-        <Paragraph>Our membership dues will be set at £36 for the year for 2022/23 - there is also a concessionary rate of £20. This includes affiliation to Mountaineering Scotland. You are welcome to come along on a trip to see if you like the club before becoming a member.</Paragraph>
+        <Paragraph>Our membership dues will be set at £36 for the year for 2022/23 - there is also a concessionary rate of £25. This includes affiliation to Mountaineering Scotland. You are welcome to come along on a trip to see if you like the club before becoming a member.</Paragraph>
         <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">

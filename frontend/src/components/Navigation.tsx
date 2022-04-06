@@ -35,6 +35,7 @@ export default function Navigation({ authContext }: NavigationProps) {
         <button onClick={() => setMenuOpenMobile(!menuOpenMobile)} className="ml-auto border rounded-lg lg:hidden "><List /></button>
       </div>
       <Link to="/" className={linkStyles}>Home</Link>
+      {/*<Link to="/faq" className={linkStyles}>FAQs</Link>*/}
       <Link to="/platform" className={linkStyles}>Members Area</Link>
       {currentUser && (
         <>

@@ -23,6 +23,7 @@ import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
 import Committee from "./components/Committee";
 import EventEditor from "./components/events/EventEditor";
+import Faqs from "./components/landing/Faqs";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
               <Route path="privacy" element={<Privacy />} />
+              <Route path="faq" element={<Faqs />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
