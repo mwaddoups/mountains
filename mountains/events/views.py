@@ -32,7 +32,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=False, permission_classes=[])
     def upcoming(self, request):
-        upcoming_events = Event.objects.filter(event_date__gte=datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=1)).order_by('-event_date')[:3]
+        upcoming_events = Event.objects.filter(event_date__gte=datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(hours=12)).order_by('event_date')[:3]
 
         serializer = FrontPageEventSerializer(upcoming_events, many=True)
         return Response(serializer.data)
