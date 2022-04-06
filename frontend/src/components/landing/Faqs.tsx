@@ -56,6 +56,14 @@ export default function Faqs() {
           For specific gear questions, register on the site and hop on the Discord to chat more!
         </Answer>
       </QA>
+      <QA>
+        <Question>Do I need a car to come on trips?</Question>
+        <Answer>
+          Not at all! We try to minimize cars on trips and maximize liftsharing where possible. Plenty of members have cars 
+          so there will usually be a way to get a lift near to where you are, and we'll make our best efforts to accomodate pickups. 
+          Just be prepared to chip in a bit for petrol!
+        </Answer>
+      </QA>
     <QuestionCategory>The Club</QuestionCategory>
       <QA>
         <Question>How much is it to join the club?</Question>
