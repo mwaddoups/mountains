@@ -21,7 +21,9 @@ export default function LandingEvents() {
       <div>
         {events.map((event, ix) => (
           <div key={ix} className="w-full h-30 p-2 border rounded shadow flex items-center mb-1">
-            <CalendarDate dateStr={event.event_date} showTime={false}/>
+            <div className="flex-none">
+              <CalendarDate dateStr={event.event_date} showTime={false}/>
+            </div>
             
             <h1 className="text-gray-900 text-lg font-medium text-bold">{event.title}</h1> 
 
