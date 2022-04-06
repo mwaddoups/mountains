@@ -14,8 +14,11 @@ export default function Landing() {
         <Paragraph>The club is still growing and most activities are currently informal between members. We are hoping to start club-backed walks in Spring 2022.</Paragraph>
       </Section>
       <Section header="Join Us">
-        <Paragraph>If you are interested in joining, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span> Once you are approved, you will have access to our internal site and our groups.</Paragraph>
-        <Paragraph>As the club is still developing, we have yet to introduce official membership - but will be adding paid annual membership later on, with concessions for those who need it. Get involved now to have your say in how the club develops!</Paragraph>
+        <Paragraph>
+          If you are interested in joining, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span> 
+          Once you register, you will have access to our internal site and be able to join our Discord, and view more details of our upcoming events.
+        </Paragraph>
+        <Paragraph>Our membership dues will be set at £36 for the year for 2022/23 - there is also a concessionary rate of £20. This includes affiliation to Mountaineering Scotland. You are welcome to come along on a trip to see if you like the club before becoming a member.</Paragraph>
         <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">
