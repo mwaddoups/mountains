@@ -7,7 +7,7 @@ import {
   Outlet,
 } from "react-router-dom";
 
-import Landing from "./components/Landing";
+import Landing from "./components/landing/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
 import Members from "./components/members/Members";
