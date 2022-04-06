@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LandingEvents from "./LandingEvents";
 import LandingPhotos from "./LandingPhotos";
 
 export default function Landing() {
@@ -18,7 +19,7 @@ export default function Landing() {
         <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">
-        <Paragraph>Once we start to run official events, you will see these here.</Paragraph>
+        <LandingEvents />
       </Section>
       <Section header="Recent Photos">
         <LandingPhotos />
