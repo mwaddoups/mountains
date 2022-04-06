@@ -29,7 +29,9 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
   }, [event])
 
-  const isInPast = new Date(event.event_date) < new Date();
+  const todayDate = new Date();
+  todayDate.setHours(0,0,0,0);
+  const isInPast = new Date(event.event_date) < todayDate;
 
   return (
     <div ref={eventRef} className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
