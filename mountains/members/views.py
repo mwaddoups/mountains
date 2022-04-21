@@ -72,6 +72,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response({'is_approved': True})
 
+    @action(methods=['post'], detail=True, permission_classes = [IsCommittee])
+    def paid(self, request, pk=None):
+        target_user = self.get_object()
+        target_user.is_paid = not target_user.is_paid
+        target_user.save()
+
+        return Response({'is_paid': True})
+
 class ProfileUpdateView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 

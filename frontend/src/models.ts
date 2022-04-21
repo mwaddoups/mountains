@@ -6,6 +6,7 @@ export type User = {
   profile_picture: string | undefined,
   is_approved: boolean,
   is_committee: boolean,
+  is_paid: boolean,
   mobile_number: string,
   in_case_emergency: string | undefined;
 }
