@@ -23,6 +23,14 @@ export interface FullUser extends User {
   in_case_emergency: string | undefined;
 }
 
+export type CommitteeUser = {
+  id: number,
+  first_name: string,
+  last_name: string,
+  profile_picture: string | undefined,
+  committee_role: "President" | "Secretary" | "Treasurer" | "General" | undefined,
+  committee_bio: string,
+}
 
 export type Event = {
   id: number,
