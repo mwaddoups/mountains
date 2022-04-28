@@ -52,3 +52,4 @@ class CommitteeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'profile_picture', 'committee_role', 'committee_bio']
+        read_only_fields = ['profile_picture']

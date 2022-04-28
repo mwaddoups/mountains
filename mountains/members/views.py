@@ -83,7 +83,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False, permission_classes=[])
     def committee(self, request):
         committee = User.objects.filter(is_committee=True)
-        serializer = CommitteeSerializer(committee, many=True)
+        serializer = CommitteeSerializer(committee, many=True, context={'request': request})
         return Response(serializer.data)
 
 class ProfileUpdateView(generics.GenericAPIView):
