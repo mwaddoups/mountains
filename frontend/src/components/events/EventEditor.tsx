@@ -13,6 +13,7 @@ export default function EventEditor() {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [eventDate, setEventDate] = useState<Date>(new Date());
+  const [showPopup, setShowPopup] = useState<boolean>(true);
 
   // use params to check if we are at event/x/edit or event/new
   // If editing, reset the state first with the correct valeus
@@ -26,6 +27,7 @@ export default function EventEditor() {
         setTitle(event.title);
         setDescription(event.description);
         setEventDate(new Date(event.event_date));
+        setShowPopup(event.show_popup);
       })
     }
     setLoading(false);
@@ -38,6 +40,7 @@ export default function EventEditor() {
     newEvent.title = title;
     newEvent.description = description;
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
+    newEvent.show_popup = showPopup;
     if (!currentEvent) {
       newEvent.max_attendees = 0; // TODO: Allow maximum
       newEvent.attendees = [];
@@ -52,7 +55,7 @@ export default function EventEditor() {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, eventId])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId])
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "text-sm px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
@@ -75,6 +78,10 @@ export default function EventEditor() {
           <div>
             <label className={labelStyles}>Date</label>
             <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} />
+          </div>
+          <div className="flex items-center">
+            <label className={labelStyles}>Show the participation popup before allowing attendance (usually yes for walks)?</label>
+            <input className="ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
           </div>
           <label className={labelStyles} htmlFor="description">Description</label>
           <textarea className={inputStyles + " resize-none h-80"} id="description" 

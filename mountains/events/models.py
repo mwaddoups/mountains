@@ -11,3 +11,4 @@ class Event(models.Model):
     attendees = models.ManyToManyField(User, blank=True)
     max_attendees = models.IntegerField(null=True, blank=False)
     organiser = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='organiser')
+    show_popup = models.BooleanField(blank=False, null=False, default=False)

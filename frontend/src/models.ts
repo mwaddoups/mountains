@@ -41,6 +41,7 @@ export type Event = {
   attendees: Array<User>,
   max_attendees: number | null,
   organiser: User,
+  show_popup: boolean,
 }
 
 export type FeedPost = {
