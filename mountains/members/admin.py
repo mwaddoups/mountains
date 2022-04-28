@@ -7,6 +7,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password', 'profile_picture')}),
         ('Personal Information', {'fields': ('first_name', 'last_name', 'mobile_number')}),
+        ('Committee Information', {'fields': ('committee_role', 'committee_bio')}),
         ('Permissions', {'fields': (
             'is_approved',
             'is_committee',
