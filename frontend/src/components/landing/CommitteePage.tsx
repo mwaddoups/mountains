@@ -22,7 +22,7 @@ export default function CommitteePage() {
       <h1 className="sm:text-3xl text-2xl font-medium m-4 text-gray-900">Meet our Committee</h1>
       <Loading loading={loading}>
         <div className="mx-8">
-          {committee.map(user => (
+          {committee.sort(committeeSort).map(user => (
             <div key={user.id} className="container flex flex-wrap mx-auto my-2 p-4 items-center text-gray-600 shadow rounded border">
               <div className="md:w-1/4 w-full  mx-auto text-center">
                 <div className="w-3/4 p-4 mb-2 mx-auto">
@@ -40,4 +40,19 @@ export default function CommitteePage() {
       </Loading>
     </div>
   )
+}
+
+function committeeSort(c1: CommitteeUser, c2: CommitteeUser) {
+  let order = ['Chair', 'Secretary', 'Treasurer', 'General'];
+
+  let get_index = (c: CommitteeUser) => {
+    let index = order.indexOf(c.committee_role || "no_role");
+    if (index == -1) {
+      return order.length
+    } else {
+      return index
+    }
+  }
+
+  return get_index(c1) - get_index(c2)
 }
