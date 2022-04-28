@@ -4,9 +4,10 @@ import api from "../api";
 
 interface LoginProps {
   setAuthToken: (a: string | null) => void;
+  logout: () => void;
 }
 
-export default function Login({ setAuthToken }: LoginProps) {
+export default function Login({ setAuthToken, logout }: LoginProps) {
   const [email, setEmail] = useState<string>('');
   const [token, setToken] = useState<string>('');
   const [waitingForToken, setWaitingForToken] = useState(false);
@@ -28,6 +29,7 @@ export default function Login({ setAuthToken }: LoginProps) {
         "An error occurred communicating with the server. Please refresh and try again, " + 
         "or if you continue to have issues let us know at hello@clydemc.org."
       )
+      logout();
       setLoading(false);
     })
   }, [email, setWaitingForToken]);
@@ -43,6 +45,7 @@ export default function Login({ setAuthToken }: LoginProps) {
       setAuthToken(response.data.token);
     }).catch(err => {
       console.log(err);
+      logout();
       setLoading(false);
       if (err.response.data.token || err.response.data.non_field_errors) {
         setErrorText("The token you entered did not match! Please check you've used the most recent token you've received, or refresh the page and try again. It can take a few minutes for a new token to arrive.")
