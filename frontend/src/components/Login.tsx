@@ -32,7 +32,7 @@ export default function Login({ setAuthToken, logout }: LoginProps) {
       logout();
       setLoading(false);
     })
-  }, [email, setWaitingForToken]);
+  }, [email, setWaitingForToken, logout]);
   
   const sendLogin = useCallback(() => {
     console.log('Sending login request...');
@@ -53,7 +53,7 @@ export default function Login({ setAuthToken, logout }: LoginProps) {
         setErrorText("An unknown error occured - please refresh and try again. If you continue to have issues, contact hello@clydemc.org.");
       }
     })
-  }, [email, token, setAuthToken]);
+  }, [email, token, setAuthToken, logout]);
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline" 
