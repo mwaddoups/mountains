@@ -47,7 +47,7 @@ function committeeSort(c1: CommitteeUser, c2: CommitteeUser) {
 
   let get_index = (c: CommitteeUser) => {
     let index = order.indexOf(c.committee_role || "no_role");
-    if (index == -1) {
+    if (index === -1) {
       return order.length
     } else {
       return index
