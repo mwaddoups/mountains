@@ -4,7 +4,7 @@ from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from .models import Experience, User
-from .serializers import ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
+from .serializers import CommitteeSerializer, ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
 
 class IsUserOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -79,6 +79,12 @@ class UserViewSet(viewsets.ModelViewSet):
         target_user.save()
 
         return Response({'is_paid': True})
+
+    @action(methods=['get'], detail=False, permission_classes=[])
+    def committee(self, request):
+        committee = User.objects.filter(is_committee=True)
+        serializer = CommitteeSerializer(committee, many=True)
+        return Response(serializer.data)
 
 class ProfileUpdateView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]

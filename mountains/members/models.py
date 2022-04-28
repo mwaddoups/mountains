@@ -54,6 +54,16 @@ class User(AbstractUser):
     in_case_emergency = models.TextField('emergency', blank=True)
     is_paid = models.BooleanField(default=False)
 
+    COMMITTEE_ROLES = [
+        ('Chair', 'Chair'),
+        ('Secretary', 'Secretary'),
+        ('Treasurer', 'Treasurer'),
+        ('General', 'General'),
+        (None, 'No role'),
+    ]
+    committee_role = models.TextField('committee role', choices=COMMITTEE_ROLES, blank=True)
+    committee_bio = models.TextField('commitee bio', blank=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

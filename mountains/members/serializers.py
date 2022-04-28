@@ -47,3 +47,8 @@ class ProfilePictureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'profile_picture']
+
+class CommitteeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'profile_picture', 'committee_role', 'committee_bio']
