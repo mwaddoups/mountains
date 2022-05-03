@@ -30,7 +30,6 @@ export default function AttendPopup({ toggleAttendance, setVisible }: AttendPopu
         <li>Waterproofs</li>
         <li>Lunch, food and water for the day</li>
         <li>Headtorch</li>
-        <li>Survival bag</li>
       </ul>
       <p className="text-sm mb-4">Please ask the walk coordinator or in Discord regarding any questions about equipment.</p>
       <p className="text-sm mb-4">Do you understand the participation statement and our equipment expectations?</p>
