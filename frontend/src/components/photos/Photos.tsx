@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowLeftCircleFill, ArrowRightCircleFill } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
+import { getName } from "../../methods/user";
 import { Album, Photo } from "../../models";
 import Loading from "../Loading";
 import PhotoUploader from "./PhotoUploader";
@@ -62,14 +63,17 @@ export default function Photos() {
           tabIndex={-1}
           onClick={() => setHighlightedPhoto(null)}
           onKeyDown={handleKeys}
-          className="fixed inset-0 w-full h-screen bg-black flex justify-center align-center items-center">
-          <div className="text-gray-100 hover:text-blue-300 ml-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepBack();}}><ArrowLeftCircleFill /></div>
-          <div className="p-4 flex-grow">
-            <img 
-              className="p-4 object-contain mx-auto my-auto"
-              src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
+          className="fixed inset-0 w-full h-screen bg-black">
+          <div className="flex justify-center align-center items-center w-full h-screen">
+            <div className="text-gray-100 hover:text-blue-300 ml-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepBack();}}><ArrowLeftCircleFill /></div>
+            <div className="p-4 flex-grow">
+              <img 
+                className="p-4 object-contain mx-auto my-auto"
+                src={album?.photos[highlightedPhoto].photo} alt="Mountains" />
+            </div>
+            <div className="text-gray-100 hover:text-blue-300 mr-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
           </div>
-          <div className="text-gray-100 hover:text-blue-300 mr-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
+          <div className="ml-1 text-gray-200 font-medium text-xs -mt-5 ml-auto">U: {getName(album?.photos[highlightedPhoto].uploader)}</div>
         </div>
       )}
     </div>
