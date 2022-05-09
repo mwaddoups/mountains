@@ -21,6 +21,7 @@ import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
+import JoinClub from "./components/JoinClub";
 import Committee from "./components/Committee";
 import EventEditor from "./components/events/EventEditor";
 import Faqs from "./components/landing/Faqs";
@@ -56,6 +57,7 @@ function App() {
                   <Route path=":albumId" element={<Photos />} />
                 </Route>
                 <Route path="kitlist" element={<KitList />} />
+                <Route path="join" element={<JoinClub />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

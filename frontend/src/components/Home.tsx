@@ -1,9 +1,5 @@
 import React from "react";
-import tw from "twin.macro";
-
-const Paragraph = tw.p`my-3 ml-3 tracking-wide font-light`
-const Section = tw.div`rounded shadow p-4 mb-4`
-const Heading = tw.h1`text-3xl font-bold tracking-tight`
+import { Heading, Paragraph, Section } from "./Base";
 
 export default function Home() {
   return (
@@ -28,9 +24,8 @@ export default function Home() {
       <Section id="walks">
         <Heading>Getting outside!</Heading>
         <Paragraph>
-          As the club is still growing and conditions are (somewhat) wintery, we are unlikely to run official walks until we return to
-          summer conditions. However, hopefully there are plenty of people out there who are keen to get out with others and do some winter
-          walking. 
+          We will usually have at least one upcoming walk in our Events section! We're still in the early days of formation but are hoping to 
+          have a better schedule of organized walks as the weather improves.
         </Paragraph>
         <Paragraph>
           If you want to get out, just post up either in Discord or on this site (on the feed) and say where you fancy going and if you have a car. Hopefully other 
