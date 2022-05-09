@@ -43,7 +43,7 @@ export default function ProfileEditor() {
   }, [about, currentUser, firstName, surname, mobileNumber, refreshUser, emergencyContact])
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
-  const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
+  const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4" 
 
   if (currentUser && submitted && approved) {
     return <Navigate to={`../${currentUser.id}`} />

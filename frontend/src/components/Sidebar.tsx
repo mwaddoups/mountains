@@ -29,9 +29,9 @@ export default function Sidebar() {
       <NavLink to="kitlist" className={linkStyler}>
         <span className="sm:flex"><ListCheck className={iconStyles} />Kit List</span>
       </NavLink>
-      <NavLink to="join" className={linkStyler}>
+      {/**<NavLink to="join" className={linkStyler}>
         <span className="sm:flex"><ArrowRightCircleFill className={iconStyles} />Join Us!</span>
-      </NavLink>
+      </NavLink>**/}
       {currentUser?.is_committee && 
         <NavLink to="committee" className={linkStyler}>
           <span className="sm:flex"><Binoculars className={iconStyles} />Committee</span>
