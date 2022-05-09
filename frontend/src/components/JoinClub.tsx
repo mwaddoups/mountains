@@ -16,7 +16,7 @@ export default function JoinClub() {
         Our membership also includes Mountaineering Scotland membership, which has a host of benefits including discounts at outdoor stores, access to talks and training and mountaineering insurance.
       </Paragraph>
       <Paragraph>
-        The cost is £35 per year, or £25 per year for those that can't afford the full fee - this choice is up to you.
+        The cost is £35, or £25 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2023 so the fee will cover you until then - if you join after October we will do a reduced rate to cover the year.
       </Paragraph>
       <Paragraph>
         To join, just complete the form below and follow the instructions to make the bank transfer to our club account.
