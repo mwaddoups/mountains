@@ -63,7 +63,7 @@ function JoinClubForm() {
       ? (
         <>
         <Paragraph>
-          Thank you for joining! Our bank details are below.
+          Thank you for joining! Our bank details are below. These have been emailed to you too.
         </Paragraph>
         <Paragraph>Name: Clyde Mountaineering Club</Paragraph>
         <Paragraph>Account: 23104562</Paragraph>
