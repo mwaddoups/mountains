@@ -67,7 +67,8 @@ function JoinClubForm() {
         </Paragraph>
         <Paragraph>Name: Clyde Mountaineering Club</Paragraph>
         <Paragraph>Account: 23104562</Paragraph>
-        <Paragraph>Sort: 80-22-60</Paragraph>
+        <Paragraph>Sort Code: 80-22-60</Paragraph>
+        <Paragraph>Reference: [your initials] + "membership"</Paragraph>
         <Paragraph>Amount: £{membership === "regular" ? "35" : "25"}</Paragraph>
         <Paragraph>
           The treasurer should be in touch to confirm receipt! Any questions, get in touch at treasurer@clydemc.org.
