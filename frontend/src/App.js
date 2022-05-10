@@ -29,7 +29,7 @@ import CommitteePage from "./components/landing/CommitteePage";
 
 function App() {
   return (
-    <div className="container mx-auto pr-2 lg:px-20">
+    <div className="container mx-auto pr-2 xl:px-20">
       <CookieConsent>This website uses cookies to manage our user experience.</CookieConsent>
       <Router>
           <Routes>
