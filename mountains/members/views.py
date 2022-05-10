@@ -176,7 +176,7 @@ class UserJoinView(generics.GenericAPIView):
 
         # Send email to treasurer
         email_body =  (
-            "A new user has become a paid member!\n\n"
+            "A new user has asked to join the club!\n\n"
             + "See their details below:\n\n" 
             + "\n".join([f"{k}: {v}" for k, v in user_data.items()])
             + "\n\nKeep an eye out for their transfer!"
