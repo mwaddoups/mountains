@@ -33,7 +33,7 @@ class UserSerializer(SmallUserSerializer):
     class Meta:
         model = SmallUserSerializer.Meta.model
         fields = SmallUserSerializer.Meta.fields + [
-            'about', 'experience'
+            'about', 'experience', 'email'
         ]
         read_only_fields = SmallUserSerializer.Meta.read_only_fields + ['experience']
 

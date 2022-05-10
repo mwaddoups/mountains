@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView
+from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView, UserJoinView
 from events.views import EventViewSet
 from social.views import FeedPostViewSet, CommentViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
@@ -36,6 +36,7 @@ router.register(r'albums', AlbumViewSet)
 urlpatterns = [
     path(r'users/self/', SelfUserView.as_view()),
     path(r'users/profile/', ProfileUpdateView.as_view()),
+    path(r'users/join/', UserJoinView.as_view()),
     path(r'', include(router.urls)),
     path(r'admin/', admin.site.urls),
     path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
