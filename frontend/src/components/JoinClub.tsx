@@ -77,9 +77,9 @@ function JoinClubForm() {
       )
       : (
         <form className="ml-2 mt-2" onSubmit={handleJoin}>
-          <FormLabel>Date of Birth</FormLabel>
+          <FormLabel>Date of Birth (DD/MM/YYYY)</FormLabel>
           <FormInput type="text" value={dob} onChange={e => setDob(e.target.value)} />
-          <FormLabel>Address</FormLabel>
+          <FormLabel>Address (inc. Postcode)</FormLabel>
           <FormInput type="text" value={address} onChange={e => setAddress(e.target.value)} />
           <FormLabel>Mobile Number</FormLabel>
           <FormInput type="text" value={mobile} onChange={e => setMobile(e.target.value)} />
