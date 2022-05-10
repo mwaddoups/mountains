@@ -20,26 +20,34 @@ export default function Home() {
           and feel free to add your mountaineering experience as well! We're hoping that this will make it easier to find
           similar members in future.
         </Paragraph>
+        <Paragraph>
+          If you like the sound of the club and want to keep coming to walks, as well as help support us and get Mountaineering Scotland membership, 
+          you can join us using the link in the sidebar.
+        </Paragraph>
       </Section>
       <Section id="walks">
         <Heading>Getting outside!</Heading>
         <Paragraph>
-          We will usually have at least one upcoming walk in our Events section! We're still in the early days of formation but are hoping to 
-          have a better schedule of organized walks as the weather improves.
+          Our official events will have a designated walk coordinator who will have a rough plan for the day and an idea of an objective. 
+          We'll usually give around two weeks notice on these and you're welcome to come along.
         </Paragraph>
         <Paragraph>
-          If you want to get out, just post up either in Discord or on this site (on the feed) and say where you fancy going and if you have a car. Hopefully other 
+          We try to run two official walks a month - you can look at the upcoming events for our current schedule! 
+          If you can't see anything coming up it may just be that we haven't posted about it yet - but feel free to pop a message in the Discord.
+        </Paragraph>
+        <Paragraph>
+          If you want to get out more informally, just post up on Discord (#walks-informal) and say where you fancy going and if you have a car. Hopefully other 
           members will then see your post and you should be able to fill seats, split petrol and everything else.
         </Paragraph>
         <Paragraph>
-          Please note that any events organized in this way are not official club events - so make sure you understand the risks 
+          Please note that any events organized informally are not official club events - so make sure you understand the risks 
           and know how to look after yourself if conditions aren't as expected.
         </Paragraph>
       </Section>
       <Section id="feedback">
         <Heading>The club and website is a work-in-progress...</Heading>
         <Paragraph>
-          The club is still very much a work-in-progress. Any ideas for our future or ways to plan ahead? Let us know in the discord on the #feedback channel.
+          The club is still very much a work-in-progress. Any ideas for our future or ways to plan ahead? Let us know in the Discord.
         </Paragraph>
         <Paragraph>
           The website is also still very new and we are actively looking for feedback. Let us know about
