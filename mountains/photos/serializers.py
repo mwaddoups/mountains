@@ -3,7 +3,8 @@ from rest_framework import serializers
 from .models import Photo, Album
 
 class PhotoSerializer(serializers.HyperlinkedModelSerializer):
-    uploader = SmallUserSerializer()
+    uploader = SmallUserSerializer(read_only=True)
+    
     def create(self, validated_data):
         photo = self.context['request'].data['file']
         return Photo.objects.create(
