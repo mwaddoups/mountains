@@ -26,7 +26,7 @@ export default function AttendPopup({ toggleAttendance, setVisible }: AttendPopu
       </p>
       <p className="text-sm">All walk participants are recommended to bring the below equipment:</p>
       <ul className="text-sm list-disc ml-4">
-        <li>Suitable footwear</li>
+        <li>Suitable footwear (Hiking boots, usually)</li>
         <li>Waterproofs</li>
         <li>Lunch, food and water for the day</li>
         <li>Headtorch</li>
