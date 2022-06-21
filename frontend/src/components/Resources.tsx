@@ -6,7 +6,7 @@ const Section = tw.div`rounded shadow p-4 mb-4`
 const Heading = tw.h1`text-3xl font-bold tracking-tight`
 const Link = tw.a`text-blue-700 hover:text-blue-400`
 const List = tw.ul`list-disc ml-3`
-const ListItem = tw.li`font-light`
+const ListItem = tw.li`font-light mb-2`
 
 export default function Resources() {
     return <Section>
