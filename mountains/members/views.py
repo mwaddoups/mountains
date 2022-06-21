@@ -4,7 +4,7 @@ from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from .models import Experience, User
-from .serializers import ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
+from .serializers import CommitteeSerializer, ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
 
 class IsUserOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -72,6 +72,20 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response({'is_approved': True})
 
+    @action(methods=['post'], detail=True, permission_classes = [IsCommittee])
+    def paid(self, request, pk=None):
+        target_user = self.get_object()
+        target_user.is_paid = not target_user.is_paid
+        target_user.save()
+
+        return Response({'is_paid': True})
+
+    @action(methods=['get'], detail=False, permission_classes=[])
+    def committee(self, request):
+        committee = User.objects.filter(is_committee=True)
+        serializer = CommitteeSerializer(committee, many=True, context={'request': request})
+        return Response(serializer.data)
+
 class ProfileUpdateView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -127,3 +141,56 @@ class ExperienceViewSet(viewsets.ModelViewSet):
             return Response(ExperienceSerializer(experience).data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserJoinView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user_data = request.data
+
+        # Send email to member
+        email_body =  (
+            "Thank you for joining!\n\n"
+            "Please make payment to our bank details below (if you haven't already). They are:\n\n"
+            "Name: Clyde Mountaineering Club\n"
+            "Account: 23104562\n"
+            "Sort Code: 80-22-60\n"
+            "Reference: [your initials] + 'membership'\n"
+            "Amount: £36 (£25 for concession)"
+
+            "The treasurer should be in touch to confirm your membership. \n\n"
+            "Thank you!"
+        )
+        email_html = "\n".join([
+            "<p>" + line + "</p>" for line in email_body.split("\n")
+        ])
+
+        send_mail(
+            "Clyde Mountaineering Club - Joining details",
+            email_body,
+            "treasurer@clydemc.org",
+            [request.data['email']],
+            fail_silently=True,
+            html_message=email_html,
+        )
+
+        # Send email to treasurer
+        email_body =  (
+            "A new user has asked to join the club!\n\n"
+            + "See their details below:\n\n" 
+            + "\n".join([f"{k}: {v}" for k, v in user_data.items()])
+            + "\n\nKeep an eye out for their transfer!"
+        )
+        email_html = "\n".join([
+            "<p>" + line + "</p>" for line in email_body.split("\n")
+        ])
+
+        send_mail(
+            "Clyde Mountaineering Club - New paid member!",
+            email_body,
+            "noreply@clydemc.org",
+            ["treasurer@clydemc.org", "chair@clydemc.org", "secretary@clydemc.org"],
+            fail_silently=True,
+            html_message=email_html,
+        )
+        return Response({"details": "Joining email sent!"})

@@ -1,6 +1,6 @@
-import { User } from "../models"
+import { CommitteeUser, User } from "../models"
 
-export function getName(user: User): string {
+export function getName(user: User | CommitteeUser | undefined): string {
   if (!user) {
     return "<Deleted user>"
   } else if (!user.first_name && !user.last_name) {

@@ -8,14 +8,14 @@ import Sidebar from "./Sidebar";
 
 export default function Platform() {
   const authContext = useAuth()
-  const { authToken, currentUser, storeAuth } = authContext;
+  const { authToken, currentUser, storeAuth, logout } = authContext;
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   let missingPicture = useMemo(() => !(currentUser?.profile_picture), [currentUser])
 
   if (!authToken) {
-    return <Login setAuthToken={storeAuth} />
+    return <Login setAuthToken={storeAuth} logout={logout} />
   }
 
   if (authToken && currentUser && !currentUser.is_approved) {

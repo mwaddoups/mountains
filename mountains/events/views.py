@@ -1,8 +1,10 @@
+import datetime
+import pytz
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Event
-from .serializers import EventSerializer
+from .serializers import EventSerializer, FrontPageEventSerializer
 
 class IsCommitteeOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -27,3 +29,11 @@ class EventViewSet(viewsets.ModelViewSet):
 
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
+
+    @action(methods=['get'], detail=False, permission_classes=[])
+    def upcoming(self, request):
+        today_date = datetime.datetime.combine(datetime.datetime.today(), datetime.time(0,0), tzinfo=pytz.UTC)
+        upcoming_events = Event.objects.filter(event_date__gte=today_date).order_by('event_date')[:3]
+
+        serializer = FrontPageEventSerializer(upcoming_events, many=True)
+        return Response(serializer.data)

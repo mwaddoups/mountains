@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import tw from "twin.macro";
+import { Section } from "./Base";
 import ClydeMarkdown from "./ClydeMarkdown";
 import kitListURL from "./KitList.md";
 
-const Section = tw.div`rounded shadow p-4 mb-4`
 
 export default function KitList() {
   const [kitList, setKitList] = useState('');

@@ -9,6 +9,7 @@ import { describe_date } from "../../utils";
 import ClydeMarkdown from "../ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
+import AttendPopup from "./AttendPopup";
 import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
@@ -18,6 +19,7 @@ interface EventListProps {
 
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
+  const [attendPopupVisible, setAttendPopupVisible] = useState(false);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
 
   const { currentUser } = useAuth();
@@ -29,10 +31,21 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
   }, [event])
 
-  const isInPast = new Date(event.event_date) < new Date();
+  const handleAttend = useCallback(() => {
+    if (isAttending || !event.show_popup) {
+      toggleAttendance();
+    } else {
+      setAttendPopupVisible(true);
+    }
+  }, [isAttending, event, toggleAttendance, setAttendPopupVisible])
+
+  const todayDate = new Date();
+  todayDate.setHours(0,0,0,0);
+  const isInPast = new Date(event.event_date) < todayDate;
 
   return (
-    <div ref={eventRef} className={"w-full shadow p-4 md:flex my-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
+    <>
+    <div ref={eventRef} className={"w-full shadow p-4 md:flex mt-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
         <div className="flex items-center">
@@ -58,10 +71,12 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
-          <AttendButton onClick={toggleAttendance}>{isAttending ? "Leave" : "Attend"}</AttendButton>
+          <AttendButton onClick={handleAttend}>{isAttending ? "Leave" : "Attend"}</AttendButton>
         </div>
       </div>
     </div>
+    {attendPopupVisible && <AttendPopup toggleAttendance={toggleAttendance} setVisible={setAttendPopupVisible} />}
+    </>
   )
 }
 

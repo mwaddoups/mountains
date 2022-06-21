@@ -13,4 +13,9 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
   class Meta:
     model = Event
-    fields = ['id', 'title', 'created_date', 'event_date', 'description', 'attendees', 'max_attendees', 'organiser']
+    fields = ['id', 'title', 'created_date', 'event_date', 'description', 'attendees', 'max_attendees', 'organiser', 'show_popup']
+
+class FrontPageEventSerializer(serializers.HyperlinkedModelSerializer):
+  class Meta:
+    model = Event
+    fields = ['id', 'title', 'created_date', 'event_date', 'description']

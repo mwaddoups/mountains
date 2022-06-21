@@ -1,9 +1,9 @@
 import React from "react";
 import { PersonSquare } from "react-bootstrap-icons";
-import { FullUser, User } from "../../models";
+import { CommitteeUser, FullUser, User } from "../../models";
 
 interface ProfilePictureProps {
-  user: FullUser | User | null,
+  user: FullUser | User | CommitteeUser | null,
 }
 
 export default function ProfilePicture({user}: ProfilePictureProps) {

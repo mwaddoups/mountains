@@ -17,7 +17,7 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = [
             'id', 'url', 'first_name', 'last_name', 'profile_picture', 
-            'is_approved', 'is_committee', 'mobile_number'
+            'is_approved', 'is_committee', 'is_paid', 'mobile_number'
         ]
         read_only_fields = ['profile_picture']
 
@@ -33,7 +33,7 @@ class UserSerializer(SmallUserSerializer):
     class Meta:
         model = SmallUserSerializer.Meta.model
         fields = SmallUserSerializer.Meta.fields + [
-            'about', 'experience'
+            'about', 'experience', 'email'
         ]
         read_only_fields = SmallUserSerializer.Meta.read_only_fields + ['experience']
 
@@ -47,3 +47,9 @@ class ProfilePictureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'profile_picture']
+
+class CommitteeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'profile_picture', 'committee_role', 'committee_bio']
+        read_only_fields = ['profile_picture']

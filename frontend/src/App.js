@@ -7,7 +7,7 @@ import {
   Outlet,
 } from "react-router-dom";
 
-import Landing from "./components/Landing";
+import Landing from "./components/landing/Landing";
 import Platform from "./components/Platform";
 import Footer from "./components/Footer";
 import Members from "./components/members/Members";
@@ -21,19 +21,24 @@ import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
+import JoinClub from "./components/JoinClub";
 import Committee from "./components/Committee";
 import EventEditor from "./components/events/EventEditor";
 import Resources from "./components/Resources";
+import Faqs from "./components/landing/Faqs";
+import CommitteePage from "./components/landing/CommitteePage";
 
 function App() {
   return (
-    <div className="container mx-auto pr-2 lg:px-20">
+    <div className="container mx-auto pr-2 xl:px-20">
       <CookieConsent>This website uses cookies to manage our user experience.</CookieConsent>
       <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Landing />} />
               <Route path="privacy" element={<Privacy />} />
+              <Route path="faq" element={<Faqs />} />
+              <Route path="committee" element={<CommitteePage />} />
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
@@ -54,6 +59,7 @@ function App() {
                 </Route>
                 <Route path="kitlist" element={<KitList />} />
                 <Route path="resources" element={<Resources />}/>
+                <Route path="join" element={<JoinClub />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

@@ -21,13 +21,13 @@ export default function Navigation({ authContext }: NavigationProps) {
   const linkStyles = "block h-full p-4 hover:bg-gray-200 flex-none";
 
   // Remember! If you are adding new links, you need to update the max-h- transition.
-  // Currently it is 20 REM = 4 links + 1 logo = 5 * 4REM
+  // Currently it is 28 REM = 6 links + 1 logo = 7 * 4REM
   return (
     <nav className={(
       "container lg:flex lg:sticky lg:items-center border-b-4 text-gray-900 bg-white lg:h-16 border-teal-600 overflow-hidden transition-[max-height]"
-      + (menuOpenMobile ? " max-h-[20rem]" : " max-h-16")
+      + (menuOpenMobile ? " max-h-[28rem]" : " max-h-16")
     )}>
-      <div className="h-full p-4 ml-2 mr-12 flex-none flex w-full lg:w-auto">
+      <div className="h-full p-4 ml-2 mr-4 flex-none flex w-full lg:w-auto">
         <span className="font-semibold text-xl tracking-tight truncate">
          <span role='img' aria-label="mountain">⛰️</span> Clyde Mountaineering Club
         </span>
@@ -35,6 +35,8 @@ export default function Navigation({ authContext }: NavigationProps) {
         <button onClick={() => setMenuOpenMobile(!menuOpenMobile)} className="ml-auto border rounded-lg lg:hidden "><List /></button>
       </div>
       <Link to="/" className={linkStyles}>Home</Link>
+      <Link to="/faq" className={linkStyles}>FAQs</Link>
+      <Link to="/committee" className={linkStyles}>Committee</Link>
       <Link to="/platform" className={linkStyles}>Members Area</Link>
       {currentUser && (
         <>
