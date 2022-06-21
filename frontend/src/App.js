@@ -23,6 +23,7 @@ import Photos from "./components/photos/Photos";
 import KitList from "./components/KitList";
 import Committee from "./components/Committee";
 import EventEditor from "./components/events/EventEditor";
+import Resources from "./components/Resources";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
                   <Route path=":albumId" element={<Photos />} />
                 </Route>
                 <Route path="kitlist" element={<KitList />} />
+                <Route path="resources" element={<Resources />}/>
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

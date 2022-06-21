@@ -1,5 +1,5 @@
 import React from "react";
-import { Binoculars, Calendar, Discord, House, Images, ListCheck, PeopleFill } from "react-bootstrap-icons";
+import { Binoculars, Calendar, Discord, House, Images, InfoSquareFill, ListCheck, PeopleFill } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./Layout";
 
@@ -28,6 +28,9 @@ export default function Sidebar() {
       </NavLink>
       <NavLink to="kitlist" className={linkStyler}>
         <span className="sm:flex"><ListCheck className={iconStyles} />Kit List</span>
+      </NavLink>
+      <NavLink to="resources" className={linkStyler}>
+         <span className="sm:flex"><InfoSquareFill className={iconStyles}/>Resources</span>
       </NavLink>
       {currentUser?.is_committee && 
         <NavLink to="committee" className={linkStyler}>
