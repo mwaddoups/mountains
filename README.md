@@ -1,6 +1,24 @@
 # mountains
 Mountaineering club site
 
+# Running Locally
+## Back end
+1. Install the Python package manager poetry on your machine
+2. `cd` into the mountains directory (the back end project)
+3. Run `poetry install` to install python packages
+4. Run database migrations to ensure the database is up to date with `poetry run python manage.py migrate`
+5. Run the command `poetry run python manage.py runserver` to start the server locally
+
+## Database access
+1. Install sqlite 3 and add it to your PATH environment variable 
+2. `cd` into the mountains directory and run 'poetry run python manage.py dbshell`
+
+## front end
+1. Install nodeJs and the bundled npm package manager on your machine
+2. `cd` into the frontend directory
+3. Run `npm install` to install all packages
+4. Run `npm start` to run locally
+
 # Deployment
 ## Frontend
 

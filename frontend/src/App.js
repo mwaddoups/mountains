@@ -24,6 +24,7 @@ import KitList from "./components/KitList";
 import JoinClub from "./components/JoinClub";
 import Committee from "./components/Committee";
 import EventEditor from "./components/events/EventEditor";
+import Resources from "./components/Resources";
 import Faqs from "./components/landing/Faqs";
 import CommitteePage from "./components/landing/CommitteePage";
 
@@ -57,6 +58,7 @@ function App() {
                   <Route path=":albumId" element={<Photos />} />
                 </Route>
                 <Route path="kitlist" element={<KitList />} />
+                <Route path="resources" element={<Resources />}/>
                 <Route path="join" element={<JoinClub />} />
               </Route>
             </Route>
