@@ -29,7 +29,7 @@ export default function Navigation({ authContext }: NavigationProps) {
     )}>
       <div className="h-full p-4 ml-2 mr-4 flex-none flex w-full lg:w-auto">
         <span className="font-semibold text-xl tracking-tight truncate">
-         <span role='img' aria-label="mountain">⛰️</span> Clyde Mountaineering Club
+         <span className="bg-logo bg-cover bg-no-repeat pr-12 mr-2"></span> Clyde Mountaineering Club
         </span>
 
         <button onClick={() => setMenuOpenMobile(!menuOpenMobile)} className="ml-auto border rounded-lg lg:hidden "><List /></button>
