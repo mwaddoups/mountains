@@ -46,3 +46,23 @@ If you're keen to pick up more gear cheaply, Decathlon is one of the best option
 - Gaiters (for winter, or wet days)
 - Sunglasses/sunscreen (for optimism)
 - Camera
+
+## For overnights
+- Sleeping bag (in a dry bag, if you're backpacking!)
+- Sleeping mat
+- Midge spray (Smidge is a good brand)
+- Midge net (for fashion)
+- Tent
+- Spork
+- Mug / plate
+- Cooking pans
+- Stove and suitable gas
+- Trowel (for gardening, if appropriate)
+- Toilet paper and hand sanitizer
+- Sanitary products
+
+## Optional overnight kit
+- Spare pair of shoes for camp (flip-flops)
+- Sleeping bag liner
+- Dry clothes for sleeping in
+- Casual clothes if we're in a hut
