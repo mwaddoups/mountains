@@ -7,7 +7,7 @@ export default function Home() {
     <div>
       <Section>
 
-        <img className="w-1/2 mx-auto mb-2" src={logo}></img>
+        <img alt="club logo" className="w-1/2 mx-auto mb-2" src={logo}></img>
         <Heading>Welcome to Clyde Mountaineering Club!</Heading>
         <Paragraph>
           Our club operates on both this site, and on our Discord server. If you haven't used Discord before, 
