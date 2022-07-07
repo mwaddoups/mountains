@@ -72,6 +72,7 @@ export type Photo = {
 export type Album = {
   id: number,
   name: string,
+  event_date: string,
   created: string,
   photos: Array<Photo>,
   contributors: Array<User>

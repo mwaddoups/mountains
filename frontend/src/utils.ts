@@ -14,6 +14,6 @@ export function describe_date(dateStr: string): string {
       return dateFormat(date, 'mmm d, HH:MM');
     }
   } else {
-    return dateFormat(date, 'mmm d, yyyy, HH:MM')
+    return dateFormat(date, 'dddd, mmm dS, yyyy, HH:MM')
   }
 }

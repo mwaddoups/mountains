@@ -1,3 +1,4 @@
+import dateFormat from "dateformat";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api";
@@ -29,6 +30,7 @@ export default function Albums() {
             <div className="h-40 mb-4 p-4 rounded shadow w-full flex items-center justify-between">
               <div>
                 <h2 className="text-2xl">{album.name}</h2>
+                <h3 className="text-xs text-gray-500">{album.event_date ? dateFormat(album.event_date, "dddd, mmmm dS, yyyy") : ""}</h3>
                 <div className="flex mt-2">
                   {album.contributors.map(user => (
                     <Link to={`/platform/members/${user.id}`}>
