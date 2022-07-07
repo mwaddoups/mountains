@@ -1,10 +1,13 @@
 import React from "react";
 import { Heading, Paragraph, Section } from "./Base";
+import logo from "../images/logo.png";
 
 export default function Home() {
   return (
     <div>
       <Section>
+
+        <img className="w-1/2 mx-auto mb-2" src={logo}></img>
         <Heading>Welcome to Clyde Mountaineering Club!</Heading>
         <Paragraph>
           Our club operates on both this site, and on our Discord server. If you haven't used Discord before, 
