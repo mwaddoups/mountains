@@ -31,8 +31,8 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'name', 'created', 'photos', 'contributors']
-        read_only_fields = ['id', 'name', 'created', 'photos', 'contributors']
+        fields = ['id', 'name', 'event_date', 'created', 'photos', 'contributors']
+        read_only_fields = ['id', 'name', 'event_date', 'created', 'photos', 'contributors']
 
 class AlbumDetailSerializer(AlbumSerializer):
     photos = PhotoSerializer(many=True)
@@ -41,4 +41,4 @@ class AlbumDetailSerializer(AlbumSerializer):
 class AlbumCreationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Album
-        fields = ['name']
+        fields = ['name', 'event_date']
