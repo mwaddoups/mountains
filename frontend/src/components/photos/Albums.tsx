@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { Album } from "../../models";
+import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import ProfilePicture from "../members/ProfilePicture";
 
 export default function Albums() {
   const [albums, setAlbums] = useState<Array<Album>>([]);
   const [loading, setLoading] = useState(true);
+
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     api.get('albums/').then(res => {
@@ -19,6 +22,7 @@ export default function Albums() {
 
   return (
     <Loading loading={loading}>
+      {currentUser?.is_committee && <Link to="new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create album</button></Link>}
       <div>
         {albums.map((album, ix) =>(
           <Link to={`${album.id}/`} key={ix}>

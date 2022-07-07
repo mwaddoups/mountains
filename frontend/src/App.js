@@ -17,6 +17,7 @@ import ProfileEditor from "./components/members/ProfileEditor";
 import Layout, { useAuth } from "./components/Layout";
 import Home from "./components/Home";
 import Albums from "./components/photos/Albums";
+import AlbumCreator from "./components/photos/AlbumCreator";
 import CookieConsent from "react-cookie-consent";
 import Privacy from "./components/Privacy";
 import Photos from "./components/photos/Photos";
@@ -55,6 +56,7 @@ function App() {
                 </Route>
                 <Route path="photos" element={<MemberContext />}>
                   <Route index element={<Albums />} />
+                  <Route path="new" element={<AlbumCreator />} />
                   <Route path=":albumId" element={<Photos />} />
                 </Route>
                 <Route path="kitlist" element={<KitList />} />

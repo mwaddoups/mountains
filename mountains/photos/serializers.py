@@ -24,6 +24,11 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     photos = PhotoSerializer(many=True, source='sample_photos')
     contributors = SmallUserSerializer(many=True)
 
+    def create(self, validated_data):
+        return Album.objects.create(
+            name=self.context['request'].data['name'],
+        )
+
     class Meta:
         model = Album
         fields = ['id', 'name', 'created', 'photos', 'contributors']
@@ -31,3 +36,9 @@ class AlbumSerializer(serializers.HyperlinkedModelSerializer):
 
 class AlbumDetailSerializer(AlbumSerializer):
     photos = PhotoSerializer(many=True)
+
+
+class AlbumCreationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Album
+        fields = ['name']
