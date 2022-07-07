@@ -25,7 +25,9 @@ export default function Albums() {
     <Loading loading={loading}>
       {currentUser?.is_committee && <Link to="new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create album</button></Link>}
       <div>
-        {albums.map((album, ix) =>(
+        {albums
+          .sort((a1, a2) => new Date(a2.event_date).getTime() - new Date(a1.event_date).getTime())
+          .map((album, ix) => (
           <Link to={`${album.id}/`} key={ix}>
             <div className="h-40 mb-4 p-4 rounded shadow w-full flex items-center justify-between">
               <div>

@@ -47,7 +47,7 @@ If you're keen to pick up more gear cheaply, Decathlon is one of the best option
 - Sunglasses/sunscreen (for optimism)
 - Camera
 
-## For overnights
+### For overnights
 - Sleeping bag (in a dry bag, if you're backpacking!)
 - Sleeping mat
 - Midge spray (Smidge is a good brand)
@@ -61,7 +61,7 @@ If you're keen to pick up more gear cheaply, Decathlon is one of the best option
 - Toilet paper and hand sanitizer
 - Sanitary products
 
-## Optional overnight kit
+### Optional overnight kit
 - Spare pair of shoes for camp (flip-flops)
 - Sleeping bag liner
 - Dry clothes for sleeping in
