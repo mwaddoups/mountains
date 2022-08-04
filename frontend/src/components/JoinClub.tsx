@@ -11,8 +11,8 @@ export default function JoinClub() {
     <Section>
       <Heading>Joining the Club</Heading>
       <Paragraph>
+        If you're new to the club you are welcome to come along for a trial walk before committing to membership - or catch us at one of the city events.  
         You need to join the club in order to come on our walks and events. 
-        If you're new to the club you are welcome to come along for a trial walk before committing to membership - or catch us at one of the city events. 
       </Paragraph>
       <Paragraph>
         Membership helps fund the club and goes towards purchasing club kit (that you can borrow) and running costs. 
