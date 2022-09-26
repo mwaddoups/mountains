@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import tw from "twin.macro";
 import api from "../api";
 import { getName } from "../methods/user";
 import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButton } from "./Base";
@@ -48,7 +47,7 @@ function JoinClubForm() {
 
   const { currentUser } = useAuth();
 
-  const currentMonth = new Date().getMonth()
+  const currentMonth = 9//new Date().getMonth()
   
   const isHalfYearFee = currentMonth > 8 || currentMonth < 3;
   const regularFee = isHalfYearFee ? 21 : 36;
