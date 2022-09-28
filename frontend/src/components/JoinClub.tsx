@@ -19,7 +19,7 @@ export default function JoinClub() {
         Our membership also includes Mountaineering Scotland membership, which has a host of benefits including discounts at outdoor stores, access to talks and training and mountaineering insurance.
       </Paragraph>
       <Paragraph>
-        The cost is £36, or £25 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2023 so the fee will cover you until then - if you join after October we will do a reduced rate to cover the year.
+        The cost is £36, or £25 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2023 so the fee will cover you until then. If you join after October we offer a reduced rate of £21 or £15 for concessions.
       </Paragraph>
       <Paragraph>
         If you are already a Mountaineering Scotland member get in touch with the treasurer (treasurer@clydemc.org) before paying as we should be able to offer a reduced rate.
@@ -47,6 +47,13 @@ function JoinClubForm() {
 
   const { currentUser } = useAuth();
 
+  const currentMonth = new Date().getMonth();
+  
+  const isHalfYearFee = currentMonth > 8 || currentMonth < 3;
+  const regularFee = isHalfYearFee ? 21 : 36;
+  const concessionFee = isHalfYearFee ? 15 : 25;
+
+
   const handleJoin = useCallback(event => {
     event.preventDefault();
     const name = currentUser ? getName(currentUser) : "<Missing user>";
@@ -69,7 +76,7 @@ function JoinClubForm() {
         <Paragraph>Account: 23104562</Paragraph>
         <Paragraph>Sort Code: 80-22-60</Paragraph>
         <Paragraph>Reference: [your initials] + "membership"</Paragraph>
-        <Paragraph>Amount: £{membership === "regular" ? "36" : "25"}</Paragraph>
+        <Paragraph>Amount: £{membership === "regular" ? regularFee : concessionFee}</Paragraph>
         <Paragraph>
           The treasurer should be in touch to confirm receipt! Any questions, get in touch at treasurer@clydemc.org.
         </Paragraph>
@@ -86,8 +93,8 @@ function JoinClubForm() {
 
           <FormLabel>Membership Type</FormLabel>
           <FormSelect value={membership} onChange={e => setMembership(e.target.value as any)}>
-            <option value="regular">Regular (£35 per year)</option>
-            <option value="concession">Concession (£25 per year)</option>
+            <option value="regular">Regular (£{regularFee})</option>
+            <option value="concession">Concession (£{concessionFee})</option>
           </FormSelect>
 
           <FormLabel>If you are already a Mountaineering Scotland member, what is your membership number?</FormLabel>
