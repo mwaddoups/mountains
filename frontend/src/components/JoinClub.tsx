@@ -47,7 +47,7 @@ function JoinClubForm() {
 
   const { currentUser } = useAuth();
 
-  const currentMonth = 9//new Date().getMonth()
+  const currentMonth = new Date().getMonth();
   
   const isHalfYearFee = currentMonth > 8 || currentMonth < 3;
   const regularFee = isHalfYearFee ? 21 : 36;
