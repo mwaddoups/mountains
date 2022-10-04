@@ -49,7 +49,7 @@ function JoinClubForm() {
 
   const currentMonth = new Date().getMonth();
   
-  const isHalfYearFee = currentMonth > 8 || currentMonth < 3;
+  const isHalfYearFee = currentMonth > 8 || currentMonth < 2;
   const regularFee = isHalfYearFee ? 21 : 36;
   const concessionFee = isHalfYearFee ? 15 : 25;
 
@@ -77,6 +77,7 @@ function JoinClubForm() {
         <Paragraph>Sort Code: 80-22-60</Paragraph>
         <Paragraph>Reference: [your initials] + "membership"</Paragraph>
         <Paragraph>Amount: £{membership === "regular" ? regularFee : concessionFee}</Paragraph>
+        <Paragraph>End Date: April 1, 2023</Paragraph>
         <Paragraph>
           The treasurer should be in touch to confirm receipt! Any questions, get in touch at treasurer@clydemc.org.
         </Paragraph>
