@@ -47,6 +47,26 @@ export default function Home() {
           and know how to look after yourself if conditions aren't as expected.
         </Paragraph>
       </Section>
+      <Section id="winter-walks">
+        <Heading>Winter Walking</Heading>
+        <Paragraph>
+          In the winter season (roughly November to March) we will try to run winter walks up munros. However, these 
+          walks by nature have additional concerns and dangers as well as much tougher equipment requirements for the condtions.
+        </Paragraph>
+        <Paragraph>
+          For our first year of winter walking, we've taken the decision to only open these winter walks to those with some previous winter 
+          experience. Our ideal experience would be a 2 day winter skills course, but we essentially require that you have a familiarity with 
+          ice axe arrest, winter hazards such as avalanches and walking in crampons.
+        </Paragraph>
+        <Paragraph>
+          These walks will also be smaller groups (6 people max per walk coordinator) and be ran with an expectation that everyone
+          is able to take responsibility for their own choices on the hill.
+        </Paragraph>
+        <Paragraph>
+          We don't wish to be exclusionary with this policy at all - we just want to be well prepared for the risks of heading out in winter. We're
+          currently looking into trying to arrange a winter skills course with a guide just for the club, and will post details about this in the Discord. 
+        </Paragraph>
+      </Section>
       <Section id="feedback">
         <Heading>The club and website is a work-in-progress...</Heading>
         <Paragraph>
