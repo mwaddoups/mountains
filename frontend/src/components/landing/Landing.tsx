@@ -11,14 +11,14 @@ export default function Landing() {
         <Paragraph>We are a mountaineering club based in Glasgow and founded in 2022.  We were created to focus on the 20s and 30s age groups within and around the city, but are open to all. Our aim is to create a group of friendly, kind and like-minded people who like to get out and have challenging days in the mountains, safely.</Paragraph>
         <Paragraph>Our main activities are harder hill and mountain walking, winter walking, scrambling and easy climbing - together with other outdoor activities in Scotland such as skiing and trail running.</Paragraph>
         <Paragraph>We try to run official day trips around every other weekend, and have weekend trips away to further afield locations. We also have an active social side in the city, with pub trips and indoor climbing/bouldering.</Paragraph>
-        <Paragraph>The club is still growing and most activities are currently informal between members. We are hoping to start club-backed walks in Spring 2022.</Paragraph>
+        <Paragraph>In the winter season, we do require some experience of winter walking in order to join on our walks - but we are looking into organizing reduced-price winter skills training through the club.</Paragraph>
       </Section>
       <Section header="Join Us">
         <Paragraph>
           If you are interested in joining, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span>
            Once you register, you will have access to our internal site and be able to join our Discord, and view more details of our upcoming events.
         </Paragraph>
-        <Paragraph>You are welcome to come along on a trip to see if you like the club before becoming a member. Our membership dues will be set at £36 for the year for 2022/23 - there is also a concessionary rate of £25. This includes affiliation to Mountaineering Scotland.</Paragraph>
+        <Paragraph>You are welcome to come along on a trip to see if you like the club before becoming a member. Our membership dues will be set at £36 for the year for 2022/23 (until April 2023) - there is also a concessionary rate of £25. This includes affiliation to Mountaineering Scotland.</Paragraph>
         <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">

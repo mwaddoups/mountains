@@ -64,6 +64,18 @@ export default function Faqs() {
           Just be prepared to chip in a bit for petrol!
         </Answer>
       </QA>
+      <QA>
+        <Question>What are the experience requirements for winter walks?</Question>
+        <Answer>
+          We ask that you've either attended a winter skills course (2 days) or have similar experience
+          in ice axe arrest, avalanche awareness and walking in crampons. We also ask that you bring an ice axe 
+          and crampons, and strongly recommend a helmet. 
+        </Answer>
+        <Answer>
+          If you don't yet have this experience, we are trying to organize some subsidized winter skills days - 
+          keep an eye on the Discord and our events to hear more about this.
+        </Answer>
+      </QA>
     <QuestionCategory>The Club</QuestionCategory>
       <QA>
         <Question>How much is it to join the club?</Question>
