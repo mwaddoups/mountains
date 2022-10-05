@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
 PASSWORDLESS_AUTH = {
     'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
     'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@clydemc.org',
+    'PASSWORDLESS_AUTH_TOKEN_CREATOR': 'members.auth.create_authentication_token'
 }
 
 MIDDLEWARE = [
