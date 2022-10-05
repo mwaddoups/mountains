@@ -10,13 +10,14 @@ export default function Layout() {
   usePageTracking();
 
   const cookies = new Cookies();
-  const [authToken, setAuthToken] = useState<string | null>(cookies.get('token'));
+  const [authToken, setAuthToken] = useState<string | null>(cookies.get('token') || localStorage.getItem('token'));
   const [currentUser, setCurrentUser] = useState<FullUser | null>(null);
 
   const logout = useCallback(() => {
     console.log('Logging out...')
     const cookies = new Cookies();
-    cookies.remove('token');
+    cookies.remove('token', {sameSite: "strict"});
+    localStorage.removeItem('token');
     setAuthToken(null);
     setCurrentUser(null);
   }, [setAuthToken])
@@ -51,6 +52,7 @@ export default function Layout() {
       sameSite: "strict",
       expires: new Date(new Date().setDate((new Date()).getDate() + 90))
     });
+    localStorage.setItem('token', token);
     setAuthToken(token);
     await refreshUser();
   }, [refreshUser, setAuthToken])
