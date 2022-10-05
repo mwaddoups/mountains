@@ -88,7 +88,14 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
               </div>
             </>
           )}
-          <AttendButton onClick={handleAttend}>{isAttending ? "Leave" : "Attend"}</AttendButton>
+          <AttendButton onClick={handleAttend}>
+            {isAttending 
+              ? "Leave" 
+              : (
+                event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+              )
+            }
+          </AttendButton>
         </div>
       </div>
     </div>
