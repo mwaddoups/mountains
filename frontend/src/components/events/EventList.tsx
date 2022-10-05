@@ -35,6 +35,14 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
   }, [event])
 
+  const toggleWaitingList = useCallback(userId => {
+    return () => {
+      api.post(
+        `events/${event.id}/changelist/`, { userId }
+        ).then(res => setEvent(res.data)) 
+    }
+  }, [event])
+
   const handleAttend = useCallback(() => {
     if (isAttending || !event.show_popup) {
       toggleAttendance();
@@ -71,7 +79,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
           </div>
           <div className="w-full my-2">
             {attendingList.length > 0
-              ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} />
+              ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList}/>
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
@@ -84,7 +92,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 </button>
               </div>
               <div className="w-full my-2">
-                <AttendeeList attendees={waitingList} expanded={expandedWaitList} />
+                <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList}/>
               </div>
             </>
           )}

@@ -41,6 +41,18 @@ class EventViewSet(viewsets.ModelViewSet):
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
 
+    @action(methods=['post'], detail=True, permission_classes=[IsCommitteeOrReadOnly])
+    def changelist(self, request, pk=None):
+        event = self.get_object()
+        user_id = request.data['userId']
+        wanted_au = AttendingUser.objects.filter(event=event, user=user_id).first()
+
+        wanted_au.is_waiting_list = not wanted_au.is_waiting_list
+        wanted_au.save()
+
+        updated_event = EventSerializer(event, context={'request': request}) 
+        return Response(updated_event.data)
+
     @action(methods=['get'], detail=False, permission_classes=[])
     def upcoming(self, request):
         today_date = datetime.datetime.combine(datetime.datetime.today(), datetime.time(0,0), tzinfo=pytz.UTC)

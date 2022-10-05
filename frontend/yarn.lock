@@ -7630,9 +7630,9 @@
     "whatwg-fetch" "^3.6.2"
 
 "react-bootstrap-icons@^1.7.2":
-  "integrity" "sha512-FaXk5iHjd6eltoPHUo+onIkcN/xcCEbaEnTeRacibwVlPagEzujFYtUJ0C2+DlvfkWwy5N+b347tSTbtWqBSEg=="
-  "resolved" "https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.7.2.tgz"
-  "version" "1.7.2"
+  "integrity" "sha512-EOxEkiKt/ucn17cXHzUcxbVmH7YCFjV5ifrIB+aGkfxjXnGGJyBDfG5kRChoCDs1Y7vLRtgSauOq+whF751Yzg=="
+  "resolved" "https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.9.1.tgz"
+  "version" "1.9.1"
   dependencies:
     "prop-types" "^15.7.2"
 
@@ -7887,7 +7887,7 @@
     "react-fit" "^1.4.0"
     "update-input-width" "^1.2.2"
 
-"react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.6.2 || ^16.0 || ^17", "react@^16.13.1 || ^17.0.0", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.8.6 || ^17", "react@^17.0.2", "react@>= 16", "react@>=16", "react@>=16.8", "react@>=16.8.0", "react@17.0.2":
+"react@^15.3.0 || ^16.0.0 || ^17.0.0", "react@^15.5.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.6.2 || ^16.0 || ^17", "react@^16.13.1 || ^17.0.0", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2", "react@>= 16", "react@>=16", "react@>=16.8", "react@>=16.8.0", "react@>=16.8.6", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
