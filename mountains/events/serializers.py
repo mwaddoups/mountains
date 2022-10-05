@@ -1,31 +1,28 @@
+import types
 from rest_framework import serializers
 from .models import Event, AttendingUser
 from members.serializers import SmallUserSerializer, SmallUserSerializerCommittee
 
-
-class AttendingUserField(serializers.RelatedField):
-  def to_representation(self, value):
-    au_data = value.filter(event=self.context['event_id']).first()
-
-    return {'is_waiting_list': au_data.is_waiting_list}
-
 class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
-  au_data = AttendingUserField(source='attendinguser_set', read_only=True)
+  user_id = serializers.ReadOnlyField(source='user.id')
+  first_name = serializers.ReadOnlyField(source='user.first_name')
+  last_name = serializers.ReadOnlyField(source='user.last_name')
+  profile_picture = serializers.FileField(source='user.profile_picture')
+  is_approved = serializers.ReadOnlyField(source='user.is_approved')
+  is_committee = serializers.ReadOnlyField(source='user.is_committee')
+  is_paid = serializers.ReadOnlyField(source='user.is_paid')
+  mobile_number = serializers.ReadOnlyField(source='user.mobile_number')
+  in_case_emergency = serializers.ReadOnlyField(source='user.in_case_emergency')
 
   class Meta:
-    model = SmallUserSerializerCommittee.Meta.model
-    fields = SmallUserSerializerCommittee.Meta.fields + ['au_data']
-    read_only_fields = SmallUserSerializerCommittee.Meta.read_only_fields + ['au_data']
+    model = AttendingUser
+    fields = ['id', 'user_id', 'first_name', 'last_name', 'profile_picture', 
+              'is_approved', 'is_committee', 'is_paid', 'mobile_number', 
+              'in_case_emergency','is_waiting_list']
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
   organiser = SmallUserSerializer(read_only=True)
-  attendees = serializers.SerializerMethodField()
-
-  def get_attendees(self, event):
-    return AttendingUserSerializer(
-      event.attendees.all(), 
-      many=True, read_only=True, context={'event_id': event, 'request': self.context['request']}
-    ).data
+  attendees = AttendingUserSerializer(source='attendinguser_set', many=True, read_only=True)
 
   def create(self, validated_data):
     return Event.objects.create(

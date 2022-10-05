@@ -1,9 +1,13 @@
-export type User = {
+// This should not be changed very often!!
+export type NamedProfileUser = {
   id: number,
-  url: string,
   first_name: string,
   last_name: string,
   profile_picture: string | undefined,
+}
+
+export interface User extends NamedProfileUser {
+  url: string,
   is_approved: boolean,
   is_committee: boolean,
   is_paid: boolean,
@@ -11,10 +15,12 @@ export type User = {
   in_case_emergency: string | undefined;
 }
 
-export type Experience = {
-  activity: "HW" | "WW" | "SC" | "IC" | "IB" | "OS" | "OT" | "WC" | "ST",
-  competency: (0 | 1 | 2 | 3),
-  info: string | undefined,
+export interface AttendingUser extends NamedProfileUser {
+  is_approved: boolean,
+  is_committee: boolean,
+  is_paid: boolean,
+  mobile_number: string,
+  in_case_emergency: string | undefined;
 }
 
 export interface FullUser extends User {
@@ -23,22 +29,17 @@ export interface FullUser extends User {
   email: string;
 }
 
-export type AttendingUserData = {
-  is_waiting_list: boolean,
-}
-
-export interface AttendingUser extends User {
-  au_data: AttendingUserData;
-}
-
-export type CommitteeUser = {
-  id: number,
-  first_name: string,
-  last_name: string,
-  profile_picture: string | undefined,
+export interface CommitteeUser extends NamedProfileUser {
   committee_role: "President" | "Secretary" | "Treasurer" | "General" | undefined,
   committee_bio: string,
 }
+
+export type Experience = {
+  activity: "HW" | "WW" | "SC" | "IC" | "IB" | "OS" | "OT" | "WC" | "ST",
+  competency: (0 | 1 | 2 | 3),
+  info: string | undefined,
+}
+
 
 export type Event = {
   id: number,

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { getName } from "../../methods/user";
-import { User } from "../../models";
+import { AttendingUser } from "../../models";
 import { useAuth } from "../Layout";
 import ProfilePicture from "../members/ProfilePicture";
 
 interface AttendeeListProps {
-    attendees: Array<User>;
+    attendees: Array<AttendingUser>;
     expanded: boolean;
 }
 
