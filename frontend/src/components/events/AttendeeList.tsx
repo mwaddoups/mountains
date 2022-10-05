@@ -26,7 +26,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList }:
                             <p className="ml-3 text-sm text-gray-500">
                                 {getName(user)} {user.mobile_number ? `(${user.mobile_number})` : ""} {currentUser?.is_committee ? `ICE: ${user.in_case_emergency ? user.in_case_emergency : "None given!"}` : ""}
                             </p>
-                            {currentUser?.is_committee && <button className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleWaitingList(user.id)}><LayerBackward /></button>}
+                            {currentUser?.is_committee && <button title="Toggle waiting list" className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleWaitingList(user.id)}><LayerBackward /></button>}
                         </>}
                     </div>
                 </>
