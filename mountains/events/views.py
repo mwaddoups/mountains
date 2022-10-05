@@ -3,7 +3,7 @@ import pytz
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Event
+from .models import AttendingUser, Event
 from .serializers import EventSerializer, FrontPageEventSerializer
 
 class IsCommitteeOrReadOnly(permissions.BasePermission):
@@ -22,10 +22,21 @@ class EventViewSet(viewsets.ModelViewSet):
     def attend(self, request, pk=None):
         event = self.get_object()
         user = request.user
+        actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
         if user in event.attendees.all():
             event.attendees.remove(user)
+            if user.id in actual_attendees:
+                # We can add a new person from the waitlist, if there is one
+                first_waiting = AttendingUser.objects.filter(event=event, is_waiting_list=True).first()
+                if first_waiting:
+                    first_waiting.is_waiting_list = False
+                    first_waiting.save()
         else:
-            event.attendees.add(user)
+            if event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees:
+                new_au = AttendingUser(user=user, event=event, is_waiting_list=True)
+                new_au.save()
+            else:
+                event.attendees.add(user)
 
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)

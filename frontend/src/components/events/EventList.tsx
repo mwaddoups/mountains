@@ -21,11 +21,15 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
+  const [expandedWaitList, setExpandedWaitList] = useState(false);
 
   const { currentUser } = useAuth();
   const isAttending = useMemo(() => (
     currentUser && event.attendees.map(user => user.id).includes(currentUser.id)
   ), [event, currentUser])
+
+  const attendingList = useMemo(() => event.attendees.filter(user => !user.is_waiting_list), [event])
+  const waitingList = useMemo(() => event.attendees.filter(user => user.is_waiting_list), [event])
 
   const toggleAttendance = useCallback(() => {
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
@@ -60,17 +64,30 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">
           <div className="flex">
-            <h2>Attendees ({event.attendees.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
+            <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
             <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
               {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
             </button>
           </div>
           <div className="w-full my-2">
-            {event.attendees.length > 0
-              ? <AttendeeList attendees={event.attendees} expanded={expandedAttendees} />
+            {attendingList.length > 0
+              ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} />
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
+          {waitingList.length > 0 && (
+            <>
+              <div className="flex">
+                <h2>Waiting List ({waitingList.length} total)</h2>
+                <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
+                  {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
+                </button>
+              </div>
+              <div className="w-full my-2">
+                <AttendeeList attendees={waitingList} expanded={expandedWaitList} />
+              </div>
+            </>
+          )}
           <AttendButton onClick={handleAttend}>{isAttending ? "Leave" : "Attend"}</AttendButton>
         </div>
       </div>

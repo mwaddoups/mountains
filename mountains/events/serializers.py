@@ -4,7 +4,8 @@ from .models import Event, AttendingUser
 from members.serializers import SmallUserSerializer, SmallUserSerializerCommittee
 
 class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
-  user_id = serializers.ReadOnlyField(source='user.id')
+  au_id = serializers.ReadOnlyField(source='id')
+  id = serializers.ReadOnlyField(source='user.id')
   first_name = serializers.ReadOnlyField(source='user.first_name')
   last_name = serializers.ReadOnlyField(source='user.last_name')
   profile_picture = serializers.FileField(source='user.profile_picture')
@@ -16,7 +17,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
 
   class Meta:
     model = AttendingUser
-    fields = ['id', 'user_id', 'first_name', 'last_name', 'profile_picture', 
+    fields = ['au_id', 'id', 'first_name', 'last_name', 'profile_picture', 
               'is_approved', 'is_committee', 'is_paid', 'mobile_number', 
               'in_case_emergency','is_waiting_list']
 
