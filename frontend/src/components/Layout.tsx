@@ -87,7 +87,7 @@ const usePageTracking = () => {
 
   useEffect(() => {
     if (initialized) {
-      ReactGA.pageview(location.pathname + location.search);
+      ReactGA.send({hitType: "pageview", page: location.pathname + location.search});
     }
   }, [initialized, location])
 }
