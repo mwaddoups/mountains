@@ -60,7 +60,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">
           <div className="flex">
-            <h2>Attendees ({event.attendees.length} total)</h2>
+            <h2>Attendees ({event.attendees.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
             <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
               {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
             </button>

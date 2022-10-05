@@ -14,6 +14,7 @@ export default function EventEditor() {
   const [description, setDescription] = useState<string>('');
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
+  const [maxAttendees, setMaxAttendees] = useState<number | null>(null); 
 
   // use params to check if we are at event/x/edit or event/new
   // If editing, reset the state first with the correct valeus
@@ -28,6 +29,7 @@ export default function EventEditor() {
         setDescription(event.description);
         setEventDate(new Date(event.event_date));
         setShowPopup(event.show_popup);
+        setMaxAttendees(event.max_attendees);
       })
     }
     setLoading(false);
@@ -41,8 +43,8 @@ export default function EventEditor() {
     newEvent.description = description;
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
     newEvent.show_popup = showPopup;
+    newEvent.max_attendees = maxAttendees;
     if (!currentEvent) {
-      newEvent.max_attendees = 0; // TODO: Allow maximum
       newEvent.attendees = [];
     }
 
@@ -55,7 +57,7 @@ export default function EventEditor() {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, maxAttendees])
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
   const inputStyles = "text-sm px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
@@ -82,6 +84,12 @@ export default function EventEditor() {
           <div className="flex items-center">
             <label className={labelStyles}>Show the participation popup before allowing attendance (usually yes for walks)?</label>
             <input className="ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
+          </div>
+          <div className="w-full">
+            <label className={labelStyles} htmlFor="maxAttendees">Max Attendees (0 = no max)</label>
+            <input 
+              className={inputStyles} type="number" id="maxAttendees" 
+              value={maxAttendees || 0} onChange={event => setMaxAttendees(+event.target.value)} />
           </div>
           <label className={labelStyles} htmlFor="description">Description</label>
           <textarea className={inputStyles + " resize-none h-80"} id="description" 
