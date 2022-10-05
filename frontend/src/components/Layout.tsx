@@ -4,7 +4,7 @@ import api from "../api";
 import { FullUser, AuthContext } from "../models";
 import Navigation from "./Navigation";
 import Cookies from "universal-cookie";
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 export default function Layout() {
   usePageTracking();
@@ -80,7 +80,7 @@ const usePageTracking = () => {
 
   useEffect(() => {
     if (window.location.href.includes("clydemc")) {
-      ReactGA.initialize('UA-28467382-3');
+      ReactGA.initialize('G-Y9C9ZH33ZE');
       setInitialized(true);
     }
   }, [])
