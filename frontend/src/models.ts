@@ -20,8 +20,15 @@ export type Experience = {
 export interface FullUser extends User {
   about: string;
   experience: Array<Experience> | null;
-  in_case_emergency: string | undefined;
   email: string;
+}
+
+export type AttendingUserData = {
+  is_waiting_list: boolean,
+}
+
+export interface AttendingUser extends User {
+  au_data: AttendingUserData;
 }
 
 export type CommitteeUser = {
@@ -39,7 +46,7 @@ export type Event = {
   created_date: string,
   event_date: string,
   description: string,
-  attendees: Array<User>,
+  attendees: Array<AttendingUser>,
   max_attendees: number | null,
   organiser: User,
   show_popup: boolean,
