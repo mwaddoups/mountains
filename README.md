@@ -1,5 +1,6 @@
-# mountains
-Mountaineering club site
+# Clyde Mountaineering Club website
+
+Code for the Clyde Mountaineering Club site lives here. Frontend is written in React, and the backend is Django. 
 
 # Running Locally
 ## Back end
