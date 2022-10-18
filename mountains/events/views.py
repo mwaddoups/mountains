@@ -14,9 +14,12 @@ class IsCommitteeOrReadOnly(permissions.BasePermission):
             return request.user.is_committee
 
 class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all().order_by('-event_date')
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsCommitteeOrReadOnly)]
+
+    def get_queryset(self, *args, **kwargs):
+        ago_90d = datetime.datetime.now() - datetime.timedelta(days=90)
+        return Event.objects.filter(event_date__gte=ago_90d).order_by('-event_date')
 
     @action(methods=['patch'], detail=True, permission_classes=[permissions.IsAuthenticated])
     def attend(self, request, pk=None):

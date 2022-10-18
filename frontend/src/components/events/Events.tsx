@@ -61,6 +61,7 @@ export default function Events() {
           .sort((e1, e2) => new Date(e2.event_date).getTime() - new Date(e1.event_date).getTime())
           .map(eventDisplay)
         }
+        <p>Events older than 90 days are not shown.</p>
       </div>
     </Loading>
   )

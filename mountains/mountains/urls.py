@@ -26,7 +26,7 @@ from photos.views import PhotoViewSet, AlbumViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'events', EventViewSet)
+router.register(r'events', EventViewSet, basename='Event')
 router.register(r'experiences', ExperienceViewSet)
 router.register(r'posts', FeedPostViewSet)
 router.register(r'comments', CommentViewSet)
