@@ -3,7 +3,7 @@ import pytz
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import AttendingUser, Event
+from .models import AttendingUser, Event, User
 from .serializers import EventSerializer, FrontPageEventSerializer
 
 class IsCommitteeOrReadOnly(permissions.BasePermission):
@@ -21,10 +21,14 @@ class EventViewSet(viewsets.ModelViewSet):
         ago_90d = datetime.datetime.now() - datetime.timedelta(days=90)
         return Event.objects.filter(event_date__gte=ago_90d).order_by('-event_date')
 
-    @action(methods=['patch'], detail=True, permission_classes=[permissions.IsAuthenticated])
+    @action(methods=['patch', 'post'], detail=True, permission_classes=[permissions.IsAuthenticated])
     def attend(self, request, pk=None):
         event = self.get_object()
         user = request.user
+        if request.method == 'POST' and request.user.is_committee:
+            user_id = request.data['userId']
+            user = User.objects.get(pk=user_id)
+
         actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
         if user in event.attendees.all():
             event.attendees.remove(user)

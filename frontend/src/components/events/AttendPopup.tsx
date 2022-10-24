@@ -2,18 +2,18 @@ import React, { useCallback } from "react";
 import tw from "twin.macro";
 
 interface AttendPopupProps {
-  toggleAttendance: () => void;
+  toggleCurrentAttendance: () => void;
   setVisible: (a: boolean) => void;
 }
 
 const AttendButton = tw.button`px-2 py-1 rounded-lg bg-blue-400 text-gray-100 hover:bg-blue-600 mr-4`
 
-export default function AttendPopup({ toggleAttendance, setVisible }: AttendPopupProps) {
+export default function AttendPopup({ toggleCurrentAttendance, setVisible}: AttendPopupProps) {
 
   const confirmAttend = useCallback(() => {
-    toggleAttendance();
+    toggleCurrentAttendance();
     setVisible(false);
-  }, [toggleAttendance, setVisible])
+  }, [toggleCurrentAttendance, setVisible])
 
   return (
     <div className="w-3/4 mx-8 mt-1 p-2 border shadow bg-blue-100">

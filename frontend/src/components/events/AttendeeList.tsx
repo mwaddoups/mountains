@@ -1,5 +1,5 @@
 import React from "react";
-import { LayerBackward } from "react-bootstrap-icons";
+import { LayerBackward, XSquareFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { getName } from "../../methods/user";
 import { AttendingUser } from "../../models";
@@ -10,9 +10,10 @@ interface AttendeeListProps {
     attendees: Array<AttendingUser>;
     expanded: boolean;
     toggleWaitingList: (userId: number) => (() => void);
+    toggleAttendance: (userId: number) => (() => void);
 }
 
-export default function AttendeeList({ attendees, expanded, toggleWaitingList }: AttendeeListProps) {
+export default function AttendeeList({ attendees, expanded, toggleWaitingList, toggleAttendance }: AttendeeListProps) {
     const { currentUser } = useAuth();
     return (
         <div className={expanded ? "w-full" : "flex flex-wrap"}>
@@ -26,6 +27,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList }:
                             {getName(user)} {user.mobile_number ? `(${user.mobile_number})` : ""} {currentUser?.is_committee ? `ICE: ${user.in_case_emergency ? user.in_case_emergency : "None given!"}` : ""}
                         </p>
                         {currentUser?.is_committee && <button title="Toggle waiting list" className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleWaitingList(user.id)}><LayerBackward /></button>}
+                        {currentUser?.is_committee && <button title="Remove user" className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleAttendance(user.id)}><XSquareFill /></button>}
                     </>}
                 </div>
             ))

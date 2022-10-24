@@ -31,7 +31,13 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const attendingList = useMemo(() => event.attendees.filter(user => !user.is_waiting_list), [event])
   const waitingList = useMemo(() => event.attendees.filter(user => user.is_waiting_list), [event])
 
-  const toggleAttendance = useCallback(() => {
+  const toggleAttendance = useCallback((userId: number) => {
+    return () => {
+      api.post(`events/${event.id}/attend/`, { userId }).then(res => setEvent(res.data)) 
+    }
+  }, [event])
+
+  const toggleCurrentAttendance = useCallback(() => {
     api.patch(`events/${event.id}/attend/`).then(res => setEvent(res.data)) 
   }, [event])
 
@@ -45,11 +51,11 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
 
   const handleAttend = useCallback(() => {
     if (isAttending || !event.show_popup) {
-      toggleAttendance();
+      toggleCurrentAttendance();
     } else {
       setAttendPopupVisible(true);
     }
-  }, [isAttending, event, toggleAttendance, setAttendPopupVisible])
+  }, [isAttending, event, toggleAttendance, setAttendPopupVisible, currentUser])
 
   const todayDate = new Date();
   todayDate.setHours(0,0,0,0);
@@ -79,7 +85,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
           </div>
           <div className="w-full my-2">
             {attendingList.length > 0
-              ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList}/>
+              ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance}/>
               : <p className="text-gray-400 h-10">None yet!</p>
             }
           </div>
@@ -92,7 +98,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 </button>
               </div>
               <div className="w-full my-2">
-                <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList}/>
+                <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance}/>
               </div>
             </>
           )}
@@ -107,7 +113,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         </div>
       </div>
     </div>
-    {attendPopupVisible && <AttendPopup toggleAttendance={toggleAttendance} setVisible={setAttendPopupVisible} />}
+    {attendPopupVisible && <AttendPopup toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
     </>
   )
 }
