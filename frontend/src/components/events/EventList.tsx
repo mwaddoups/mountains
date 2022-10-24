@@ -55,7 +55,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     } else {
       setAttendPopupVisible(true);
     }
-  }, [isAttending, event, toggleAttendance, setAttendPopupVisible, currentUser])
+  }, [isAttending, event, toggleCurrentAttendance, setAttendPopupVisible])
 
   const todayDate = new Date();
   todayDate.setHours(0,0,0,0);
