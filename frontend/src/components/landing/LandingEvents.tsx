@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api";
-import { Event } from "../../models";
+import { BasicEvent } from "../../models";
 import CalendarDate from "../events/CalendarDate";
 import Loading from "../Loading";
 
 export default function LandingEvents() {
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Array<Event>>([])
+  const [events, setEvents] = useState<Array<BasicEvent>>([])
 
   useEffect(() => {
     setLoading(true);

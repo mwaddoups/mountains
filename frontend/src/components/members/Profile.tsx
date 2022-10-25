@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import tw from 'twin.macro';
 import api from "../../api";
 import { getName } from "../../methods/user";
-import { FullUser } from "../../models";
+import { BasicEvent, FullUser } from "../../models";
 import { useAuth } from "../Layout";
 import ProfilePicture from "./ProfilePicture";
 import Loading from "../Loading";
@@ -25,6 +25,7 @@ export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   const [editingExperience, setEditingExperience] = useState(false);
   const [needsRefresh, setNeedsRefresh] = useState(false);
+  const [attendedEvents, setAttendedEvents] = useState<Array<BasicEvent>>([]);
   const { memberId } = useParams();
   const { currentUser, refreshUser } = useAuth();
 
@@ -94,6 +95,14 @@ export default function Profile() {
                 ? <ExperienceRecord experiences={user.experience} editable={editingExperience} />
                 : <p className="italic text-gray-500">Nothing here yet!</p>
               }
+          </div>
+          <div className="min-h-[10rem] mt-4">
+            <h2 className="text-xl lg:text-3xl font-medium">Attended Events</h2>
+            {attendedEvents.length > 0 
+              ? attendedEvents.map(event => (
+                  <p key={event.id}>{event.event_date} {event.title}</p>
+                ))
+              : <p className="italic text-gray-500"> No events yet!</p>}
           </div>
         </div>
       </div>

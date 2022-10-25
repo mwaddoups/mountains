@@ -42,12 +42,14 @@ export type Experience = {
   info: string | undefined,
 }
 
-
-export type Event = {
+export type BasicEvent = {
   id: number,
   title: string,
-  created_date: string,
   event_date: string,
+}
+
+export interface Event extends BasicEvent {
+  created_date: string,
   description: string,
   attendees: Array<AttendingUser>,
   max_attendees: number | null,

@@ -4,7 +4,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import AttendingUser, Event, User
-from .serializers import EventSerializer, FrontPageEventSerializer
+from .serializers import BasicEventSerializer, EventSerializer
 
 class IsCommitteeOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -65,5 +65,5 @@ class EventViewSet(viewsets.ModelViewSet):
         today_date = datetime.datetime.combine(datetime.datetime.today(), datetime.time(0,0), tzinfo=pytz.UTC)
         upcoming_events = Event.objects.filter(event_date__gte=today_date).order_by('event_date')[:3]
 
-        serializer = FrontPageEventSerializer(upcoming_events, many=True)
+        serializer = BasicEventSerializer(upcoming_events, many=True)
         return Response(serializer.data)
