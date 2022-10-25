@@ -11,6 +11,7 @@ import Loading from "../Loading";
 import { BadgesLong } from "./Badges";
 import ExperienceRecord from "./ExperienceRecord";
 import AdminTools from "./AdminTools";
+import dateFormat from "dateformat";
 
 interface ProfileButtonProps {
   $loading?: boolean;
@@ -35,6 +36,10 @@ export default function Profile() {
     api.get(`users/${memberId}/`).then(response => {
       let foundUser = response.data;
       setUser(foundUser);
+
+      api.post("events/attendedby/", {userId: foundUser.id}).then(response => {
+        setAttendedEvents(response.data);
+      })
       if (isUser) {
         refreshUser();
       }
@@ -99,9 +104,14 @@ export default function Profile() {
           <div className="min-h-[10rem] mt-4">
             <h2 className="text-xl lg:text-3xl font-medium">Attended Events</h2>
             {attendedEvents.length > 0 
-              ? attendedEvents.map(event => (
-                  <p key={event.id}>{event.event_date} {event.title}</p>
-                ))
+              ? <div className="grid grid-cols-2"> 
+                  {attendedEvents.map(event => (
+                    <React.Fragment key={event.id}>
+                      <p className="text-sm truncate hover:text-blue-400"><Link to={`../../events/${event.id}/`}>{event.title}</Link></p>
+                      <p className="text-gray-500 text-sm">{dateFormat(event.event_date, 'dddd, mmm dS, yyyy')}</p>
+                    </React.Fragment>
+                  ))}
+                </div>
               : <p className="italic text-gray-500"> No events yet!</p>}
           </div>
         </div>

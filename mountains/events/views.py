@@ -67,3 +67,12 @@ class EventViewSet(viewsets.ModelViewSet):
 
         serializer = BasicEventSerializer(upcoming_events, many=True)
         return Response(serializer.data)
+
+    @action(methods=['post'], detail=False, permission_classes=[permissions.IsAuthenticated])
+    def attendedby(self, request):
+        user_id = request.data['userId']
+        attended_events = [au.event for au in AttendingUser.objects.filter(user=user_id)]
+        attended_events = sorted(attended_events, key=lambda e: e.event_date, reverse=True)
+
+        serializer = BasicEventSerializer(attended_events, many=True)
+        return Response(serializer.data)

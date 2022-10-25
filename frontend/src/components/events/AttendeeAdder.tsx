@@ -30,7 +30,7 @@ export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) 
       setSearchList(searchUsers(userList, searchString));
     }
 
-  }, [setIsLoading, setUserList, setSearchList, searchString, userList])
+  }, [isLoading, setIsLoading, setUserList, setSearchList, searchString, userList])
 
   let addUserToEvent = useCallback(user => {
     return () => {
