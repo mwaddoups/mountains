@@ -5,6 +5,7 @@ import { getName } from "../../methods/user";
 import { AttendingUser } from "../../models";
 import { useAuth } from "../Layout";
 import ProfilePicture from "../members/ProfilePicture";
+import AttendeeAdder from "./AttendeeAdder";
 
 interface AttendeeListProps {
     attendees: Array<AttendingUser>;
@@ -32,6 +33,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList, t
                 </div>
             ))
             }
+            {expanded && currentUser?.is_committee && <AttendeeAdder toggleAttendance={toggleAttendance} />}
         </div>
     )
 }

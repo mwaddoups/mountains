@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import tw from "twin.macro";
 import api from "../../api";
+import { searchUsers } from "../../methods/user";
 import { User } from "../../models";
 import { useAuth } from "../Layout";
 import Loading from "../Loading";
@@ -49,11 +50,7 @@ export default function Members() {
     if (!searchString) {
       return approvedUsers
     } else {
-      const searchKeywords = searchString.split(" ");
-      return approvedUsers.filter(user => searchKeywords.filter(k => k).some(keyword => (
-          user.first_name.includes(keyword) || user.last_name.includes(keyword)
-        )
-      ))
+      return searchUsers(approvedUsers, searchString)
     }
   }, [searchString, userList, currentUser])
 

@@ -45,7 +45,7 @@ export default function Profile() {
     <Loading loading={(!user)}>
       <AdminTools user={user} setNeedsRefresh={setNeedsRefresh} />
       <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
-        <div className="ml-auto p-2 lg:p-4 rounded lg:shadow block flex-auto flex lg:block items-center">
+        <div className="ml-auto p-2 lg:p-4 rounded lg:shadow flex-auto flex lg:block items-center">
           <div className="w-32 h-32 lg:w-64 lg:h-64">
             <ProfilePicture user={user} />
           </div>
