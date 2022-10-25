@@ -16,7 +16,7 @@ export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) 
   let [searchString, setSearchString] = useState<string | null>(null);
 
   let handleValue = useCallback(searchValue => {
-    if (!userList) {
+    if (!userList && !isLoading) {
       setIsLoading(true);
       api.get("users/").then(response => {
         setUserList(response.data);
@@ -47,18 +47,18 @@ export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) 
         onClick={() => {if (searchString === null) {setSearchString("")}}}
         onChange={e => handleValue(e.target.value)} 
         value={(searchString === null) ? "Add a new user..." : searchString} />
-      {searchList && (
-        <div className="border-gray-400 ml-5 p-2 border-1 rounded">
-          <Loading loading={isLoading}>
-          {searchList.map(user => (
-            <div key={user.id} onClick={addUserToEvent(user)} className="hover:bg-blue-400 h-10 flex items-center my-1">
-              <div className="w-10"><ProfilePicture user={user} /></div>
-              <p className="text-sm text-gray-500">{getName(user)}</p>
-            </div>
-          ))}
-          </Loading>
-        </div>
-      )}
+      <Loading loading={isLoading}>
+        {searchList && (
+          <div className="border-gray-400 ml-5 p-2 border-1 rounded">
+            {searchList.map(user => (
+              <div key={user.id} onClick={addUserToEvent(user)} className="hover:bg-blue-400 h-10 flex items-center my-1">
+                <div className="w-10"><ProfilePicture user={user} /></div>
+                <p className="text-sm text-gray-500">{getName(user)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </Loading>
     </div>
   )
 }
