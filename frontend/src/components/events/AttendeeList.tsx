@@ -25,7 +25,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList, t
                     </Link>
                     {expanded && <>
                         <p className="ml-3 text-sm text-gray-500">
-                            {getName(user)} {user.mobile_number ? `(${user.mobile_number})` : ""} {currentUser?.is_committee ? `ICE: ${user.in_case_emergency ? user.in_case_emergency : "None given!"}` : ""}
+                            <span className={user.is_paid ? "text-blue-500 font-semibold" : ""}>{getName(user)}</span> {user.mobile_number ? `(${user.mobile_number})` : ""} {currentUser?.is_committee ? `ICE: ${user.in_case_emergency ? user.in_case_emergency : "None given!"}` : ""}
                         </p>
                         {currentUser?.is_committee && <button title="Toggle waiting list" className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleWaitingList(user.id)}>{user.is_waiting_list ? <LayerForward /> : <LayerBackward />}</button>}
                         {currentUser?.is_committee && <button title="Remove user" className="ml-2 rounded bg-gray-300 w-6 h-6 p-1" onClick={toggleAttendance(user.id)}><XSquareFill /></button>}
