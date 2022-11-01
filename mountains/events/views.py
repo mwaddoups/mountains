@@ -30,16 +30,14 @@ class EventViewSet(viewsets.ModelViewSet):
             user = User.objects.get(pk=user_id)
 
         actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
-        if user in event.attendees.all():
+        all_attendees = list(event.attendees.all())
+        if user in all_attendees:
             event.attendees.remove(user)
-            if user.id in actual_attendees:
-                # We can add a new person from the waitlist, if there is one
-                first_waiting = AttendingUser.objects.filter(event=event, is_waiting_list=True).first()
-                if first_waiting:
-                    first_waiting.is_waiting_list = False
-                    first_waiting.save()
         else:
-            if event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees:
+            event_has_waiting_list = len(all_attendees) > len(actual_attendees)
+            event_over_max_limit = event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees
+            if event_has_waiting_list or event_over_max_limit:
+                # Add to waiting list
                 new_au = AttendingUser(user=user, event=event, is_waiting_list=True)
                 new_au.save()
             else:
