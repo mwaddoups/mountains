@@ -5,7 +5,7 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import { Button } from "../base/Base";
+import { Button, Badge, EventHeading } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
@@ -77,9 +77,10 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
       <CalendarDate dateStr={event.event_date}/>
       <div className="w-full">
         <div className="flex items-center">
-          <h1 className={"text-lg font-semibold tracking-tight " + (isInPast ? "text-gray-500" : "text-teal-900")}>
-            <span className="hover:underline"><Link to={`../${event.id}`}>{event.title}</Link></span>
-          </h1>
+          <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
+            <Link to={`../${event.id}`}>{event.title}</Link>
+          </EventHeading>
+          <span className="ml-2"><Badge $badgeColor="purple">{eventType[event.event_type]}</Badge></span>
           {currentUser?.is_committee && (
             <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2" /></Link>
           )}
