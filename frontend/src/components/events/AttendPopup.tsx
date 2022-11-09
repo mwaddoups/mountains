@@ -87,7 +87,7 @@ function ICEStep({isFinalStep, advanceStep}: StepProps) {
     <>
       <Paragraph>In order to join on a walk, we need to have emergency contact information for you so we know who to contact in case of any incidents.</Paragraph>
       <Paragraph>Please ensure this is up to date by editing if needed below. Note this will be saved on file and provided to walk leaders.</Paragraph>
-      <FormInput type="string" value={ice} onChange={event => setIce(event.target.value)} />
+      <FormInput type="string" value={ice} placeholder="Enter here..." onChange={event => setIce(event.target.value)} />
       <Button onClick={updateIceAndAdvance}>{isFinalStep ? "This is up to date - sign me up!" : "This is up to date"}</Button>
     </>
   )
