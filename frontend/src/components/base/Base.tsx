@@ -23,6 +23,7 @@ export const FormButton = tw.button`block rounded bg-blue-500 hover:bg-blue-700 
 export const FormCancelButton = tw.button`block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3`
 
 export const Button = tw.button`px-2 py-1 rounded-lg bg-blue-400 text-gray-100 hover:bg-blue-600 mr-4`
+export const CancelButton = tw.button`px-2 py-1 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mr-4`
 export const Error = tw.p`font-light text-sm text-red-500`
 
 export type BadgeColor = "red" | "green" | "purple" | "blue" | "darkgreen" | "darkblue" | "orange" | "pink";

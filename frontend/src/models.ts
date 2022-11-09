@@ -13,6 +13,7 @@ export interface User extends NamedProfileUser {
   is_paid: boolean,
   mobile_number: string,
   in_case_emergency: string | undefined;
+  is_on_discord: boolean,
 }
 
 export interface AttendingUser extends NamedProfileUser {
@@ -22,6 +23,7 @@ export interface AttendingUser extends NamedProfileUser {
   is_paid: boolean,
   mobile_number: string,
   in_case_emergency: string | undefined;
+  is_on_discord: boolean,
   is_waiting_list: boolean,
 }
 

@@ -114,7 +114,7 @@ export default function EventEditor() {
             </FormSelect>
           </div>
           <div className="flex items-center">
-            <FormLabel>Show the participation popup before allowing attendance (usually yes for walks, no for socials/climbing)?</FormLabel>
+            <FormLabel>Show the participation statement before allowing attendance (usually yes for walks, no for socials/climbing)?</FormLabel>
             <input className="-ml-1 md:ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
           </div>
           <div className="w-full">
