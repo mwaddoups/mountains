@@ -9,7 +9,7 @@ import { Button, Badge, EventHeading, BadgeColor } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
-import AttendPopup from "./AttendPopup";
+import AttendPopup, { PopupStep } from "./AttendPopup";
 import CalendarDate from "./CalendarDate";
 
 interface EventListProps {
@@ -30,6 +30,7 @@ export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
+  const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>([]);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
 
@@ -60,12 +61,30 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   }, [event])
 
   const handleAttend = useCallback(() => {
-    if (isAttending || !event.show_popup) {
+    if (isAttending) {
       toggleCurrentAttendance();
     } else {
-      setAttendPopupVisible(true);
+      // Setup the steps
+      let steps = [];
+      if (currentUser && !currentUser.is_on_discord) {
+        steps.push("discord")
+      }
+      if (currentUser && event.show_popup) {
+        // We just show this for any event which requires participation statement
+        steps.push("ice")
+      }
+      if (event.show_popup) {
+        steps.push("participation")
+      }
+
+      if (steps.length > 0) {
+        setAttendPopupSteps(steps as Array<PopupStep>);
+        setAttendPopupVisible(true);
+      } else {
+        toggleCurrentAttendance();
+      }
     }
-  }, [isAttending, event, toggleCurrentAttendance, setAttendPopupVisible])
+  }, [isAttending, toggleCurrentAttendance, setAttendPopupVisible, currentUser, event.show_popup])
 
   const todayDate = new Date();
   todayDate.setHours(0,0,0,0);
@@ -124,7 +143,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         </div>
       </div>
     </div>
-    {attendPopupVisible && <AttendPopup event={event} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
+    {attendPopupVisible && <AttendPopup steps={attendPopupSteps} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
     </>
   )
 }

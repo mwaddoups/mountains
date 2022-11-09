@@ -1,42 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
 import api from "../../api";
-import { Event } from "../../models";
 import { Paragraph, Button, FormInput, CancelButton } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
 import participationStatementURL from "./ParticipationStatement.md";
 
-type PopupStep = "participation" | "ice" | "discord"
+export type PopupStep = "participation" | "ice" | "discord"
 
 interface AttendPopupProps {
-  event: Event,
+  steps: Array<PopupStep>,
   toggleCurrentAttendance: () => void;
   setVisible: (a: boolean) => void;
 }
 
-export default function AttendPopup({ event, toggleCurrentAttendance, setVisible}: AttendPopupProps) {
+export default function AttendPopup({ steps, toggleCurrentAttendance, setVisible}: AttendPopupProps) {
   let [currentStep, setCurrentStep] = useState<number>(0)
   let [participationStatement, setParticipationStatement] = useState("");
-  let [steps, setSteps] = useState<Array<PopupStep> | null>(null)
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    if (steps === null && currentUser) {
-      let pSteps = [];
-      if (currentUser && !currentUser.is_on_discord) {
-        pSteps.push("discord")
-      }
-      if (currentUser && event.show_popup) {
-        // We just show this for any event which requires participation statement
-        pSteps.push("ice")
-      }
-      if (event.show_popup) {
-        pSteps.push("participation")
-      }
-      setSteps(pSteps as Array<PopupStep>)
-    }
-  }, [currentUser, steps, event.show_popup])
 
   useEffect(() => {
     async function f() {
