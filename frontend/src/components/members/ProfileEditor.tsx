@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import api from "../../api";
+import { FormButton } from "../base/Base";
 import { useAuth } from "../Layout";
 
 export default function ProfileEditor() {
@@ -96,11 +97,10 @@ export default function ProfileEditor() {
           </>
         )}
         <div className="flex justify-between">
-          <button
-            className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
+          <FormButton
             type="submit">
               {approved ? "Update" : "Submit"}
-          </button>
+          </FormButton>
           <Link to={currentUser ? `../${currentUser.id}` : ''}>
             <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>
           </Link>
