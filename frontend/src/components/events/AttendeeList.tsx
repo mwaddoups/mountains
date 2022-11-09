@@ -19,7 +19,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList, t
     return (
         <div className={expanded ? "w-full" : "flex flex-wrap"}>
             {attendees.map(user => (
-                <div key={user.id} className={"h-auto sm:h-10" + (expanded ? "flex w-full mr-1 my-1 items-center" : "mr-1")}>
+                <div key={user.id} className={"h-auto sm:h-10 " + (expanded ? "flex w-full mr-1 my-1 items-center" : "mr-1")}>
                     <Link to={`/platform/members/${user.id}`}>
                         <div className="w-10"><ProfilePicture user={user} /></div>
                     </Link>

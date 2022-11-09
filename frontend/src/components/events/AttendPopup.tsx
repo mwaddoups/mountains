@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import api from "../../api";
-import { Paragraph, Button, FormInput, CancelButton } from "../base/Base";
+import { Paragraph, Button, FormInput, CancelButton, SubHeading } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
@@ -51,6 +51,7 @@ export default function AttendPopup({ steps, toggleCurrentAttendance, setVisible
         )}
         {steps[currentStep] === 'participation' && (
           <>
+            <SubHeading>Participation Statement</SubHeading>
             <ClydeMarkdown>{participationStatement}</ClydeMarkdown>
             <Button onClick={advanceStep}>{isFinalStep ? "Yes - I agree. Sign me up!" : "Next"}</Button>
           </>
@@ -85,6 +86,7 @@ function ICEStep({isFinalStep, advanceStep}: StepProps) {
 
   return (
     <>
+      <SubHeading>Emergency Contact</SubHeading>
       <Paragraph>In order to join on a walk, we need to have emergency contact information for you so we know who to contact in case of any incidents.</Paragraph>
       <Paragraph>Please ensure this is up to date by editing if needed below. Note this will be saved on file and provided to walk leaders.</Paragraph>
       <FormInput type="string" value={ice} placeholder="Enter here..." onChange={event => setIce(event.target.value)} />
@@ -110,6 +112,7 @@ function DiscordStep({isFinalStep, advanceStep}: StepProps) {
 
   return (
     <>
+      <SubHeading>Joining Discord</SubHeading>
       <Paragraph>Most updates and discussion for any of our events is on our Discord server. To join any of our events, you need to also join our Discord server to see any needed updates.</Paragraph>
       <Paragraph>We also strongly recommend getting the mobile app with notifications so we can get in touch more easily.</Paragraph>
       <Paragraph>More information about this is in the "Home" section, and the link to the server is in the sidebar.</Paragraph>
