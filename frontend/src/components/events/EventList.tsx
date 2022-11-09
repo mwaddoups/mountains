@@ -124,7 +124,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         </div>
       </div>
     </div>
-    {attendPopupVisible && <AttendPopup toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
+    {attendPopupVisible && <AttendPopup steps={["participation"]} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
     </>
   )
 }
