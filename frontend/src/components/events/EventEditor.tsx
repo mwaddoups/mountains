@@ -5,7 +5,7 @@ import { Event } from "../../models";
 import DateTimePicker from 'react-datetime-picker';
 import dateFormat from "dateformat";
 import Loading from "../Loading";
-import { FormButton, FormCancelButton } from "../base/Base";
+import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading } from "../base/Base";
 
 export default function EventEditor() {
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
@@ -15,7 +15,7 @@ export default function EventEditor() {
   const [description, setDescription] = useState<string>('');
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
-  const [maxAttendees, setMaxAttendees] = useState<number | null>(null); 
+  const [maxAttendees, setMaxAttendees] = useState<number>(0); 
 
   // use params to check if we are at event/x/edit or event/new
   // If editing, reset the state first with the correct valeus
@@ -60,40 +60,37 @@ export default function EventEditor() {
     }
   }, [title, description, eventDate, currentEvent, showPopup, eventId, maxAttendees])
 
-  const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
-  const inputStyles = "text-sm px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-outline mb-4" 
-
   if (submitted) {
     return <Navigate to={`..`} />
   }
 
   return (
     <Loading loading={loading}>
-      <div className="w-3/4 mx-auto bg-white shadow-md roudned p-8 m-4">
-        <h1 className="text-lg font-bold text-gray-700 tracking-wide">Edit Event</h1>
-        <form onSubmit={updateEvent} className="mt-4">
+      <FormContainer>
+        <SubHeading>Edit Event</SubHeading>
+        <form onSubmit={updateEvent}>
           <div className="w-full">
-            <label className={labelStyles} htmlFor="title">Title</label>
-            <input 
-              className={inputStyles} type="string" id="title" 
+            <FormLabel htmlFor="title">Title</FormLabel>
+            <FormInput 
+              type="string" id="title" 
               value={title} onChange={event => setTitle(event.target.value)} />
           </div>
           <div>
-            <label className={labelStyles}>Date</label>
+            <FormLabel>Date</FormLabel>
             <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} format="dd/MM/y h:mm a"/>
           </div>
           <div className="flex items-center">
-            <label className={labelStyles}>Show the participation popup before allowing attendance (usually yes for walks)?</label>
+            <FormLabel>Show the participation popup before allowing attendance (usually yes for walks)?</FormLabel>
             <input className="ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
           </div>
           <div className="w-full">
-            <label className={labelStyles} htmlFor="maxAttendees">Max Attendees (0 = no max)</label>
-            <input 
-              className={inputStyles} type="number" id="maxAttendees" 
+            <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>
+            <FormInput 
+              type="number" id="maxAttendees" 
               value={maxAttendees || 0} onChange={event => setMaxAttendees(+event.target.value)} />
           </div>
-          <label className={labelStyles} htmlFor="description">Description</label>
-          <textarea className={inputStyles + " resize-none h-80"} id="description" 
+          <FormLabel htmlFor="description">Description</FormLabel>
+          <FormTextArea id="description" 
             value={description} onChange={event => setDescription(event.target.value)} />
           <div className="flex justify-between">
             <FormButton
@@ -106,7 +103,7 @@ export default function EventEditor() {
             </Link>
           </div>
         </form>
-      </div>
+      </FormContainer>
     </Loading>
   )
 }

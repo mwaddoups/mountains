@@ -11,8 +11,10 @@ export const SmallHeading = tw.h3`text-lg mb-2 font-medium tracking-tight`
 export const Bolded = tw.span`text-gray-700 font-bold italic`
 export const Italic = tw.span`text-gray-700 text-xs italic`
 
+export const FormContainer = tw.div`w-3/4 rounded shadow p-8 m-4 bg-white mx-auto`
 export const FormLabel = tw.label`block text-gray-700 text-sm font-bold mb-2`
 export const FormInput = tw.input`px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4`
+export const FormTextArea = tw.textarea`px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4 resize-none h-80`
 export const FormSelect = tw.select`px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4`
 export const FormButton = tw.button`block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3`
 export const FormCancelButton = tw.button`block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3`

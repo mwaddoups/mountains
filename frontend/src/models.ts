@@ -52,7 +52,7 @@ export interface Event extends BasicEvent {
   created_date: string,
   description: string,
   attendees: Array<AttendingUser>,
-  max_attendees: number | null,
+  max_attendees: number,
   organiser: User,
   show_popup: boolean,
 }
