@@ -10,7 +10,7 @@ export const LI = tw.li`font-light tracking-wide text-sm`
 export const SubHeading = tw.h2`text-2xl mb-2 font-medium tracking-tight`
 export const SmallHeading = tw.h3`text-lg mb-2 font-semibold tracking-tight`
 export const Bolded = tw.span`text-gray-700 font-bold`
-export const Italic = tw.span`text-gray-700 text-xs italic`
+export const Italic = tw.span`text-gray-700 italic`
 
 export const EventHeading = tw.h1`text-lg font-semibold tracking-tight hover:underline`
 

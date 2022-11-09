@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import api from "../../api";
-import { FormButton } from "../base/Base";
+import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, Italic, Paragraph, SubHeading, Error } from "../base/Base";
 import { useAuth } from "../Layout";
 
 export default function ProfileEditor() {
@@ -43,56 +43,53 @@ export default function ProfileEditor() {
     }
   }, [about, currentUser, firstName, surname, mobileNumber, refreshUser, emergencyContact])
 
-  const labelStyles = "block text-gray-700 text-sm font-bold mb-2"
-  const inputStyles = "px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4" 
-
   if (currentUser && submitted && approved) {
     return <Navigate to={`../${currentUser.id}`} />
   }
 
   return (
-    <div className="w-3/4 mx-auto bg-white shadow-md roudned p-8 m-4">
-      <h1 className="text-lg font-bold text-gray-700 tracking-wide">Edit Profile</h1>
-      {(!approved) && <p className="text-gray-700 text-sm italic">
+    <FormContainer>
+      <SubHeading>{approved ? "Edit Profile" : "Add Profile"}</SubHeading>
+      {(!approved) && <Paragraph>
         Thanks for signing up! Let us know a bit more about you below...
-      </p>}
+      </Paragraph>}
       <form onSubmit={updateUser} className="mt-4">
         <div className="flex w-full">
           <div className="flex-grow mr-2">
-            <label className={labelStyles} htmlFor="firstName">First Name*</label>
-            <input 
-              className={inputStyles} type="string" id="firstName" 
+            <FormLabel htmlFor="firstName">First Name*</FormLabel>
+            <FormInput 
+              type="string" id="firstName" 
               value={firstName} onChange={event => setFirstName(event.target.value)} />
           </div>
           <div className="flex-grow ml-2">
-            <label className={labelStyles} htmlFor="surname">Surname*</label>
-            <input 
-              className={inputStyles} type="string" id="surname" 
+            <FormLabel htmlFor="surname">Surname*</FormLabel>
+            <FormInput 
+              type="string" id="surname" 
               value={surname} onChange={event => setSurname(event.target.value)} />
           </div>
         </div>
-        <label className={labelStyles} htmlFor="about">Bio</label>
-        <p className="text-sm text-gray-700 italic mb-2 ml-2">
+        <FormLabel htmlFor="about">Bio</FormLabel>
+        <Paragraph className="ml-2"><Italic>
           Write about yourself and what brings you to our club! {!approved && <span> This will be visible to all members once you are approved, but you can change it later on. Feel free to leave this blank for now.</span>}
-        </p>
-        <textarea className={inputStyles + " resize-none h-80"} id="about" 
+        </Italic></Paragraph>
+        <FormTextArea id="about" 
           value={about} onChange={event => setAbout(event.target.value)} />
-        <label className={labelStyles} htmlFor="mobile">Mobile Number</label>
-        <p className="text-sm text-gray-700 italic mb-2 ml-2">
+        <FormLabel htmlFor="mobile">Mobile Number</FormLabel>
+        <Paragraph className="ml-2"><Italic>
           Optional. We make this visible to all members if you provide it as it's useful for organising walks and quickly 
           getting in touch with people.
-        </p>
-        <input
-          className={inputStyles} type="string" id="mobile"
+        </Italic></Paragraph>
+        <FormInput
+          type="string" id="mobile"
           value={mobileNumber} onChange={(event => setMobileNumber(event.target.value))} />
         {approved && (
           <>
-            <label className={labelStyles} htmlFor="emergencyContact">Emergency Contact</label>
-            <p className="text-sm text-gray-700 italic mb-2 ml-2">
+            <FormLabel htmlFor="emergencyContact">Emergency Contact</FormLabel>
+            <Paragraph className="ml-2"><Italic>
               Please provide if joining for an event - include phone number and relationship/other notes.
-            </p>
-            <input
-              className={inputStyles} type="string" id="emergencyContact"
+            </Italic></Paragraph>
+            <FormInput
+              type="string" id="emergencyContact"
               value={emergencyContact} onChange={(event => setEmergencyContact(event.target.value))} />
           </>
         )}
@@ -102,11 +99,11 @@ export default function ProfileEditor() {
               {approved ? "Update" : "Submit"}
           </FormButton>
           <Link to={currentUser ? `../${currentUser.id}` : ''}>
-            <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>
+            <FormCancelButton>Cancel</FormCancelButton>
           </Link>
         </div>
       </form>
-      {(submitted && !approved) && <p>Thank you for submitting! It looks like some required information may be missing - double check and edit your answers above! If all looks good you should be approved for access shortly.</p>}
-    </div>
+      {(submitted && !approved) && <Error>Thank you for submitting! It looks like some required information may be missing - double check and edit your answers above! If all looks good you should be approved for access shortly.</Error>}
+    </FormContainer>
   )
 }
