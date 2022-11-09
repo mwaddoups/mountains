@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import tw from "twin.macro";
 
 export const Section = tw.div`rounded shadow p-4 mb-4`
@@ -20,3 +21,19 @@ export const FormButton = tw.button`block rounded bg-blue-500 hover:bg-blue-700 
 export const FormCancelButton = tw.button`block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3`
 
 export const Button = tw.button`px-2 py-1 rounded-lg bg-blue-400 text-gray-100 hover:bg-blue-600 mr-4`
+
+interface BadgeProps {
+  $badgeColor: "red" | "green" | "purple" | "blue";
+}
+
+const colorVariants = {
+  red: tw`bg-red-400 text-gray-100`,
+  green: tw`bg-green-400 text-gray-100`,
+  purple: tw`bg-purple-400 text-gray-100`,
+  blue: tw`bg-blue-400 text-gray-100`,
+}
+
+export const Badge = styled.span(({$badgeColor}: BadgeProps) => [
+ tw`rounded-lg m-1 px-3 py-0.5 text-sm flex-initial truncate block sm:inline-block`,
+ colorVariants[$badgeColor], 
+])
