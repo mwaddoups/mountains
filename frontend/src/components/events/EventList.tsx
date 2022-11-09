@@ -5,7 +5,7 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import { Button, Badge, EventHeading } from "../base/Base";
+import { Button, Badge, EventHeading, BadgeColor } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
@@ -17,14 +17,14 @@ interface EventListProps {
   event: Event,
 }
 
-const eventType: Record<EventType, string> = {
-  'SD': 'Summer Day Walk',
-  'SW': 'Summer Weekend',
-  'WD': 'Winter Day Walk',
-  'WW': 'Winter Weekend',
-  'CL': 'Climbing',
-  'SO': 'Social',
-  'XX': 'Other',
+export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
+  'SD': ['Summer Day Walk', "green"],
+  'SW': ['Summer Weekend', "darkgreen"],
+  'WD': ['Winter Day Walk', "blue"],
+  'WW': ['Winter Weekend', "darkblue"],
+  'CL': ['Climbing', "purple"],
+  'SO': ['Social', "orange"],
+  'XX': ['Other', "pink"],
 }
 
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
@@ -80,11 +80,11 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
           <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
             <Link to={`../${event.id}`}>{event.title}</Link>
           </EventHeading>
-          <span className="ml-2"><Badge $badgeColor="purple">{eventType[event.event_type]}</Badge></span>
           {currentUser?.is_committee && (
-            <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2" /></Link>
+            <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
           )}
         </div>
+        <Badge $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
         <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
         <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">

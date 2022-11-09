@@ -23,19 +23,25 @@ export const FormButton = tw.button`block rounded bg-blue-500 hover:bg-blue-700 
 export const FormCancelButton = tw.button`block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3`
 
 export const Button = tw.button`px-2 py-1 rounded-lg bg-blue-400 text-gray-100 hover:bg-blue-600 mr-4`
+export const Error = tw.p`font-light text-sm text-red-500`
 
+export type BadgeColor = "red" | "green" | "purple" | "blue" | "darkgreen" | "darkblue" | "orange" | "pink";
 interface BadgeProps {
-  $badgeColor: "red" | "green" | "purple" | "blue";
+  $badgeColor: BadgeColor
 }
 
-const colorVariants = {
+const colorVariants: Record<BadgeColor, any> = {
   red: tw`bg-red-400 text-gray-100`,
   green: tw`bg-green-400 text-gray-100`,
   purple: tw`bg-purple-400 text-gray-100`,
   blue: tw`bg-blue-400 text-gray-100`,
+  darkgreen: tw`bg-green-700 text-gray-100`,
+  darkblue: tw`bg-blue-700 text-gray-100`,
+  orange: tw`bg-orange-400 text-gray-100`,
+  pink: tw`bg-pink-400 text-gray-100`,
 }
 
 export const Badge = styled.span(({$badgeColor}: BadgeProps) => [
- tw`rounded-lg mx-1 px-2 py-0.5 text-sm flex-initial truncate block sm:inline-block`,
+ tw`rounded-lg mr-2 px-2 py-0.5 text-sm flex-initial truncate inline`,
  colorVariants[$badgeColor], 
 ])

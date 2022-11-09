@@ -1,17 +1,20 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import api from "../../api";
-import { Event } from "../../models";
+import { Event, EventType } from "../../models";
 import DateTimePicker from 'react-datetime-picker';
 import dateFormat from "dateformat";
 import Loading from "../Loading";
-import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading } from "../base/Base";
+import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect } from "../base/Base";
+import { eventTypeMap } from "./EventList";
 
 export default function EventEditor() {
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [title, setTitle] = useState<string>('');
+  const [eventType, setEventType] = useState<EventType | null>(null);
+  const [errorText, setErrorText] = useState<string | null>(null);
   const [description, setDescription] = useState<string>('');
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
@@ -31,6 +34,7 @@ export default function EventEditor() {
         setEventDate(new Date(event.event_date));
         setShowPopup(event.show_popup);
         setMaxAttendees(event.max_attendees);
+        setEventType(event.event_type)
       })
     }
     setLoading(false);
@@ -49,16 +53,36 @@ export default function EventEditor() {
       newEvent.attendees = [];
     }
 
+    if (!eventType) {
+      setErrorText("Please select an event type before submission!")
+      return
+    }
+    newEvent.event_type = eventType;
+
     if (eventId) {
+      setErrorText(null);
       api.put(`events/${eventId}/`, newEvent).then(res => {
         setSubmitted(true);
       })
     } else {
+      setErrorText(null);
       api.post(`events/`, newEvent).then(res => {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId, maxAttendees])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees])
+
+  const setNewEventType = useCallback((newEventType: string) => {
+    if (Object.keys(eventTypeMap).includes(newEventType)) {
+      setEventType(newEventType as EventType);
+      if ((newEventType === 'CL') || (newEventType === 'SO')) {
+        // Don't show popup by default for climbing/social
+        setShowPopup(false);
+      } else {
+        setShowPopup(true);
+      }
+    }
+  }, [setEventType, setShowPopup])
 
   if (submitted) {
     return <Navigate to={`..`} />
@@ -79,9 +103,19 @@ export default function EventEditor() {
             <FormLabel>Date</FormLabel>
             <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} format="dd/MM/y h:mm a"/>
           </div>
+          <div className="w-full">
+            <FormLabel htmlFor="eventtype">Event Type</FormLabel>
+            <FormSelect id="eventtype" value={eventType ? eventType : ""} 
+              onChange={event => setNewEventType(event.target.value)}>
+                <option value=""></option>
+                {Object.entries(eventTypeMap).map(([eventType, [eventTypeLabel, _]]) => (
+                  <option key={eventType} value={eventType}>{eventTypeLabel}</option>)
+                )}
+            </FormSelect>
+          </div>
           <div className="flex items-center">
-            <FormLabel>Show the participation popup before allowing attendance (usually yes for walks)?</FormLabel>
-            <input className="ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
+            <FormLabel>Show the participation popup before allowing attendance (usually yes for walks, no for socials/climbing)?</FormLabel>
+            <input className="-ml-1 md:ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
           </div>
           <div className="w-full">
             <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>
@@ -92,6 +126,7 @@ export default function EventEditor() {
           <FormLabel htmlFor="description">Description</FormLabel>
           <FormTextArea id="description" 
             value={description} onChange={event => setDescription(event.target.value)} />
+          {errorText && <Error>{errorText}</Error>}
           <div className="flex justify-between">
             <FormButton
               className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
