@@ -42,10 +42,14 @@ export type Experience = {
   info: string | undefined,
 }
 
+// If changing this, change eventType dict (client) and server
+export type EventType = 'SD' | 'SW' | 'WD' | 'WW' | 'CL' | 'SO' | 'XX'
+
 export type BasicEvent = {
   id: number,
   title: string,
   event_date: string,
+  event_type: EventType,
 }
 
 export interface Event extends BasicEvent {

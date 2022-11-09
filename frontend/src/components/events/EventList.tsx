@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
-import { Event } from "../../models";
+import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
 import { Button } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
@@ -15,6 +15,16 @@ import CalendarDate from "./CalendarDate";
 interface EventListProps {
   eventRef: ((node: any) => void) | null,
   event: Event,
+}
+
+const eventType: Record<EventType, string> = {
+  'SD': 'Summer Day Walk',
+  'SW': 'Summer Weekend',
+  'WD': 'Winter Day Walk',
+  'WW': 'Winter Weekend',
+  'CL': 'Climbing',
+  'SO': 'Social',
+  'XX': 'Other',
 }
 
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
