@@ -5,6 +5,7 @@ import { Event } from "../../models";
 import DateTimePicker from 'react-datetime-picker';
 import dateFormat from "dateformat";
 import Loading from "../Loading";
+import { FormButton, FormCancelButton } from "../base/Base";
 
 export default function EventEditor() {
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
@@ -79,7 +80,7 @@ export default function EventEditor() {
           </div>
           <div>
             <label className={labelStyles}>Date</label>
-            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} />
+            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} format="dd/MM/y h:mm a"/>
           </div>
           <div className="flex items-center">
             <label className={labelStyles}>Show the participation popup before allowing attendance (usually yes for walks)?</label>
@@ -95,13 +96,13 @@ export default function EventEditor() {
           <textarea className={inputStyles + " resize-none h-80"} id="description" 
             value={description} onChange={event => setDescription(event.target.value)} />
           <div className="flex justify-between">
-            <button
+            <FormButton
               className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
               type="submit">
                 Submit
-            </button>
+            </FormButton>
             <Link to="..">
-              <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>
+              <FormCancelButton className="ml-auto">Cancel</FormCancelButton>
             </Link>
           </div>
         </form>
