@@ -44,7 +44,7 @@ export default function EventEditor() {
     newEvent.description = description;
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
     newEvent.show_popup = showPopup;
-    newEvent.max_attendees = maxAttendees;
+    newEvent.max_attendees = maxAttendees || 0;
     if (!currentEvent) {
       newEvent.attendees = [];
     }

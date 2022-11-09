@@ -10,7 +10,7 @@ class Event(models.Model):
     event_date = models.DateTimeField(blank=False)
     description = models.TextField(blank=False)
     attendees = models.ManyToManyField(User, through='AttendingUser', blank=True)
-    max_attendees = models.IntegerField(null=True, blank=False)
+    max_attendees = models.IntegerField(null=False, blank=False, default=0)
     organiser = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='organiser')
     show_popup = models.BooleanField(blank=False, null=False, default=False)
 
