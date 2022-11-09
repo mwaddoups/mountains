@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
-import tw from "twin.macro";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
+import { Button } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
@@ -102,14 +102,14 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
               </div>
             </>
           )}
-          <AttendButton onClick={handleAttend}>
+          <Button onClick={handleAttend}>
             {isAttending 
               ? "Leave" 
               : (
                 event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
               )
             }
-          </AttendButton>
+          </Button>
         </div>
       </div>
     </div>
@@ -117,5 +117,3 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     </>
   )
 }
-
-const AttendButton = tw.button`px-2 py-1 rounded-lg bg-blue-400 text-gray-100 hover:bg-blue-600`
