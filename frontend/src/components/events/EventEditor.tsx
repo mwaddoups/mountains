@@ -85,7 +85,7 @@ export default function EventEditor() {
   }, [setEventType, setShowPopup])
 
   if (submitted) {
-    return <Navigate to={`..`} />
+    return <Navigate to={`../${eventId}`} />
   }
 
   return (
@@ -133,7 +133,7 @@ export default function EventEditor() {
               type="submit">
                 Submit
             </FormButton>
-            <Link to="..">
+            <Link to={`../${eventId}`}>
               <FormCancelButton className="ml-auto">Cancel</FormCancelButton>
             </Link>
           </div>
