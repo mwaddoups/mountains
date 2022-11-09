@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import DateTimePicker from "react-datetime-picker";
 import { Link, Navigate } from "react-router-dom";
 import api from "../../api";
-import { FormInput, FormLabel } from "../Base";
+import { FormInput, FormLabel } from "../base/Base";
 
 
 export default function AlbumCreator() {

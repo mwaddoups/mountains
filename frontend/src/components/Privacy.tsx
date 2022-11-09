@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ClydeMarkdown from "./ClydeMarkdown";
+import ClydeMarkdown from "./base/ClydeMarkdown";
 import privacyPolicy from "./PrivacyPolicy.md";
 
 export default function Privacy() {

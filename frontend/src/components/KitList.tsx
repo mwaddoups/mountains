@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Section } from "./Base";
-import ClydeMarkdown from "./ClydeMarkdown";
+import { Section } from "./base/Base";
+import ClydeMarkdown from "./base/ClydeMarkdown";
 import kitListURL from "./KitList.md";
 
 

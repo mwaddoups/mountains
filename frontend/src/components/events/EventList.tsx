@@ -6,7 +6,7 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event } from "../../models";
 import { describe_date } from "../../utils";
-import ClydeMarkdown from "../ClydeMarkdown";
+import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
 import AttendPopup from "./AttendPopup";

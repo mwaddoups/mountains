@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import api from "../api";
 import { getName } from "../methods/user";
-import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButton } from "./Base";
+import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButton } from "./base/Base";
 import { useAuth } from "./Layout";
 
 export default function JoinClub() {

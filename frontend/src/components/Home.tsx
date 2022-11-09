@@ -1,5 +1,5 @@
 import React from "react";
-import { Heading, Paragraph, Section } from "./Base";
+import { Heading, Paragraph, Section } from "./base/Base";
 import logo from "../images/logo.png";
 
 export default function Home() {
