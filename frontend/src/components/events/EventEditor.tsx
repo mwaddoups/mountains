@@ -133,7 +133,7 @@ export default function EventEditor() {
               type="submit">
                 Submit
             </FormButton>
-            <Link to={`../${eventId}`}>
+            <Link to={`../${eventId ? eventId : '' }`}>
               <FormCancelButton className="ml-auto">Cancel</FormCancelButton>
             </Link>
           </div>
