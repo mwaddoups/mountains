@@ -19,7 +19,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
     model = AttendingUser
     fields = ['au_id', 'id', 'first_name', 'last_name', 'profile_picture', 
               'is_approved', 'is_committee', 'is_paid', 'mobile_number', 
-              'in_case_emergency','is_waiting_list']
+              'in_case_emergency','is_waiting_list', 'is_driving']
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
   organiser = SmallUserSerializer(read_only=True)
