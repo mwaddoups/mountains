@@ -58,6 +58,22 @@ class EventViewSet(viewsets.ModelViewSet):
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
 
+    @action(methods=['patch', 'post'], detail=True, permission_classes=[IsCommitteeOrReadOnly])
+    def changedriving(self, request, pk=None):
+        event = self.get_object()
+        user = request.user
+        if request.method == 'POST' and request.user.is_committee:
+            # POST for changing others, PATCH for changing self
+            user_id = request.data['userId']
+            user = User.objects.get(pk=user_id)
+        wanted_au = AttendingUser.objects.filter(event=event, user=user).first()
+
+        wanted_au.is_driving = not wanted_au.is_driving
+        wanted_au.save()
+
+        updated_event = EventSerializer(event, context={'request': request}) 
+        return Response(updated_event.data)
+
     @action(methods=['get'], detail=False, permission_classes=[])
     def upcoming(self, request):
         today_date = datetime.datetime.combine(datetime.datetime.today(), datetime.time(0,0), tzinfo=pytz.UTC)
