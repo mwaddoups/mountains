@@ -29,6 +29,8 @@ class EventViewSet(viewsets.ModelViewSet):
             user_id = request.data['userId']
             user = User.objects.get(pk=user_id)
 
+        is_driving = request.data.get('isDriving', False)
+
         actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
         all_attendees = list(event.attendees.all())
         if user in all_attendees:
@@ -36,12 +38,17 @@ class EventViewSet(viewsets.ModelViewSet):
         else:
             event_has_waiting_list = len(all_attendees) > len(actual_attendees)
             event_over_max_limit = event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees
+            attending_user, _was_created = AttendingUser.objects.get_or_create(user=user, event=event)
+            print(attending_user)
             if event_has_waiting_list or event_over_max_limit:
                 # Add to waiting list
-                new_au = AttendingUser(user=user, event=event, is_waiting_list=True)
-                new_au.save()
+                attending_user.is_waiting_list = True
+                attending_user.is_driving = is_driving
+                attending_user.save()
             else:
-                event.attendees.add(user)
+                attending_user.is_waiting_list = False
+                attending_user.is_driving = is_driving
+                attending_user.save()
 
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
