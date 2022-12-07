@@ -33,7 +33,7 @@ class Photo(models.Model):
     uploader = ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True)
     uploaded = models.DateTimeField(auto_now_add=True)
     photo = ResizedImageField(
-      size=[1200, 630],
+      size=[1920, 1080],
       quality=90,
       upload_to=get_photos_filename
     )
