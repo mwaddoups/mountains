@@ -4,7 +4,7 @@ interface ModalProps {
     children: React.ReactFragment;
 }
 
-export default function AttendPopup({ children }: ModalProps) {
+export default function Modal({ children }: ModalProps) {
 
   // Disable scroll on the body with modal dialog
   useEffect(() => {

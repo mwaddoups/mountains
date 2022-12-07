@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, ChevronDown, ChevronUp, PencilFill } from "react-bootstrap-icons";
+import React, { useCallback, useMemo, useState } from "react";
+import { ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -7,6 +7,7 @@ import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
 import { Button, Badge, EventHeading, BadgeColor } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
+import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
 import AttendPopup, { PopupStep } from "./AttendPopup";
@@ -27,18 +28,12 @@ export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
   'XX': ['Other', "pink"],
 }
 
-// The default height before expansion
-const DEFAULT_HEIGHT = 300;
-
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
   const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>([]);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
-  const [expanded, setExpanded] = useState<boolean | null>(false);
-  const expandedHeightRef = useRef<HTMLDivElement>(null);
-
 
   const { currentUser } = useAuth();
   const isAttending = useMemo(() => (
@@ -105,32 +100,6 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   todayDate.setHours(0,0,0,0);
   const isInPast = new Date(event.event_date) < todayDate;
 
-  // Only has an effect once, which is if the element is short enough it removes expansion altogether
-  useEffect(() => {
-    if (expandedHeightRef.current) {
-      let wantedHeight = expandedHeightRef.current.scrollHeight;
-
-      // Use a bit of give to avoid tiny expansions
-      if (wantedHeight <= DEFAULT_HEIGHT * 1.1) {
-        setExpanded(null);
-      }
-    }
-  }, []);
-
-  // Sets appropriate height
-  // Needs to be triggered every time to account for attendee list changes, etc.
-  useEffect(() => {
-    if (expandedHeightRef.current) {
-      let wantedHeight = expandedHeightRef.current.scrollHeight;
-      if (expanded === false) {
-        expandedHeightRef.current.style.maxHeight = DEFAULT_HEIGHT.toString() + "px";
-      } else {
-        // Also true for expanded === null
-        expandedHeightRef.current.style.maxHeight = wantedHeight.toString() + "px";
-      }
-    }
-  });
-
   return (
     <>
     <div  
@@ -156,53 +125,48 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
             <CalendarTime dateStr={event.event_date} />
           </div>
         </div>
-        <div ref={expandedHeightRef} className="w-full mt-2 transition-[max-height] overflow-clip"> 
-          <div className={(expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-200" : "")}>
+        <div className="w-full mt-2"> 
+          <Expander>
             <ClydeMarkdown>{event.description}</ClydeMarkdown>
-            <div className="mt-4">
-              <div className="flex">
-                <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
-                <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
-                  {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
-                </button>
-              </div>
-              <div className="w-full my-2">
-                {attendingList.length > 0
-                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                  : <p className="text-gray-400 h-10">None yet!</p>
-                }
-              </div>
-              {waitingList.length > 0 && (
-                <>
-                  <div className="flex">
-                    <h2>Waiting List ({waitingList.length} total)</h2>
-                    <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
-                      {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
-                    </button>
-                  </div>
-                  <div className="w-full my-2">
-                    <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                  </div>
-                </>
-              )}
-              <Button onClick={handleAttend}>
-                {isAttending 
-                  ? "Leave" 
-                  : (
-                    event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
-                  )
-                }
-              </Button>
+          </Expander>
+          <div className="mt-4">
+            <div className="flex">
+              <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
+              <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
+                {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
+              </button>
             </div>
+            <div className="w-full my-2">
+              {attendingList.length > 0
+                ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                : <p className="text-gray-400 h-10">None yet!</p>
+              }
+            </div>
+            {waitingList.length > 0 && (
+              <>
+                <div className="flex">
+                  <h2>Waiting List ({waitingList.length} total)</h2>
+                  <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
+                    {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
+                  </button>
+                </div>
+                <div className="w-full my-2">
+                  <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                </div>
+              </>
+            )}
+            <Button onClick={handleAttend}>
+              {isAttending 
+                ? "Leave" 
+                : (
+                  event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+                )
+              }
+            </Button>
           </div>
         </div>
       </div>
-      {expanded !== null && (
-        <div className="w-full h-6 bg-gradient-to-t from-gray-100 hover:from-gray-200" onClick={() => setExpanded(!expanded)}>
-            {expanded ? <ChevronUp className="mx-auto" /> : <ChevronDown className="mx-auto" />}
-        </div>
-      )}
-      </div>
+    </div>
     {attendPopupVisible && <AttendPopup steps={attendPopupSteps} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
     </>
   )
