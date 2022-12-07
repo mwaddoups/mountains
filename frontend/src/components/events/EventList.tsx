@@ -28,10 +28,7 @@ export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
 }
 
 // The default height before expansion
-let DEFAULT_HEIGHT = 300;
-if ("ontouchstart" in document.documentElement) {
-  DEFAULT_HEIGHT = 500;
-}
+const DEFAULT_HEIGHT = 300;
 
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
