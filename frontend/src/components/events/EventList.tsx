@@ -105,12 +105,13 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   todayDate.setHours(0,0,0,0);
   const isInPast = new Date(event.event_date) < todayDate;
 
-  // Only has an effect once, which is if the element has enough content to require expansion it non-nulls it.
+  // Only has an effect once, which is if the element is short enough it removes expansion altogether
   useEffect(() => {
     if (expandedHeightRef.current) {
       let wantedHeight = expandedHeightRef.current.scrollHeight;
 
-      if (wantedHeight <= DEFAULT_HEIGHT) {
+      // Use a bit of give to avoid tiny expansions
+      if (wantedHeight <= DEFAULT_HEIGHT * 1.1) {
         setExpanded(null);
       }
     }
@@ -124,6 +125,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
       if (expanded === false) {
         expandedHeightRef.current.style.maxHeight = DEFAULT_HEIGHT.toString() + "px";
       } else {
+        // Also true for expanded === null
         expandedHeightRef.current.style.maxHeight = wantedHeight.toString() + "px";
       }
     }
