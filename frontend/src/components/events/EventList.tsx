@@ -36,7 +36,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>([]);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
-  const [expanded, setExpanded] = useState<boolean | null>(null);
+  const [expanded, setExpanded] = useState<boolean | null>(false);
   const expandedHeightRef = useRef<HTMLDivElement>(null);
 
 
@@ -110,11 +110,11 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     if (expandedHeightRef.current) {
       let wantedHeight = expandedHeightRef.current.scrollHeight;
 
-      if ((wantedHeight > DEFAULT_HEIGHT) && (expanded === null)) {
-        setExpanded(false);
+      if (wantedHeight <= DEFAULT_HEIGHT) {
+        setExpanded(null);
       }
     }
-  }, [expanded]);
+  }, []);
 
   // Sets appropriate height
   // Needs to be triggered every time to account for attendee list changes, etc.
