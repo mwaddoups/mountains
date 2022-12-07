@@ -121,7 +121,6 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   useEffect(() => {
     if (expandedHeightRef.current) {
       let wantedHeight = expandedHeightRef.current.scrollHeight;
-
       if (expanded === false) {
         expandedHeightRef.current.style.maxHeight = DEFAULT_HEIGHT.toString() + "px";
       } else {
@@ -155,42 +154,44 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
             <CalendarTime dateStr={event.event_date} />
           </div>
         </div>
-        <div ref={expandedHeightRef} className={"w-full mt-2 transition-[max-height] " + (expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-300" : "")}>
-          <ClydeMarkdown>{event.description}</ClydeMarkdown>
-          <div className="mt-4">
-            <div className="flex">
-              <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
-              <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
-                {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
-              </button>
+        <div ref={expandedHeightRef} className="w-full mt-2 transition-[max-height] overflow-clip"> 
+          <div className={(expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-200" : "")}>
+            <ClydeMarkdown>{event.description}</ClydeMarkdown>
+            <div className="mt-4">
+              <div className="flex">
+                <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
+                <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
+                  {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
+                </button>
+              </div>
+              <div className="w-full my-2">
+                {attendingList.length > 0
+                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                  : <p className="text-gray-400 h-10">None yet!</p>
+                }
+              </div>
+              {waitingList.length > 0 && (
+                <>
+                  <div className="flex">
+                    <h2>Waiting List ({waitingList.length} total)</h2>
+                    <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
+                      {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
+                    </button>
+                  </div>
+                  <div className="w-full my-2">
+                    <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                  </div>
+                </>
+              )}
+              <Button onClick={handleAttend}>
+                {isAttending 
+                  ? "Leave" 
+                  : (
+                    event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+                  )
+                }
+              </Button>
             </div>
-            <div className="w-full my-2">
-              {attendingList.length > 0
-                ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                : <p className="text-gray-400 h-10">None yet!</p>
-              }
-            </div>
-            {waitingList.length > 0 && (
-              <>
-                <div className="flex">
-                  <h2>Waiting List ({waitingList.length} total)</h2>
-                  <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
-                    {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
-                  </button>
-                </div>
-                <div className="w-full my-2">
-                  <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                </div>
-              </>
-            )}
-            <Button onClick={handleAttend}>
-              {isAttending 
-                ? "Leave" 
-                : (
-                  event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
-                )
-              }
-            </Button>
           </div>
         </div>
       </div>
