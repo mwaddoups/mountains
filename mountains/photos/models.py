@@ -34,7 +34,7 @@ class Photo(models.Model):
     uploaded = models.DateTimeField(auto_now_add=True)
     photo = ResizedImageField(
       size=[1200, 630],
-      quality=80,
+      quality=90,
       upload_to=get_photos_filename
     )
     album = ForeignKey(Album, on_delete=models.SET_NULL, related_name='photos', blank=False, null=True)
