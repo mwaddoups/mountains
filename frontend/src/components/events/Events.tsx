@@ -47,7 +47,7 @@ export default function Events() {
     <Loading loading={isLoading}>
       <div>
         <div className="flex">
-          <h1 className="text-3xl font-medium mb-2">Upcoming Events</h1>
+          <h1 className="text-xl md:text-3xl font-medium mb-2">Upcoming Events</h1>
           {currentUser?.is_committee && <Link to="new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create event</button></Link>}
         </div>
         {eventList
@@ -55,7 +55,7 @@ export default function Events() {
           .sort((e1, e2) => new Date(e1.event_date).getTime() - new Date(e2.event_date).getTime())
           .map(eventDisplay)
         }
-        <h1 className="text-3xl font-medium mb-2">Past Events</h1>
+        <h1 className="text-xl md:text-3xl font-medium mb-2">Past Events</h1>
         {eventList
           .filter(e => new Date(e.event_date) < todayDate)
           .sort((e1, e2) => new Date(e2.event_date).getTime() - new Date(e1.event_date).getTime())

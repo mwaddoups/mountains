@@ -10,7 +10,7 @@ import ClydeMarkdown from "../base/ClydeMarkdown";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
 import AttendPopup, { PopupStep } from "./AttendPopup";
-import CalendarDate from "./CalendarDate";
+import CalendarDate, { CalendarTime } from "./CalendarDate";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null,
@@ -100,19 +100,26 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
 
   return (
     <>
-    <div ref={eventRef} className={"w-full shadow p-4 md:flex mt-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
-      <CalendarDate dateStr={event.event_date}/>
-      <div className="w-full">
-        <div className="flex items-center">
-          <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
-            <Link to={`../${event.id}`}>{event.title}</Link>
-          </EventHeading>
-          {currentUser?.is_committee && (
-            <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
-          )}
+    <div ref={eventRef} className={"w-full shadow p-4 mt-4 bg-gradient-to-r" + (isInPast ? " striped-gradient" : "")}>
+      <div className="flex">
+        <CalendarDate dateStr={event.event_date}/>
+        <div className="w-full">
+          <div className="flex items-center">
+            <div className="md:flex md:items-center">
+              <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
+                <Link to={`../${event.id}`}>{event.title}</Link>
+              </EventHeading>
+              <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
+            </div>
+            {currentUser?.is_committee && (
+              <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
+            )}
+          </div>
+          <h6 className="text-[0.6rem] md:text-xs text-gray-400">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
+          <CalendarTime dateStr={event.event_date} />
         </div>
-        <Badge $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
-        <h6 className="text-xs text-gray-400 mb-3">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
+      </div>
+      <div className="w-full mt-2">
         <ClydeMarkdown>{event.description}</ClydeMarkdown>
         <div className="mt-4">
           <div className="flex">
