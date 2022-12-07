@@ -27,13 +27,16 @@ export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
   'XX': ['Other', "pink"],
 }
 
+// The default height before expansion
+const DEFAULT_HEIGHT = 300;
+
 export default function EventList({ event: initialEvent, eventRef }: EventListProps) {
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
   const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>([]);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean | null>(null);
   const expandedHeightRef = useRef<HTMLDivElement>(null);
 
 
@@ -102,26 +105,30 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   todayDate.setHours(0,0,0,0);
   const isInPast = new Date(event.event_date) < todayDate;
 
+  // Only has an effect once, which is if the element has enough content to require expansion it non-nulls it.
   useEffect(() => {
     if (expandedHeightRef.current) {
-      expandedHeightRef.current.style.maxHeight = "30rem";
-    }
-  }, [])
-
-  const toggleExpand = useCallback(() => {
-    if (expandedHeightRef.current) {
       let wantedHeight = expandedHeightRef.current.scrollHeight;
-      if (expanded) {
-        expandedHeightRef.current.style.maxHeight = "30rem";
+
+      if ((wantedHeight > DEFAULT_HEIGHT) && (expanded === null)) {
         setExpanded(false);
-      } else {
-        expandedHeightRef.current.style.maxHeight = wantedHeight.toString() + "px";
-        setExpanded(true);
       }
     }
+  }, [expanded]);
 
+  // Sets appropriate height
+  // Needs to be triggered every time to account for attendee list changes, etc.
+  useEffect(() => {
+    if (expandedHeightRef.current) {
+      let wantedHeight = expandedHeightRef.current.scrollHeight;
 
-  }, [expandedHeightRef, expanded])
+      if (expanded === false) {
+        expandedHeightRef.current.style.maxHeight = DEFAULT_HEIGHT.toString() + "px";
+      } else {
+        expandedHeightRef.current.style.maxHeight = wantedHeight.toString() + "px";
+      }
+    }
+  });
 
   return (
     <>
@@ -148,7 +155,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
             <CalendarTime dateStr={event.event_date} />
           </div>
         </div>
-        <div ref={expandedHeightRef} className="w-full mt-2 transition-[max-height] overflow-clip">
+        <div ref={expandedHeightRef} className={"w-full mt-2 transition-[max-height] " + (expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-100" : "")}>
           <ClydeMarkdown>{event.description}</ClydeMarkdown>
           <div className="mt-4">
             <div className="flex">
@@ -187,10 +194,12 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
           </div>
         </div>
       </div>
-      <div className="w-full h-6 bg-gradient-to-t from-gray-100 hover:from-gray-200" onClick={toggleExpand}>
-          {expanded ? <ChevronUp className="mx-auto" /> : <ChevronDown className="mx-auto" />}
+      {expanded !== null && (
+        <div className="w-full h-6 bg-gradient-to-t from-gray-100 hover:from-gray-200" onClick={() => setExpanded(!expanded)}>
+            {expanded ? <ChevronUp className="mx-auto" /> : <ChevronDown className="mx-auto" />}
+        </div>
+      )}
       </div>
-    </div>
     {attendPopupVisible && <AttendPopup steps={attendPopupSteps} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
     </>
   )

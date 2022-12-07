@@ -49,7 +49,7 @@ export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) 
         value={(searchString === null) ? "Add a new user..." : searchString} />
       <Loading loading={isLoading}>
         {searchList && (
-          <div className="border-gray-400 ml-5 p-2 border-1 rounded">
+          <div className="border-gray-400 ml-5 p-2 border-1 rounded bg-white">
             {searchList.map(user => (
               <div key={user.id} onClick={addUserToEvent(user)} className="hover:bg-blue-400 h-10 flex items-center my-1">
                 <div className="w-10"><ProfilePicture user={user} /></div>
