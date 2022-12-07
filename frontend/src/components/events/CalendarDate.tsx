@@ -1,6 +1,6 @@
 import dateFormat from "dateformat";
 import React from "react";
-import { Calendar, Clock } from "react-bootstrap-icons";
+import { Clock } from "react-bootstrap-icons";
 
 interface CalendarDateProps {
   dateStr: string;
@@ -13,14 +13,14 @@ export default function CalendarDate({ dateStr, showTime }: CalendarDateProps) {
     showTime = true;
   }
   return (
-    <div className={"relative w-20 h-20 mr-5" + (showTime ? " mb-10" : "")}>
-      <Calendar className="h-full w-full static text-gray-500" />
-      <div className="absolute left-0 right-0 top-0 mt-4 mx-auto text-center">
-        <div className="font-bold text-3xl">{dateFormat(date, "d")}</div>
-        <div className="font-light tracking-tight text-sm">{dateFormat(date, "mmm yyyy")}</div>
+    <div className="w-20 mr-5">
+      <div className="border-gray-500 border-2 border-t-8 p-1 rounded-lg mx-auto text-center">
+        <p className="font-light tracking-tight text-sm leading-tight">{dateFormat(date, "dddd")}</p>
+        <p className="font-bold text-2xl leading-tight">{dateFormat(date, "d")}</p>
+        <p className="font-light tracking-tight text-sm leading-tight">{dateFormat(date, "mmm yyyy")}</p>
       </div>
       {showTime && (
-        <div className="w-full mx-auto text-center font-semibold mt-3 flex content-center items-center">
+        <div className="w-full mx-auto text-center font-semibold mt-1 flex content-center items-center">
           <Clock className="mr-2"/> <span>{dateFormat(date, "HH:MM")}</span>
         </div>
       )}
