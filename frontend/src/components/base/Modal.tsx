@@ -15,7 +15,7 @@ export default function AttendPopup({ children }: ModalProps) {
 
   return (
     <div className="fixed left-0 top-0 w-full h-full bg-black/60 z-40">
-      <div className="fixed w-3/4 h-auto mx-auto top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-lg p-5 shadow bg-white overflow-scroll">
+      <div className="fixed w-3/4 h-auto max-h-[95vh] mx-auto top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-lg p-5 shadow bg-white overflow-scroll">
         {children}
       </div>
     </div>
