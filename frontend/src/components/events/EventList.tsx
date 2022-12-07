@@ -155,7 +155,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
             <CalendarTime dateStr={event.event_date} />
           </div>
         </div>
-        <div ref={expandedHeightRef} className={"w-full mt-2 transition-[max-height] " + (expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-100" : "")}>
+        <div ref={expandedHeightRef} className={"w-full mt-2 transition-[max-height] " + (expanded === false ? "overflow-clip bg-gradient-to-b text-transparent bg-clip-text from-black to-gray-300" : "")}>
           <ClydeMarkdown>{event.description}</ClydeMarkdown>
           <div className="mt-4">
             <div className="flex">
