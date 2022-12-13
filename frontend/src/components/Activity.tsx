@@ -1,8 +1,10 @@
+import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api";
 import { getName } from "../methods/user";
 import { Activity } from "../models";
-import { Heading, Paragraph, Section } from "./base/Base";
+import { Bolded, Heading, Paragraph, Section } from "./base/Base";
 import Loading from "./Loading";
 
 export default function ActivityLog() {
@@ -22,7 +24,13 @@ export default function ActivityLog() {
       <Loading loading={loading}>
         {activities.map(activity => (
           <Paragraph key={activity.id}>
-            {getName(activity.user)} {activity.action} {activity.event?.title || ""}
+            <span className="text-gray-500">{dateFormat(activity.timestamp, "dd mmm HH:MM")}</span> 
+            <Bolded>{" " + getName(activity.user)}</Bolded> {activity.action} 
+            {activity.event 
+              ? <Link to={`../events/${activity.event?.id}`} className="text-blue-700 hover:text-blue-500">
+                {` ${activity.event.title} (${dateFormat(activity.event.event_date, "mmm dS")})`}
+                </Link>
+              : ""}
           </Paragraph>
         ))}
       </Loading>
