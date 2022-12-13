@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import tw from "twin.macro";
 import api from "../api";
 import { User } from "../models";
-
-const Paragraph = tw.p`my-3 ml-3 tracking-wide font-light`
-const Section = tw.div`rounded shadow p-4 mb-4`
-const Heading = tw.h1`text-3xl font-bold tracking-tight`
+import Activity from "./Activity";
+import { Heading, Paragraph, Section } from "./base/Base";
 
 export default function Committee() {
   const [userList, setUserList] = useState<Array<User>>([]);
@@ -36,6 +33,7 @@ export default function Committee() {
         <Paragraph>You should be able to create events on the event page, and edit them as a committee member.</Paragraph>
         <Paragraph>You can add or remove users to events, or move them back and forth to the waiting list.</Paragraph>
       </Section>
+      <Activity />
     </div>
   )
 }

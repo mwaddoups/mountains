@@ -23,6 +23,7 @@ from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileU
 from events.views import EventViewSet
 from social.views import FeedPostViewSet, CommentViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
+from activity.views import ActivityViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -32,6 +33,7 @@ router.register(r'posts', FeedPostViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'albums', AlbumViewSet)
+router.register(r'activity', ActivityViewSet)
 
 urlpatterns = [
     path(r'users/self/', SelfUserView.as_view()),

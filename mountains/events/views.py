@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import AttendingUser, Event, User
 from .serializers import BasicEventSerializer, EventSerializer
+from activity.models import Activity
 
 class IsCommitteeOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
@@ -35,6 +36,10 @@ class EventViewSet(viewsets.ModelViewSet):
         all_attendees = list(event.attendees.all())
         if user in all_attendees:
             event.attendees.remove(user)
+            if user != request.user:
+                Activity.objects.create(user=request.user, event=event, action=f"removed {user.first_name} {user.last_name} from")
+            else:
+                Activity.objects.create(user=user, event=event, action="left")
         else:
             event_has_waiting_list = len(all_attendees) > len(actual_attendees)
             event_over_max_limit = event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees
@@ -45,10 +50,18 @@ class EventViewSet(viewsets.ModelViewSet):
                 attending_user.is_waiting_list = True
                 attending_user.is_driving = is_driving
                 attending_user.save()
+                if user != request.user:
+                    Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to waiting list for")
+                else:
+                    Activity.objects.create(user=user, event=event, action="joined waiting list for")
             else:
                 attending_user.is_waiting_list = False
                 attending_user.is_driving = is_driving
                 attending_user.save()
+                if user != request.user:
+                    Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to")
+                else:
+                    Activity.objects.create(user=user, event=event, action="joined")
 
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)

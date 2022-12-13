@@ -104,3 +104,11 @@ export type AuthContext = {
   storeAuth: (a: string | null) => void,
   logout: () => void,
 }
+
+export type Activity = {
+  id: number,
+  user: NamedProfileUser,
+  action: string,
+  timestamp: string,
+  event: BasicEvent | null,
+}

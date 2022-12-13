@@ -1,4 +1,5 @@
 import types
+from activity.models import Activity
 from rest_framework import serializers
 from .models import Event, AttendingUser
 from members.serializers import SmallUserSerializer, SmallUserSerializerCommittee
@@ -26,10 +27,17 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
   attendees = AttendingUserSerializer(source='attendinguser_set', many=True, read_only=True)
 
   def create(self, validated_data):
-    return Event.objects.create(
+    created = Event.objects.create(
       organiser=self.context['request'].user,
       **validated_data,
     )
+    try:
+      Activity.objects.create(user=self.context['request'].user,  event=created, action="created")
+    except:
+      print('Error creating activity - ignoring...')
+    
+    return created
+
 
   class Meta:
     model = Event

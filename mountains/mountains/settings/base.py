@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'social',
     'events',
     'photos',
+    'activity',
 ]
 
 AUTH_USER_MODEL = 'members.User'

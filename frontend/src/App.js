@@ -28,6 +28,7 @@ import EventEditor from "./components/events/EventEditor";
 import Resources from "./components/Resources";
 import Faqs from "./components/landing/Faqs";
 import CommitteePage from "./components/landing/CommitteePage";
+import Activity from "./components/Activity";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
+                <Route path="activity" element={<Activity />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />
                   <Route path="edit" element={<ProfileEditor />} />
