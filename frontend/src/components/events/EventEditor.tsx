@@ -23,14 +23,14 @@ export default function EventEditor() {
 
   // use params to check if we are at event/x/edit or event/new
   // If editing, reset the state first with the correct valeus
-  const { eventIdParam } = useParams();
+  const { eventId: eventIdParam } = useParams();
 
   useEffect(() => {
     if (eventIdParam) {
       api.get(`events/${eventIdParam}/`).then(res => {
         let event = (res.data as Event);
-        setEventId(eventIdParam as unknown as number);
         setCurrentEvent(event);
+        setEventId(event.id);
         setTitle(event.title);
         setDescription(event.description);
         setEventDate(new Date(event.event_date));
