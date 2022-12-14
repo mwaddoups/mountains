@@ -13,6 +13,7 @@ export default function EventEditor() {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [title, setTitle] = useState<string>('');
+  const [eventId, setEventId] = useState<number | null>(null);
   const [eventType, setEventType] = useState<EventType | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [description, setDescription] = useState<string>('');
@@ -22,12 +23,13 @@ export default function EventEditor() {
 
   // use params to check if we are at event/x/edit or event/new
   // If editing, reset the state first with the correct valeus
-  const { eventId } = useParams();
+  const { eventIdParam } = useParams();
 
   useEffect(() => {
-    if (eventId) {
-      api.get(`events/${eventId}/`).then(res => {
+    if (eventIdParam) {
+      api.get(`events/${eventIdParam}/`).then(res => {
         let event = (res.data as Event);
+        setEventId(eventIdParam as unknown as number);
         setCurrentEvent(event);
         setTitle(event.title);
         setDescription(event.description);
@@ -38,7 +40,7 @@ export default function EventEditor() {
       })
     }
     setLoading(false);
-  }, [eventId])
+  }, [eventIdParam])
 
   const updateEvent = useCallback(e => {
     e.preventDefault();
@@ -67,6 +69,7 @@ export default function EventEditor() {
     } else {
       setErrorText(null);
       api.post(`events/`, newEvent).then(res => {
+        setEventId((res.data as Event).id);
         setSubmitted(true);
       })
     }
