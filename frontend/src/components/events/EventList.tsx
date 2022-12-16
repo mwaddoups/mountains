@@ -18,7 +18,7 @@ interface EventListProps {
   event: Event,
 }
 
-export const eventTypeMap: Record<EventType, [string, BadgeColor] > = {
+export const eventTypeMap: Record<EventType, [string, BadgeColor]> = {
   'SD': ['Summer Day Walk', "green"],
   'SW': ['Summer Weekend', "darkgreen"],
   'WD': ['Winter Day Walk', "blue"],
