@@ -51,7 +51,8 @@ export default function Home() {
         <Heading>Winter Walking</Heading>
         <Paragraph>
           In the winter season (roughly November to March) we will try to run winter walks up munros. However, these 
-          walks by nature have additional concerns and dangers as well as much tougher equipment requirements for the condtions.
+          walks by nature have additional concerns and dangers as well as much tougher equipment requirements for the condtions. We will also 
+          probably have less day trips, and more weekend trips to make the most of the short days.
         </Paragraph>
         <Paragraph>
           For our first year of winter walking, we've taken the decision to only open these winter walks to those with some previous winter 
