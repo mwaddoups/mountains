@@ -19,7 +19,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=False, permission_classes=[])
     def recent(self, request):
-        recent_photos = Photo.objects.all().order_by('-uploaded')[:5]
+        recent_photos = Photo.objects.filter(starred=True).order_by('-uploaded')[:5]
 
         serializer = self.get_serializer(recent_photos, many=True)
         return Response(serializer.data)
