@@ -17,10 +17,10 @@ export default function LandingPhotos() {
 
   return (
     <Loading loading={loading}> 
-      <div className="flex items-center flex-grow flex-wrap md:flex-wrap">
+      <div className="flex items-center justify-between flex-grow flex-wrap md:flex-wrap">
         {photos.map((photo, ix) => (
           <img 
-            className="h-32 object-cover mr-1 rounded shadow border"
+            className="h-32 object-cover mr-1 rounded shadow border basis-1/8"
             src={photo.photo} key={ix} alt='recent club trip' /> 
         ))}
       </div>
