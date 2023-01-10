@@ -132,7 +132,6 @@ export default function EventEditor() {
           {errorText && <Error>{errorText}</Error>}
           <div className="flex justify-between">
             <FormButton
-              className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
               type="submit">
                 Submit
             </FormButton>

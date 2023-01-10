@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import DateTimePicker from "react-datetime-picker";
 import { Link, Navigate } from "react-router-dom";
 import api from "../../api";
-import { FormInput, FormLabel } from "../base/Base";
+import { FormButton, FormCancelButton, FormInput, FormLabel } from "../base/Base";
 
 
 export default function AlbumCreator() {
@@ -30,13 +30,12 @@ export default function AlbumCreator() {
         format="MMMM d, y"
         className="text-sm rounded shadow border w-full mb-4" onChange={setEventDate} value={eventDate} />
       <div className="flex justify-between">
-        <button
-          className="block rounded bg-blue-500 hover:bg-blue-700 text-white font-bold p-3"
+        <FormButton
           type="submit">
             Submit
-        </button>
+        </FormButton>
         <Link to="..">
-          <button className="ml-auto block rounded bg-gray-300 hover:bg-gray-400 text-gray-700 p-3">Cancel</button>
+          <FormCancelButton className="ml-auto">Cancel</FormCancelButton>
         </Link>
       </div>
     </form>
