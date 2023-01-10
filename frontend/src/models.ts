@@ -86,6 +86,7 @@ export type Photo = {
   uploader: User,
   uploaded: string,
   photo: string,
+  starred: boolean,
 }
 
 export type Album = {

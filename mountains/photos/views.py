@@ -24,6 +24,14 @@ class PhotoViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(recent_photos, many=True)
         return Response(serializer.data)
 
+    @action(methods=['post'], detail=True, permission_classes=[IsCommitteeOrReadOnly])
+    def star(self, request, pk=None):
+        photo = self.get_object()
+        photo.starred = not photo.starred
+        photo.save()
+        serialized = self.get_serializer(photo)
+        return Response(serialized.data)
+
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
     permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsCommitteeOrReadOnly)]

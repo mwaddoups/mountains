@@ -6,6 +6,7 @@ import { getName } from "../../methods/user";
 import { Album, Photo } from "../../models";
 import Loading from "../Loading";
 import PhotoUploader from "./PhotoUploader";
+import StarPhoto from "./StarPhoto";
 
 export default function Photos() {
   const [needsRefresh, setNeedsRefresh] = useState(true);
@@ -73,7 +74,10 @@ export default function Photos() {
             </div>
             <div className="text-gray-100 hover:text-blue-300 mr-2 text-2xl flex-none" onClick={e => {e.stopPropagation(); stepForward();}}><ArrowRightCircleFill /></div>
           </div>
-          <div className="ml-1 text-gray-200 font-medium text-xs -mt-5 ml-auto">U: {getName(album?.photos[highlightedPhoto].uploader)}</div>
+          <div className="ml-1 text-gray-200 font-medium text-xs -mt-5 ml-auto">
+            U: {getName(album?.photos[highlightedPhoto].uploader)}
+            {album && <StarPhoto photo={album.photos[highlightedPhoto]} />}
+          </div>
         </div>
       )}
     </div>

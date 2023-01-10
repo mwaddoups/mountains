@@ -16,7 +16,7 @@ class PhotoSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ['id', 'uploader', 'uploaded', 'photo']
+        fields = ['id', 'uploader', 'uploaded', 'photo', 'starred']
         read_only_fields = ['uploader', 'uploaded', 'photo']
 
 
