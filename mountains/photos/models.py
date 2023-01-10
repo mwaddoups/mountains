@@ -38,3 +38,4 @@ class Photo(models.Model):
       upload_to=get_photos_filename
     )
     album = ForeignKey(Album, on_delete=models.SET_NULL, related_name='photos', blank=False, null=True)
+    starred = models.BooleanField(default=False)
