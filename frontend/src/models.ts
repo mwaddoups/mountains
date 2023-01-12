@@ -62,6 +62,7 @@ export interface Event extends BasicEvent {
   max_attendees: number,
   organiser: User,
   show_popup: boolean,
+  members_only: boolean,
 }
 
 export type FeedPost = {

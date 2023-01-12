@@ -23,6 +23,7 @@ class Event(models.Model):
     max_attendees = models.IntegerField(null=False, blank=False, default=0)
     organiser = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='organiser')
     show_popup = models.BooleanField(blank=False, null=False, default=False)
+    members_only = models.BooleanField(blank=False, null=False, default=False)
 
 class AttendingUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

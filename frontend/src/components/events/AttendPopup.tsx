@@ -6,7 +6,7 @@ import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
 import participationStatementURL from "./ParticipationStatement.md";
 
-export type PopupStep = "participation" | "ice" | "discord"
+export type PopupStep = "participation" | "ice" | "discord" | "members_only"
 
 interface AttendPopupProps {
   steps: Array<PopupStep>,
@@ -45,6 +45,9 @@ export default function AttendPopup({ steps, toggleCurrentAttendance, setVisible
         <>
         {steps[currentStep] === 'ice' && (
           <ICEStep isFinalStep={isFinalStep} advanceStep={advanceStep}/>
+        )}
+        {steps[currentStep] === 'members_only' && (
+          <MembersOnlyStep isFinalStep={isFinalStep} advanceStep={advanceStep}/>
         )}
         {steps[currentStep] === 'discord' && (
           <DiscordStep isFinalStep={isFinalStep} advanceStep={advanceStep}/>
@@ -121,6 +124,19 @@ function DiscordStep({isFinalStep, advanceStep}: StepProps) {
       </a></Paragraph>
       <Paragraph>Can you confirm you have signed up? We will only ask this once.</Paragraph>
       <Button onClick={setDiscordAndAdvance}>{isFinalStep ? "Yes - I have signed up to Discord. Sign me up!" : "Yes - I have signed up to Discord."}</Button>
+    </>
+  )
+}
+
+function MembersOnlyStep({isFinalStep, advanceStep}: StepProps) {
+  return (
+    <>
+      <SubHeading>Members Only Trip</SubHeading>
+      <Paragraph>Our weekend trips and AGM are members only.</Paragraph>
+      <Paragraph>If you are new to the club, you are welcome to join any of our day walks to meet the club members and see if you enjoy the club. 
+        We also have regular indoor climbing events and socials.</Paragraph>
+      <Paragraph>If you want to join the club, please use the Join Us link on the left side of the sidebar. 
+        This also helps support the club and allows use of shared club kit.</Paragraph>
     </>
   )
 }

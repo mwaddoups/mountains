@@ -19,6 +19,7 @@ export default function EventEditor() {
   const [description, setDescription] = useState<string>('');
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
+  const [membersOnly, setMembersOnly] = useState<boolean>(false);
   const [maxAttendees, setMaxAttendees] = useState<number>(0); 
 
   // use params to check if we are at event/x/edit or event/new
@@ -50,6 +51,7 @@ export default function EventEditor() {
     newEvent.description = description;
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
     newEvent.show_popup = showPopup;
+    newEvent.members_only = membersOnly;
     newEvent.max_attendees = maxAttendees || 0;
     if (!currentEvent) {
       newEvent.attendees = [];
@@ -73,7 +75,7 @@ export default function EventEditor() {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly])
 
   const setNewEventType = useCallback((newEventType: string) => {
     if (Object.keys(eventTypeMap).includes(newEventType)) {
@@ -83,6 +85,13 @@ export default function EventEditor() {
         setShowPopup(false);
       } else {
         setShowPopup(true);
+      }
+
+      if ((newEventType === 'SW') || (newEventType === 'WW')) {
+        // Weekend trips are members only by default
+        setMembersOnly(true);
+      } else {
+        setMembersOnly(false);
       }
     }
   }, [setEventType, setShowPopup])
@@ -119,6 +128,10 @@ export default function EventEditor() {
           <div className="flex items-center">
             <FormLabel>Show the participation statement before allowing attendance (usually yes for walks, no for socials/climbing)?</FormLabel>
             <input className="-ml-1 md:ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
+          </div>
+          <div className="flex items-center">
+            <FormLabel>Make this event members only?</FormLabel>
+            <input className="-ml-1 md:ml-4" type="checkbox" checked={membersOnly} onChange={() => setMembersOnly(!membersOnly)} />
           </div>
           <div className="w-full">
             <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>

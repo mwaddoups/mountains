@@ -75,10 +75,16 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
       toggleCurrentAttendance();
     } else {
       // Setup the steps
-      let steps = [];
+      let steps: Array<PopupStep> = [];
+      if (currentUser && !currentUser.is_paid && event.members_only) {
+        // If it's members only, 
+        steps.push("members_only")
+      }
+
       if (currentUser && !currentUser.is_on_discord) {
         steps.push("discord")
       }
+
       if (currentUser && event.show_popup) {
         // We just show this for any event which requires participation statement
         steps.push("ice")
@@ -88,13 +94,13 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
       }
 
       if (steps.length > 0) {
-        setAttendPopupSteps(steps as Array<PopupStep>);
+        setAttendPopupSteps(steps);
         setAttendPopupVisible(true);
       } else {
         toggleCurrentAttendance();
       }
     }
-  }, [isAttending, toggleCurrentAttendance, setAttendPopupVisible, currentUser, event.show_popup])
+  }, [isAttending, toggleCurrentAttendance, setAttendPopupVisible, currentUser, event])
 
   const todayDate = new Date();
   todayDate.setHours(0,0,0,0);
@@ -116,6 +122,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                   <Link to={`../${event.id}`}>{event.title}</Link>
                 </EventHeading>
                 <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
+                {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
               </div>
               {currentUser?.is_committee && (
                 <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
