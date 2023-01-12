@@ -36,6 +36,7 @@ export default function EventEditor() {
         setDescription(event.description);
         setEventDate(new Date(event.event_date));
         setShowPopup(event.show_popup);
+        setMembersOnly(event.members_only);
         setMaxAttendees(event.max_attendees);
         setEventType(event.event_type)
       })
