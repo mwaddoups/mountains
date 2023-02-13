@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -43,6 +43,9 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const attendingList = useMemo(() => event.attendees.filter(user => !user.is_waiting_list), [event])
   const waitingList = useMemo(() => event.attendees.filter(user => user.is_waiting_list), [event])
 
+  const refreshEvent = useCallback(() => {
+    api.get(`events/${event.id}/`).then(res => setEvent(res.data))
+  }, [event])
 
   const toggleAttendance = useCallback((userId: number) => {
     return () => {
@@ -124,6 +127,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
                 {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
               </div>
+              <button onClick={refreshEvent}><ArrowClockwise /></button>
               {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (
                 <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
               )}
