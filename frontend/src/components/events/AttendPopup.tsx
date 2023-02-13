@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import api from "../../api";
-import { Paragraph, Button, FormInput, CancelButton, SubHeading } from "../base/Base";
+import { Paragraph, Button, FormInput, CancelButton, SubHeading, FormLabel } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
@@ -74,25 +74,30 @@ interface StepProps {
 function ICEStep({isFinalStep, advanceStep}: StepProps) {
   const { currentUser, refreshUser } = useAuth();
   let [ice, setIce] = useState<string | undefined>(currentUser?.in_case_emergency)
+  let [mobile, setMobile] = useState<string | undefined>(currentUser?.mobile_number)
 
   const updateIceAndAdvance = useCallback(event => {
     event.preventDefault();
     if (currentUser) {
-      let newUser = {id: currentUser.id, in_case_emergency: ice};
+      let newUser = {id: currentUser.id, in_case_emergency: ice, mobile_number: mobile};
 
       api.patch(`users/${currentUser.id}/`, newUser).then(res => {
         refreshUser();
         advanceStep();
       })
     }
-  }, [currentUser, refreshUser, ice, advanceStep])
+  }, [currentUser, refreshUser, ice, mobile, advanceStep])
 
   return (
     <>
-      <SubHeading>Emergency Contact</SubHeading>
-      <Paragraph>In order to join on a walk, we need to have emergency contact information for you so we know who to contact in case of any incidents.</Paragraph>
+      <SubHeading>Contact Details</SubHeading>
+      <Paragraph>In order to join on a walk, we need to have both a mobile number so we can reach you on the day, and  
+        emergency contact information for you so we know who to contact in case of any incidents.</Paragraph>
       <Paragraph>Please ensure this is up to date by editing if needed below. Note this will be saved on file and provided to walk leaders.</Paragraph>
-      <FormInput type="string" value={ice} placeholder="Enter here..." onChange={event => setIce(event.target.value)} />
+      <FormLabel>Mobile Number</FormLabel>
+      <FormInput type="string" value={mobile} placeholder="Enter mobile number..." onChange={event => setMobile(event.target.value)} />
+      <FormLabel>Emergency Contact</FormLabel>
+      <FormInput type="string" value={ice} placeholder="Enter emergency contact..." onChange={event => setIce(event.target.value)} />
       <Button onClick={updateIceAndAdvance}>{isFinalStep ? "This is up to date - sign me up!" : "This is up to date"}</Button>
     </>
   )
