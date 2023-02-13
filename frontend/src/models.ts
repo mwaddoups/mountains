@@ -10,6 +10,7 @@ export interface User extends NamedProfileUser {
   url: string,
   is_approved: boolean,
   is_committee: boolean,
+  is_walk_coordinator: boolean,
   is_paid: boolean,
   mobile_number: string,
   in_case_emergency: string | undefined;
@@ -20,6 +21,7 @@ export interface AttendingUser extends NamedProfileUser {
   au_id: number,
   is_approved: boolean,
   is_committee: boolean,
+  is_walk_coordinator: boolean,
   is_paid: boolean,
   mobile_number: string,
   in_case_emergency: string | undefined;

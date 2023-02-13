@@ -7,16 +7,19 @@ from .models import AttendingUser, Event, User
 from .serializers import BasicEventSerializer, EventSerializer
 from activity.models import Activity
 
-class IsCommitteeOrReadOnly(permissions.BasePermission):
+def user_allowed_edit_events(user):
+    return user.is_committee or user.is_walk_coordinator
+
+class IsEventEditorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
         if request.method in permissions.SAFE_METHODS:
             return True
         else:
-            return request.user.is_committee
+            return user_allowed_edit_events(request.user)
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsCommitteeOrReadOnly)]
+    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsEventEditorOrReadOnly)]
 
     def get_queryset(self, *args, **kwargs):
         ago_90d = datetime.datetime.now() - datetime.timedelta(days=90)
@@ -26,7 +29,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def attend(self, request, pk=None):
         event = self.get_object()
         user = request.user
-        if request.method == 'POST' and request.user.is_committee:
+        if request.method == 'POST' and user_allowed_edit_events(request.user):
             user_id = request.data['userId']
             user = User.objects.get(pk=user_id)
 
@@ -66,7 +69,7 @@ class EventViewSet(viewsets.ModelViewSet):
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
 
-    @action(methods=['post'], detail=True, permission_classes=[IsCommitteeOrReadOnly])
+    @action(methods=['post'], detail=True, permission_classes=[IsEventEditorOrReadOnly])
     def changelist(self, request, pk=None):
         event = self.get_object()
         user_id = request.data['userId']
@@ -78,11 +81,11 @@ class EventViewSet(viewsets.ModelViewSet):
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
 
-    @action(methods=['patch', 'post'], detail=True, permission_classes=[IsCommitteeOrReadOnly])
+    @action(methods=['patch', 'post'], detail=True, permission_classes=[IsEventEditorOrReadOnly])
     def changedriving(self, request, pk=None):
         event = self.get_object()
         user = request.user
-        if request.method == 'POST' and request.user.is_committee:
+        if request.method == 'POST' and user_allowed_edit_events(request.user):
             # POST for changing others, PATCH for changing self
             user_id = request.data['userId']
             user = User.objects.get(pk=user_id)

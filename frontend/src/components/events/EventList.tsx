@@ -124,7 +124,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
                 {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
               </div>
-              {currentUser?.is_committee && (
+              {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (
                 <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
               )}
             </div>

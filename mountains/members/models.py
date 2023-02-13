@@ -51,6 +51,7 @@ class User(AbstractUser):
     )
     is_approved = models.BooleanField(default=False)
     is_committee = models.BooleanField(default=False)
+    is_walk_coordinator = models.BooleanField(default=False)
     in_case_emergency = models.TextField('emergency', blank=True)
     is_paid = models.BooleanField(default=False)
     is_on_discord = models.BooleanField(default=False)
