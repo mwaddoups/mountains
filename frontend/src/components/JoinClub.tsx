@@ -5,6 +5,16 @@ import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButt
 import { useAuth } from "./Layout";
 
 export default function JoinClub() {
+  return (
+    <>
+    <Section>
+      <Heading>Joining the Club</Heading>
+      <Paragraph>
+        Joining the club is currently closed ahead of our AGM on March 15th, 2023. Check back after then or on the Discord for updates!
+      </Paragraph>
+    </Section>
+    </>
+  )
   // TODO: Check they have entered email, phone number, full name
   return (
     <>
