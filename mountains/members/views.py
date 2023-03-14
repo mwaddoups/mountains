@@ -146,7 +146,7 @@ class UserJoinView(generics.GenericAPIView):
             "Account: 23104562\n"
             "Sort Code: 80-22-60\n"
             "Reference: [your initials] + 'membership'\n"
-            "Amount: £36 (£25 for concession)"
+            f"Amount: £{user_data['amount']}\n\n"
 
             "The treasurer should be in touch to confirm your membership. \n\n"
             "Thank you!"

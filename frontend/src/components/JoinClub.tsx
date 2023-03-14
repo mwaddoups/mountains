@@ -5,7 +5,7 @@ import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButt
 import { useAuth } from "./Layout";
 
 export default function JoinClub() {
-  return (
+  /*return (
     <>
     <Section>
       <Heading>Joining the Club</Heading>
@@ -14,7 +14,7 @@ export default function JoinClub() {
       </Paragraph>
     </Section>
     </>
-  )
+  )*/
   // TODO: Check they have entered email, phone number, full name
   return (
     <>
@@ -29,7 +29,7 @@ export default function JoinClub() {
         Our membership also includes Mountaineering Scotland membership, which has a host of benefits including discounts at outdoor stores, access to talks and training and mountaineering insurance.
       </Paragraph>
       <Paragraph>
-        The cost is £36, or £25 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2023 so the fee will cover you until then. If you join after October we offer a reduced rate of £21 or £15 for concessions.
+        The cost is £39, or £27 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2024 so the fee will cover you until then. If you join after October we offer a reduced rate of £22 or £16 for concessions.
       </Paragraph>
       <Paragraph>
         If you are already a Mountaineering Scotland member get in touch with the treasurer (treasurer@clydemc.org) before paying as we should be able to offer a reduced rate.
@@ -60,8 +60,9 @@ function JoinClubForm() {
   const currentMonth = new Date().getMonth();
   
   const isHalfYearFee = currentMonth > 8 || currentMonth < 2;
-  const regularFee = isHalfYearFee ? 21 : 36;
-  const concessionFee = isHalfYearFee ? 15 : 25;
+  const regularFee = isHalfYearFee ? 22 : 39;
+  const concessionFee = isHalfYearFee ? 16 : 27;
+  const feeForThisUser = membership === "regular" ? regularFee : concessionFee;
 
 
   const handleJoin = useCallback(event => {
@@ -69,12 +70,12 @@ function JoinClubForm() {
     const name = currentUser ? getName(currentUser) : "<Missing user>";
     const email = currentUser?.email;
 
-    const userData = {name, email, dob, address, mobile, membership, mscot};
+    const userData = {name, email, dob, address, mobile, membership, mscot, amount: feeForThisUser};
 
     api.post("users/join/", userData).then(() => {
       setSubmitted(true);
     })
-  }, [dob, address, mobile, membership, mscot, currentUser])
+  }, [dob, address, mobile, membership, mscot, currentUser, feeForThisUser])
 
   return submitted 
       ? (
@@ -86,8 +87,8 @@ function JoinClubForm() {
         <Paragraph>Account: 23104562</Paragraph>
         <Paragraph>Sort Code: 80-22-60</Paragraph>
         <Paragraph>Reference: [your initials] + "membership"</Paragraph>
-        <Paragraph>Amount: £{membership === "regular" ? regularFee : concessionFee}</Paragraph>
-        <Paragraph>End Date: April 1, 2023</Paragraph>
+        <Paragraph>Amount: £{feeForThisUser}</Paragraph>
+        <Paragraph>End Date: April 1, 2024</Paragraph>
         <Paragraph>
           The treasurer should be in touch to confirm receipt! Any questions, get in touch at treasurer@clydemc.org.
         </Paragraph>

@@ -18,7 +18,7 @@ export default function Landing() {
           If you are interested in joining the club, the first step is <span className="text-blue-600 hover:text-blue-400"><Link to="/platform">registering on our site.</Link></span>
            &nbsp; Once you register, you will have access to our internal site and be able to join our Discord, and view more details of our upcoming events.
         </Paragraph>
-        <Paragraph>You are welcome to come along on a trip to see if you like the club before becoming a member. Our membership year runs until April, and dues are currently £21 until April 2023 (and are £36 for the full year). This includes affiliation to Mountaineering Scotland.</Paragraph>
+        <Paragraph>You are welcome to come along on a trip to see if you like the club before becoming a member. Our membership year runs until April, and dues are currently £39 until April 2024. This includes affiliation to Mountaineering Scotland.</Paragraph>
         <Paragraph>Any other questions or want to say hello? Get in touch at hello@clydemc.org</Paragraph>
       </Section>
       <Section header="Upcoming Events">
