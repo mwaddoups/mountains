@@ -80,7 +80,7 @@ export default function Faqs() {
       <QA>
         <Question>How much is it to join the club?</Question>
         <Answer>
-          Our fees for 2022/23 are set at £36. If you have no or low income, we can offer a reduced rate of £25. 
+          Our fees for 2023/24 are set at £39 for the year. If you're not able to afford this, we can offer a reduced concession rate of £21. 
           We also pro-rate this to some extent throughout the year.
         </Answer>
       </QA>
@@ -93,8 +93,8 @@ export default function Faqs() {
         </Answer>
         <Answer>
           The club is a nonprofit, so the other half goes into developing and improving the club. We are looking at buying some
-          club kit (such as maps, helmets, and perhaps winter gear) that will be available to club members. As we're still in the 
-          early stages, new ideas are welcome!
+          club kit (such as maps, helmets, and perhaps winter gear) that will be available to club members. We currently have club 
+          helmets, safety gear such as group shelters, and navigational aids such as maps and compasses.
         </Answer>
       </QA>
       <QA>

@@ -29,7 +29,7 @@ export default function JoinClub() {
         Our membership also includes Mountaineering Scotland membership, which has a host of benefits including discounts at outdoor stores, access to talks and training and mountaineering insurance.
       </Paragraph>
       <Paragraph>
-        The cost is £39, or £27 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2024 so the fee will cover you until then. If you join after October we offer a reduced rate of £22 or £16 for concessions.
+        The cost is £39 for the year, or £21 for those that can't afford the full fee - this choice is up to you. Our membership year runs until April 1, 2024 so the fee will cover you until then. If you join after October we offer a reduced rate of £22 or £12 for concessions.
       </Paragraph>
       <Paragraph>
         If you are already a Mountaineering Scotland member get in touch with the treasurer (treasurer@clydemc.org) before paying as we should be able to offer a reduced rate.
@@ -61,7 +61,7 @@ function JoinClubForm() {
   
   const isHalfYearFee = currentMonth > 8 || currentMonth < 2;
   const regularFee = isHalfYearFee ? 22 : 39;
-  const concessionFee = isHalfYearFee ? 16 : 27;
+  const concessionFee = isHalfYearFee ? 12 : 21;
   const feeForThisUser = membership === "regular" ? regularFee : concessionFee;
 
 
