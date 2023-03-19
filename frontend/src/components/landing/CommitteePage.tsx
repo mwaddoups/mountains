@@ -43,7 +43,7 @@ export default function CommitteePage() {
 }
 
 function committeeSort(c1: CommitteeUser, c2: CommitteeUser) {
-  let order = ['Chair', 'Secretary', 'Treasurer', 'General'];
+  let order = ['Chair', 'Vice-Chair', 'Treasurer', 'Secretary', 'General'];
 
   let get_index = (c: CommitteeUser) => {
     let index = order.indexOf(c.committee_role || "no_role");

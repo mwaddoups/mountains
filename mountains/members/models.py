@@ -58,6 +58,7 @@ class User(AbstractUser):
 
     COMMITTEE_ROLES = [
         ('Chair', 'Chair'),
+        ('Vice-Chair', 'Vice-Chair'),
         ('Secretary', 'Secretary'),
         ('Treasurer', 'Treasurer'),
         ('General', 'General'),
