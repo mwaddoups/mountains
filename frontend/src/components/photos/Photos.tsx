@@ -95,6 +95,7 @@ function GalleryPhoto({ photo, onClick }: GalleryPhotoProps) {
     <img 
       className="w-60 p-2 flex-1 object-contain max-h-40 rounded-lg"
       onClick={onClick}
+      loading="lazy"
       src={photo.photo} alt="Mountains" />
   )
 }
