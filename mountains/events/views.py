@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .models import AttendingUser, Event, User
 from .serializers import BasicEventSerializer, EventSerializer
 from activity.models import Activity
+from django.utils import timezone
 
 def user_allowed_edit_events(user):
     return user.is_committee or user.is_walk_coordinator
@@ -108,8 +109,30 @@ class EventViewSet(viewsets.ModelViewSet):
     @action(methods=['post'], detail=False, permission_classes=[permissions.IsAuthenticated])
     def attendedby(self, request):
         user_id = request.data['userId']
-        attended_events = [au.event for au in AttendingUser.objects.filter(user=user_id)]
-        attended_events = sorted(attended_events, key=lambda e: e.event_date, reverse=True)
+        attended_events = [au.event for au in AttendingUser.objects.filter(user=user_id, is_waiting_list=False)]
+        attended_events = sorted(
+            [e for e in attended_events if e.event_date < timezone.now() + datetime.timedelta(days=1)], 
+            key=lambda e: e.event_date, reverse=True
+        )
 
         serializer = BasicEventSerializer(attended_events, many=True)
         return Response(serializer.data)
+
+    @action(methods=['get'], detail=False, permission_classes=[permissions.IsAuthenticated])
+    def needsmembership(self, request):
+        """Returns a list of users who have attended 1 or more walks but aren't yet a member"""
+        attended_users = {}
+        for au in AttendingUser.objects.all():
+            if not au.user.is_paid and au.event.event_type in ('SD', 'SW', 'WD', 'WW') and au.event.event_date < timezone.now():
+                if au.user.id not in attended_users:
+                    attended_users[au.user.id] = {'user': au.user, 'count': 1}
+                else:
+                    attended_users[au.user.id]['count'] += 1
+
+        users_to_prompt = sorted([
+            {'name': d['user'].first_name + ' ' + d['user'].last_name, 'count': d['count']}
+            for d in attended_users.values()
+        ], key=lambda x: x['count'], reverse=True)
+
+
+        return Response(users_to_prompt)
