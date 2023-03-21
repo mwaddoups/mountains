@@ -123,7 +123,7 @@ class EventViewSet(viewsets.ModelViewSet):
         """Returns a list of users who have attended 1 or more walks but aren't yet a member"""
         attended_users = {}
         for au in AttendingUser.objects.all():
-            if not au.user.is_paid and au.event.event_type in ('SD', 'SW', 'WD', 'WW') and au.event.event_date < timezone.now():
+            if not au.user.is_paid and au.event.event_type in ('SD', 'SW', 'WD', 'WW') and au.event.event_date < timezone.now() and not au.is_waiting_list:
                 if au.user.id not in attended_users:
                     attended_users[au.user.id] = {'user': au.user, 'count': 1}
                 else:
