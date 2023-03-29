@@ -17,9 +17,9 @@ def email_superusers_about_new_user(instance, **kwargs):
         superusers = User.objects.filter(is_superuser=True)
 
         send_mail(
-            "Clyde Mountaineering Club - New User needs approval",
+            "Clyde Mountaineering Club - New User",
             email_body,
             "noreply@clydemc.org",
-            [u.email for u in superusers],
+            ["admin@clydemc.org"],
             fail_silently=True,
         )

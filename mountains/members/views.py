@@ -179,7 +179,7 @@ class UserJoinView(generics.GenericAPIView):
             "Clyde Mountaineering Club - New paid member!",
             email_body,
             "noreply@clydemc.org",
-            ["treasurer@clydemc.org", "chair@clydemc.org", "secretary@clydemc.org"],
+            ["committee@clydemc.org"],
             fail_silently=True,
             html_message=email_html,
         )
