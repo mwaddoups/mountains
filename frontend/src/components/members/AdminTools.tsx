@@ -38,6 +38,7 @@ export default function AdminTools({ user, setNeedsRefresh }: ApprovalButtonProp
         <h1 className="text-lg mb-3">Admin Tools</h1>
         {!user.is_approved && <ProfileButton onClick={approveUser}>Approve User</ProfileButton>}
         <span className="ml-2"><ProfileButton onClick={togglePaid}>Toggle Member/Guest</ProfileButton></span>
+        <span className="ml-2 text-sm">Email: {user.email}</span>
       </div>
     )
   } else {
