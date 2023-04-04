@@ -39,7 +39,7 @@ export default function JoinClub() {
       </Paragraph>
     </Section>
     <Section>
-      <Heading> Join Now! </Heading>
+      <Heading> Join or Renew Now! </Heading>
       <Paragraph> Just fill in the details below and the treasurer will be in touch with our bank details and the pro-rated payment amount.</Paragraph>
       <JoinClubForm />
     </Section>
