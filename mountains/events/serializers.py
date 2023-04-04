@@ -12,6 +12,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
   profile_picture = serializers.FileField(source='user.profile_picture')
   is_approved = serializers.ReadOnlyField(source='user.is_approved')
   is_committee = serializers.ReadOnlyField(source='user.is_committee')
+  is_walk_coordinator = serializers.ReadOnlyField(source='user.is_walk_coordinator')
   is_paid = serializers.ReadOnlyField(source='user.is_paid')
   mobile_number = serializers.ReadOnlyField(source='user.mobile_number')
   in_case_emergency = serializers.ReadOnlyField(source='user.in_case_emergency')
@@ -20,7 +21,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
     model = AttendingUser
     fields = ['au_id', 'id', 'first_name', 'last_name', 'profile_picture', 
               'is_approved', 'is_committee', 'is_paid', 'mobile_number', 
-              'in_case_emergency','is_waiting_list', 'is_driving']
+              'in_case_emergency','is_waiting_list', 'is_driving', 'is_walk_coordinator']
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
   organiser = SmallUserSerializer(read_only=True)

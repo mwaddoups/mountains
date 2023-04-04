@@ -27,7 +27,7 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList, t
                     </Link>
                     {expanded && <>
                         <p className="ml-3 text-sm text-gray-500">
-                            <span className={user.is_paid ? "text-blue-500 font-semibold mr-1" : "font-semibold mr-1"}>{getName(user)}</span> 
+                            <span className={user.is_walk_coordinator ? "text-orange-500 font-semibold mr-1" : (user.is_paid ? "text-blue-500 font-semibold mr-1" : "font-semibold mr-1")}>{getName(user)}</span> 
                             {user.is_driving ? <CarFrontFill  className="inline mr-1 text-green-500" /> : ""}
                             <span className="mr-1">{user.mobile_number ? `(${user.mobile_number})` : ""}</span>
                             {isEditor ? `ICE: ${user.in_case_emergency ? user.in_case_emergency : "None given!"}` : ""}
