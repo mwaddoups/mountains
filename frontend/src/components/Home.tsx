@@ -16,7 +16,7 @@ export default function Home() {
         </Paragraph>
         <Paragraph><a target="_blank" rel="noreferrer" className="text-blue-700 hover:text-blue-400" href="https://discord.gg/98K3CafRxk">Join our discord server here!</a></Paragraph>
         <Paragraph>
-          You can see our events, members and other information using the sidebar on the side.
+          You can see our events, members and other information using the sidebar on the side. We go bouldering weekly on Tuesdays and climbing at GCC on Thursdays.
         </Paragraph>
         <Paragraph>
           You can adjust or update your profile using your profile link at the top of the page. Please add a picture 
