@@ -20,6 +20,7 @@ export default function EventEditor() {
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [membersOnly, setMembersOnly] = useState<boolean>(false);
+  const [signupOpen, setSignupOpen] = useState<boolean>(true);
   const [maxAttendees, setMaxAttendees] = useState<number>(0); 
 
   // use params to check if we are at event/x/edit or event/new
@@ -38,7 +39,8 @@ export default function EventEditor() {
         setShowPopup(event.show_popup);
         setMembersOnly(event.members_only);
         setMaxAttendees(event.max_attendees);
-        setEventType(event.event_type)
+        setEventType(event.event_type);
+        setSignupOpen(event.signup_open);
       })
     }
     setLoading(false);
@@ -53,6 +55,7 @@ export default function EventEditor() {
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
     newEvent.show_popup = showPopup;
     newEvent.members_only = membersOnly;
+    newEvent.signup_open = signupOpen;
     newEvent.max_attendees = maxAttendees || 0;
     if (!currentEvent) {
       newEvent.attendees = [];
@@ -76,7 +79,7 @@ export default function EventEditor() {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupOpen])
 
   const setNewEventType = useCallback((newEventType: string) => {
     if (Object.keys(eventTypeMap).includes(newEventType)) {
@@ -131,8 +134,12 @@ export default function EventEditor() {
             <input className="-ml-1 md:ml-4" type="checkbox" checked={showPopup} onChange={() => setShowPopup(!showPopup)} />
           </div>
           <div className="flex items-center">
-            <FormLabel>Make this event members only?</FormLabel>
+            <FormLabel>Make this event members only? (Usually no, unless weekend)</FormLabel>
             <input className="-ml-1 md:ml-4" type="checkbox" checked={membersOnly} onChange={() => setMembersOnly(!membersOnly)} />
+          </div>
+          <div className="flex items-center">
+            <FormLabel>Open signup for this event? (Usually yes)</FormLabel>
+            <input className="-ml-1 md:ml-4" type="checkbox" checked={signupOpen} onChange={() => setSignupOpen(!signupOpen)} />
           </div>
           <div className="w-full">
             <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>

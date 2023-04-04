@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowClockwise, ArrowDown, ArrowUp, PencilFill } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowDown, ArrowUp, DoorClosedFill, DoorOpenFill, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import { Button, Badge, EventHeading, BadgeColor } from "../base/Base";
+import { Button, Badge, EventHeading, BadgeColor, CancelButton } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
@@ -73,6 +73,12 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     }
   }, [event])
 
+  const toggleSignup = useCallback(() => {
+      api.patch(
+        `events/${event.id}/`, { signup_open: (!event.signup_open) }
+        ).then(res => setEvent(res.data)) 
+    }, [event])
+
   const handleAttend = useCallback(() => {
     if (isAttending) {
       toggleCurrentAttendance();
@@ -128,9 +134,12 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
               </div>
               <button onClick={refreshEvent}><ArrowClockwise /></button>
-              {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (
+              {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (<>
                 <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
-              )}
+                <span onClick={toggleSignup} className="cursor-pointer">
+                  {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
+                </span>
+              </>)}
             </div>
             <h6 className="text-[0.6rem] md:text-xs text-gray-400">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
             <CalendarTime dateStr={event.event_date} />
@@ -166,14 +175,17 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 </div>
               </>
             )}
-            <Button onClick={handleAttend}>
-              {isAttending 
-                ? "Leave" 
-                : (
-                  event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
-                )
-              }
-            </Button>
+            {event.signup_open 
+               ? <Button onClick={handleAttend}>
+                  {isAttending 
+                    ? "Leave" 
+                    : (
+                      event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+                    )
+                  }
+                </Button>
+               : <CancelButton>Signup closed</CancelButton>
+            }
           </div>
         </div>
       </div>

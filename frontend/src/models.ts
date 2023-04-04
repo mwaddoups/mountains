@@ -65,6 +65,7 @@ export interface Event extends BasicEvent {
   organiser: User,
   show_popup: boolean,
   members_only: boolean,
+  signup_open: boolean,
 }
 
 export type FeedPost = {
