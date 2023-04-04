@@ -8,7 +8,11 @@ import Loading from "../Loading";
 import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect } from "../base/Base";
 import { eventTypeMap } from "./EventList";
 
-export default function EventEditor() {
+interface EventEditorProps {
+  copyFrom: boolean
+}
+
+export default function EventEditor({ copyFrom }: EventEditorProps) {
   const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -31,8 +35,12 @@ export default function EventEditor() {
     if (eventIdParam) {
       api.get(`events/${eventIdParam}/`).then(res => {
         let event = (res.data as Event);
-        setCurrentEvent(event);
-        setEventId(event.id);
+        // Check if we are at event/x/edit or event/x/copy
+        // This is set by the routing
+        if (!copyFrom) {
+          setCurrentEvent(event);
+          setEventId(event.id);
+        }
         setTitle(event.title);
         setDescription(event.description);
         setEventDate(new Date(event.event_date));
@@ -44,7 +52,7 @@ export default function EventEditor() {
       })
     }
     setLoading(false);
-  }, [eventIdParam])
+  }, [eventIdParam, copyFrom])
 
   const updateEvent = useCallback(e => {
     e.preventDefault();

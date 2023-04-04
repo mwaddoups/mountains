@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowClockwise, ArrowDown, ArrowUp, DoorClosedFill, DoorOpenFill, PencilFill } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowDown, ArrowUp, ClipboardPlus, DoorClosedFill, DoorOpenFill, PencilFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -136,6 +136,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
               <button onClick={refreshEvent}><ArrowClockwise /></button>
               {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (<>
                 <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
+                <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
                 <span onClick={toggleSignup} className="cursor-pointer">
                   {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
                 </span>
