@@ -53,9 +53,9 @@ function App() {
                 <Route path="events" element={<MemberContext />}>
                   <Route index element={<Events />} />
                   <Route path=":eventId" element={<Events />} />
-                  <Route path="new" element={<EventEditor copyFrom="false"/>} />
-                  <Route path=":eventId/edit" element={<EventEditor copyFrom="false" />} />
-                  <Route path=":eventId/copy" element={<EventEditor copyFrom="true" />} />
+                  <Route path="new" element={<EventEditor copyFrom={false}/>} />
+                  <Route path=":eventId/edit" element={<EventEditor copyFrom={false} />} />
+                  <Route path=":eventId/copy" element={<EventEditor copyFrom={true} />} />
                 </Route>
                 <Route path="photos" element={<MemberContext />}>
                   <Route index element={<Albums />} />
