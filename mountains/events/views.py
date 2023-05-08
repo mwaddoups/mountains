@@ -77,6 +77,7 @@ class EventViewSet(viewsets.ModelViewSet):
         wanted_au = AttendingUser.objects.filter(event=event, user=user_id).first()
 
         wanted_au.is_waiting_list = not wanted_au.is_waiting_list
+        wanted_au.list_join_date = timezone.now()
         wanted_au.save()
 
         updated_event = EventSerializer(event, context={'request': request}) 

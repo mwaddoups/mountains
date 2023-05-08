@@ -28,6 +28,7 @@ export interface AttendingUser extends NamedProfileUser {
   is_on_discord: boolean,
   is_waiting_list: boolean,
   is_driving: boolean,
+  list_join_date: string,
 }
 
 export interface FullUser extends User {

@@ -28,6 +28,8 @@ class Event(models.Model):
     is_deleted = models.BooleanField(blank=False, null=False, default=False)
 
 class AttendingUser(models.Model):
+    modified_date = models.DateTimeField(auto_now=True)
+    list_join_date = models.DateTimeField(auto_now_add=True) # Gets updated manually by waiting list changes
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     is_waiting_list = models.BooleanField(blank=False, null=False, default=False)

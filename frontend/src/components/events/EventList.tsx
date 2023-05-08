@@ -42,8 +42,18 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     currentUser && event.attendees.map(user => user.id).includes(currentUser.id)
   ), [event, currentUser])
 
-  const attendingList = useMemo(() => event.attendees.filter(user => !user.is_waiting_list), [event])
-  const waitingList = useMemo(() => event.attendees.filter(user => user.is_waiting_list), [event])
+  const attendingList = useMemo(
+    () => event.attendees
+      .filter(user => !user.is_waiting_list)
+      .sort((u1, u2) => new Date(u1.list_join_date).getTime() - new Date(u2.list_join_date).getTime())
+    , [event]
+  )
+  const waitingList = useMemo(
+    () => event.attendees
+      .filter(user => user.is_waiting_list)
+      .sort((u1, u2) => new Date(u1.list_join_date).getTime() - new Date(u2.list_join_date).getTime())
+    , [event]
+  )
 
   const refreshEvent = useCallback(() => {
     api.get(`events/${event.id}/`).then(res => setEvent(res.data))
