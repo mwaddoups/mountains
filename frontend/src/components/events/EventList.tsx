@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowClockwise, ArrowDown, ArrowUp, ClipboardPlus, DoorClosedFill, DoorOpenFill, PencilFill, Trash } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowDown, ArrowUp, ClipboardPlus, DoorClosedFill, DoorOpenFill, Envelope, PencilFill, Trash } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -36,6 +36,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmReminder, setConfirmReminder] = useState(false);
 
   const { currentUser } = useAuth();
   const isAttending = useMemo(() => (
@@ -97,7 +98,15 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     ).then(res => {
       setConfirmDelete(false);
       setEvent(res.data);
-    })//window.location.reload())
+    })
+  }, [event])
+
+  const sendReminder = useCallback(() => {
+    api.post(
+      `events/${event.id}/reminderemail/`, {}
+    ).then(res => {
+      setConfirmReminder(false);
+    })
   }, [event])
 
   const handleAttend = useCallback(() => {
@@ -148,6 +157,14 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         <CancelButton onClick={() => setConfirmDelete(false)}>Cancel</CancelButton>
       </Modal>)
       }
+      {confirmReminder && (<Modal>
+        <Paragraph>Are you sure you want to send an email reminder?</Paragraph>
+        <Paragraph>Please only do this <Bolded>after</Bolded> you have created the walk thread in #trips</Paragraph>
+        <Paragraph>This will email <Bolded>{event.attendees.length}</Bolded> people.</Paragraph>
+        <Button onClick={sendReminder}>Send reminder</Button>
+        <CancelButton onClick={() => setConfirmReminder(false)}>Cancel</CancelButton>
+      </Modal>)
+      }
       <div  
         ref={eventRef} 
         className={"w-full shadow" + (isInPast ? " striped-gradient" : "")}
@@ -170,6 +187,9 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                   <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
                   <span onClick={toggleSignup} className="cursor-pointer">
                     {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
+                  </span>
+                  <span onClick={() => setConfirmReminder(true)} className="cursor-pointer">
+                    <Envelope className="text-sm ml-2 inline" />
                   </span>
                   <span onClick={() => setConfirmDelete(true)} className="cursor-pointer">
                     <Trash className="text-sm ml-2 inline" />

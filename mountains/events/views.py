@@ -7,6 +7,7 @@ from .models import AttendingUser, Event, User
 from .serializers import BasicEventSerializer, EventSerializer
 from activity.models import Activity
 from django.utils import timezone
+from django.core.mail import send_mail
 
 def user_allowed_edit_events(user):
     return user.is_committee or user.is_walk_coordinator
@@ -137,3 +138,40 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
         return Response(users_to_prompt)
+
+    @action(methods=['post'], detail=True, permission_classes = [IsEventEditorOrReadOnly])
+    def reminderemail(self, request, pk=None):
+        event = self.get_object()
+        attendee_emails = list([u.email for u in event.attendees.all()])
+
+        email_subject = f'Reminder: CMC walk, {event.title}'
+
+        email_body =  (
+            f"This is a reminder that you have signed up or are on the waiting list for {event.title} on {event.event_date.strftime('%Y-%m-%d')}!\n\n"
+            "If you still wish to attend, you must confirm your place on Discord in the associated walk thread."
+            "Discord will also be used for any updates this week, as well as organising lifts and handing out waiting list places - so please keep an eye on it!\n\n"
+            "If you can no longer attend or no longer wish to be on the waiting list, please update your attendance on the site and let the organiser know. "
+            "If we are unable to reach you on Discord in the next couple days, we will remove you from the event.\n\n"
+            "Looking forward to the walk and will hopefully see you there!"
+        )
+        email_html =  (
+            f"<h1>Confirm your place: {event.title}, {event.event_date.strftime('%Y-%m-%d')}</h1>"
+            f"<p>This is a reminder that you have signed up or are on the waiting list for {event.title} on {event.event_date.strftime('%Y-%m-%d')}!</p>\n"
+            '<p style="font-weight: bold;">If you still wish to attend, you must confirm your place on Discord in the associated walk thread.</p>\n`'
+            "<p>Discord will also be used for any updates this week, as well as organising lifts and handing out waiting list places - so please keep an eye on it!</p>\n"
+            "<p>If you can no longer attend or no longer wish to be on the waiting list, please update your attendance on the site and let the organiser know. "
+            "If we are unable to reach you on Discord in the next couple days, we will remove you from the event.</p>\n"
+            "<p>Looking forward to the walk and will hopefully see you there!</p>"
+        )
+
+        send_mail(
+            email_subject,
+            email_body,
+            "noreply@clydemc.org",
+            attendee_emails,
+            fail_silently=True,
+            html_message=email_html,
+        )
+
+
+        return Response({'is_approved': True})
