@@ -55,6 +55,7 @@ export type BasicEvent = {
   title: string,
   event_date: string,
   event_type: EventType,
+  is_deleted: boolean,
 }
 
 export interface Event extends BasicEvent {
@@ -66,6 +67,7 @@ export interface Event extends BasicEvent {
   show_popup: boolean,
   members_only: boolean,
   signup_open: boolean,
+  is_deleted: boolean,
 }
 
 export type FeedPost = {

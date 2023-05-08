@@ -1,17 +1,18 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ArrowClockwise, ArrowDown, ArrowUp, ClipboardPlus, DoorClosedFill, DoorOpenFill, PencilFill } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowDown, ArrowUp, ClipboardPlus, DoorClosedFill, DoorOpenFill, PencilFill, Trash } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import { Button, Badge, EventHeading, BadgeColor, CancelButton } from "../base/Base";
+import { Button, Badge, EventHeading, BadgeColor, CancelButton, Bolded, Paragraph } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
 import AttendPopup, { PopupStep } from "./AttendPopup";
 import CalendarDate, { CalendarTime } from "./CalendarDate";
+import Modal from "../base/Modal";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null,
@@ -34,6 +35,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>([]);
   const [expandedAttendees, setExpandedAttendees] = useState(false);
   const [expandedWaitList, setExpandedWaitList] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const { currentUser } = useAuth();
   const isAttending = useMemo(() => (
@@ -79,6 +81,15 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         ).then(res => setEvent(res.data)) 
     }, [event])
 
+  const deleteEvent = useCallback(() => {
+    api.patch(
+      `events/${event.id}/`, { is_deleted: true}
+    ).then(res => {
+      setConfirmDelete(false);
+      setEvent(res.data);
+    })//window.location.reload())
+  }, [event])
+
   const handleAttend = useCallback(() => {
     if (isAttending) {
       toggleCurrentAttendance();
@@ -115,83 +126,97 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
   todayDate.setHours(0,0,0,0);
   const isInPast = new Date(event.event_date) < todayDate;
 
-  return (
-    <>
-    <div  
-      ref={eventRef} 
-      className={"w-full shadow" + (isInPast ? " striped-gradient" : "")}
-      >
-      <div className="w-full p-4 mt-4">
-        <div className="flex">
-          <CalendarDate dateStr={event.event_date}/>
-          <div className="w-full">
-            <div className="flex items-center">
-              <div className="md:flex md:items-center">
-                <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
-                  <Link to={`../${event.id}`}>{event.title}</Link>
-                </EventHeading>
-                <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
-                {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
+  if (event.is_deleted) {
+    return null
+  } else {
+    return (
+      <>
+      {confirmDelete && (<Modal>
+        <Paragraph>Are you sure you want to delete this event?</Paragraph>
+        <Paragraph><Bolded>{event.title}</Bolded></Paragraph>
+        <Button onClick={deleteEvent}>Delete event</Button>
+        <CancelButton onClick={() => setConfirmDelete(false)}>Cancel</CancelButton>
+      </Modal>)
+      }
+      <div  
+        ref={eventRef} 
+        className={"w-full shadow" + (isInPast ? " striped-gradient" : "")}
+        >
+        <div className="w-full p-4 mt-4">
+          <div className="flex">
+            <CalendarDate dateStr={event.event_date}/>
+            <div className="w-full">
+              <div className="flex items-center">
+                <div className="md:flex md:items-center">
+                  <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
+                    <Link to={`../${event.id}`}>{event.title}</Link>
+                  </EventHeading>
+                  <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
+                  {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
+                </div>
+                <button onClick={refreshEvent}><ArrowClockwise /></button>
+                {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (<>
+                  <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
+                  <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
+                  <span onClick={toggleSignup} className="cursor-pointer">
+                    {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
+                  </span>
+                  <span onClick={() => setConfirmDelete(true)} className="cursor-pointer">
+                    <Trash className="text-sm ml-2 inline" />
+                  </span>
+                </>)}
               </div>
-              <button onClick={refreshEvent}><ArrowClockwise /></button>
-              {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (<>
-                <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
-                <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
-                <span onClick={toggleSignup} className="cursor-pointer">
-                  {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
-                </span>
-              </>)}
+              <h6 className="text-[0.6rem] md:text-xs text-gray-400">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
+              <CalendarTime dateStr={event.event_date} />
             </div>
-            <h6 className="text-[0.6rem] md:text-xs text-gray-400">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
-            <CalendarTime dateStr={event.event_date} />
           </div>
-        </div>
-        <div className="w-full mt-2"> 
-          <Expander>
-            <ClydeMarkdown>{event.description}</ClydeMarkdown>
-          </Expander>
-          <div className="mt-4">
-            <div className="flex">
-              <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
-              <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
-                {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
-              </button>
-            </div>
-            <div className="w-full my-2">
-              {attendingList.length > 0
-                ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                : <p className="text-gray-400 h-10">None yet!</p>
+          <div className="w-full mt-2"> 
+            <Expander>
+              <ClydeMarkdown>{event.description}</ClydeMarkdown>
+            </Expander>
+            <div className="mt-4">
+              <div className="flex">
+                <h2>Attendees ({attendingList.length} total, {(event.max_attendees || 0) > 0 ? event.max_attendees : "no"} max)</h2>
+                <button onClick={() => setExpandedAttendees(!expandedAttendees)} className="ml-3">
+                  {expandedAttendees ? <ArrowUp /> : <ArrowDown />}
+                </button>
+              </div>
+              <div className="w-full my-2">
+                {attendingList.length > 0
+                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                  : <p className="text-gray-400 h-10">None yet!</p>
+                }
+              </div>
+              {waitingList.length > 0 && (
+                <>
+                  <div className="flex">
+                    <h2>Waiting List ({waitingList.length} total)</h2>
+                    <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
+                      {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
+                    </button>
+                  </div>
+                  <div className="w-full my-2">
+                    <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                  </div>
+                </>
+              )}
+              {event.signup_open 
+                ? <Button onClick={handleAttend}>
+                    {isAttending 
+                      ? "Leave" 
+                      : (
+                        event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+                      )
+                    }
+                  </Button>
+                : <CancelButton>Signup closed</CancelButton>
               }
             </div>
-            {waitingList.length > 0 && (
-              <>
-                <div className="flex">
-                  <h2>Waiting List ({waitingList.length} total)</h2>
-                  <button onClick={() => setExpandedWaitList(!expandedWaitList)} className="ml-3">
-                    {expandedWaitList ? <ArrowUp /> : <ArrowDown />}
-                  </button>
-                </div>
-                <div className="w-full my-2">
-                  <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
-                </div>
-              </>
-            )}
-            {event.signup_open 
-               ? <Button onClick={handleAttend}>
-                  {isAttending 
-                    ? "Leave" 
-                    : (
-                      event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
-                    )
-                  }
-                </Button>
-               : <CancelButton>Signup closed</CancelButton>
-            }
           </div>
         </div>
       </div>
-    </div>
-    {attendPopupVisible && <AttendPopup steps={attendPopupSteps} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
-    </>
-  )
+      {attendPopupVisible && <AttendPopup steps={attendPopupSteps} toggleCurrentAttendance={toggleCurrentAttendance} setVisible={setAttendPopupVisible} />}
+      </>
+    )
+  }
 }
