@@ -164,15 +164,15 @@ class EventViewSet(viewsets.ModelViewSet):
             "<p>Looking forward to the walk and will hopefully see you there!</p>"
         )
 
-        email = EmailMultiAlternatives(
-            subject=email_subject,
-            body=email_body,
-            from_email="noreply@clydemc.org",
-            to=[],
-            bcc=attendee_emails,
-        )
-        email.attach_alternative(email_html, "text/html")
-        email.send(fail_silently=True)
+        for attendee_email in attendee_emails:
+            email = EmailMultiAlternatives(
+                subject=email_subject,
+                body=email_body,
+                from_email="noreply@clydemc.org",
+                to=[attendee_email],
+            )
+            email.attach_alternative(email_html, "text/html")
+            email.send(fail_silently=True)
 
 
         return Response({'is_approved': True})
