@@ -168,7 +168,7 @@ class EventViewSet(viewsets.ModelViewSet):
             email_subject,
             email_body,
             "noreply@clydemc.org",
-            attendee_emails,
+            bcc=attendee_emails,
             fail_silently=True,
             html_message=email_html,
         )
