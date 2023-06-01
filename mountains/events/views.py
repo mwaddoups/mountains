@@ -7,7 +7,7 @@ from .models import AttendingUser, Event, User
 from .serializers import BasicEventSerializer, EventSerializer
 from activity.models import Activity
 from django.utils import timezone
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 
 def user_allowed_edit_events(user):
     return user.is_committee or user.is_walk_coordinator
@@ -164,14 +164,14 @@ class EventViewSet(viewsets.ModelViewSet):
             "<p>Looking forward to the walk and will hopefully see you there!</p>"
         )
 
-        send_mail(
-            email_subject,
-            email_body,
-            "noreply@clydemc.org",
+        email = EmailMultiAlternatives(
+            subject=email_subject,
+            body=email_body,
+            from_email="noreply@clydemc.org",
             bcc=attendee_emails,
-            fail_silently=True,
-            html_message=email_html,
         )
+        email.attach_alternative(email_html, "text/html")
+        email.send(fail_silently=True)
 
 
         return Response({'is_approved': True})
