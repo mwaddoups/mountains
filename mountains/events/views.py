@@ -168,6 +168,7 @@ class EventViewSet(viewsets.ModelViewSet):
             subject=email_subject,
             body=email_body,
             from_email="noreply@clydemc.org",
+            to=[],
             bcc=attendee_emails,
         )
         email.attach_alternative(email_html, "text/html")
