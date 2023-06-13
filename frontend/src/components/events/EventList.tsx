@@ -26,6 +26,7 @@ export const eventTypeMap: Record<EventType, [string, BadgeColor]> = {
   'WW': ['Winter Weekend', "darkblue"],
   'CL': ['Climbing', "purple"],
   'SO': ['Social', "orange"],
+  'CM': ['Committee', "pink"],
   'XX': ['Other', "pink"],
 }
 

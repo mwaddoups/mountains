@@ -49,7 +49,7 @@ export type Experience = {
 }
 
 // If changing this, change eventType dict (client) and server
-export type EventType = 'SD' | 'SW' | 'WD' | 'WW' | 'CL' | 'SO' | 'XX'
+export type EventType = 'SD' | 'SW' | 'WD' | 'WW' | 'CL' | 'SO' | 'CM' | 'XX'
 
 export type BasicEvent = {
   id: number,

@@ -12,6 +12,7 @@ class Event(models.Model):
         WINTER_WEEKEND = 'WW'
         CLIMBING = 'CL'
         SOCIAL = 'SO'
+        COMMITTEE = 'CM'
         OTHER = 'XX'
 
     title = models.CharField(max_length=100, blank=False)

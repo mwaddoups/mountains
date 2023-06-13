@@ -10,7 +10,7 @@ import EventList, { eventTypeMap } from "./EventList";
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([])
-  const [filters, setFilters] = useState<Array<EventType>>(Object.keys(eventTypeMap) as Array<EventType>)
+  const [filters, setFilters] = useState<Array<EventType>>(Object.keys(eventTypeMap).filter(e => e !== 'CM') as Array<EventType>)
   const [isLoading, setIsLoading] = useState(true);
 
   // Slightly complex logic needed to get the selectedEvent from the param
