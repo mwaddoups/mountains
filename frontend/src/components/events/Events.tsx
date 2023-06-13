@@ -93,10 +93,16 @@ function EventFilter({ filters, setFilters }: EventFilterProps) {
       setFilters(filters.concat([wanted_type]))
     }
   }, [filters, setFilters, firstClick])
+
+  let selectAll = useCallback(e => {
+    setFilters(allFilters)
+  }, [setFilters, allFilters])
+
   return (
     <div className="rounded shadow p-4">
-      <SmallHeading>Filter Event Types</SmallHeading>
-      <div className={"flex overflow-scroll"}>
+      <SmallHeading className="inline mr-4">Filter Event Types</SmallHeading>
+      <FilterBadge $badgeColor="gray" onClick={selectAll}>Select All</FilterBadge>
+      <div className={"py-1 flex overflow-scroll"}>
         {allFilters.map(event_type => (
           <FilterBadge 
             key={event_type}
