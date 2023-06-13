@@ -46,3 +46,8 @@ export const Badge = styled.span(({$badgeColor}: BadgeProps) => [
  tw`rounded-lg mr-2 px-2 py-0.5 text-sm flex-initial truncate inline`,
  colorVariants[$badgeColor], 
 ])
+
+export const FilterBadge = styled.span(({$badgeColor}: BadgeProps) => [
+ tw`rounded-lg mr-2 px-2 py-0.5 text-sm shrink-0 inline select-none cursor-pointer`,
+ colorVariants[$badgeColor], 
+])

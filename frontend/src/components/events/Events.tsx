@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ArrowLeftCircleFill, ArrowRightCircleFill } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
-import { Badge } from "../base/Base";
+import { FilterBadge, SmallHeading } from "../base/Base";
 import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";
@@ -80,7 +79,6 @@ interface EventFilterProps {
 
 function EventFilter({ filters, setFilters }: EventFilterProps) {
   let allFilters = Object.keys(eventTypeMap) as Array<EventType>
-  let [expanded, setExpanded] = useState(false)
   let [firstClick, setFirstClick] = useState(true)
 
   let handleClick = useCallback(e => {
@@ -96,19 +94,20 @@ function EventFilter({ filters, setFilters }: EventFilterProps) {
     }
   }, [filters, setFilters, firstClick])
   return (
-    <div className={"flex" + (expanded ? " flex-wrap" : "")}>
-      <h3 className="text-sm mr-2 text-gray-500">Filter</h3>
-      <span className="select-none cursor-pointer text-gray-500 mr-1" onClick={() => setExpanded(!expanded)}>{expanded ? <ArrowLeftCircleFill /> : <ArrowRightCircleFill />}</span>
-      {allFilters.map(event_type => (
-        <Badge 
-          key={event_type}
-          $badgeColor={eventTypeMap[event_type][1]} 
-          className={"select-none cursor-pointer my-0.5" + (expanded ? (filters.includes(event_type) ? " opacity-100" : " opacity-50") : " opacity-0 !hidden")}
-          onClick={handleClick} id={event_type}>
-            {eventTypeMap[event_type][0]}
-        </Badge>
-      ))}
+    <div className="rounded shadow p-4">
+      <SmallHeading>Filter Event Types</SmallHeading>
+      <div className={"flex overflow-scroll"}>
+        {allFilters.map(event_type => (
+          <FilterBadge 
+            key={event_type}
+            $badgeColor={eventTypeMap[event_type][1]} 
+            className={"py-0.5" + (filters.includes(event_type) ? " opacity-100" : " opacity-50")}
+            onClick={handleClick} id={event_type}>
+              {eventTypeMap[event_type][0]}
+          </FilterBadge>
+        ))}
 
+      </div>
     </div>
   )
 }
