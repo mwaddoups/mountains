@@ -81,15 +81,20 @@ interface EventFilterProps {
 function EventFilter({ filters, setFilters }: EventFilterProps) {
   let allFilters = Object.keys(eventTypeMap) as Array<EventType>
   let [expanded, setExpanded] = useState(false)
+  let [firstClick, setFirstClick] = useState(true)
 
   let handleClick = useCallback(e => {
     let wanted_type = e.target.id;
-    if (filters.includes(wanted_type)) {
+    if (firstClick) {
+      // First click we only select that type
+      setFirstClick(false);
+      setFilters([wanted_type])
+    } else if (filters.includes(wanted_type)) {
       setFilters(filters.filter(e => e !== wanted_type))
     } else {
       setFilters(filters.concat([wanted_type]))
     }
-  }, [filters, setFilters])
+  }, [filters, setFilters, firstClick])
   return (
     <div className={"flex" + (expanded ? " flex-wrap" : "")}>
       <h3 className="text-sm mr-2 text-gray-500">Filter</h3>
