@@ -34,4 +34,4 @@ class AttendingUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     is_waiting_list = models.BooleanField(blank=False, null=False, default=False)
-    is_driving = models.BooleanField(blank=False, null=False, default=False)
+    is_trip_paid = models.BooleanField(blank=False, null=False, default=False)

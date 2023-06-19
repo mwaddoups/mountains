@@ -79,10 +79,10 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
     }
   }, [event])
 
-  const toggleDriving = useCallback(userId => {
+  const togglePaid = useCallback(userId => {
     return () => {
       api.post(
-        `events/${event.id}/changedriving/`, { userId }
+        `events/${event.id}/changepaid/`, { userId }
         ).then(res => setEvent(res.data)) 
     }
   }, [event])
@@ -214,7 +214,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
               </div>
               <div className="w-full my-2">
                 {attendingList.length > 0
-                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} togglePaid={togglePaid}/>
                   : <p className="text-gray-400 h-10">None yet!</p>
                 }
               </div>
@@ -227,7 +227,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                     </button>
                   </div>
                   <div className="w-full my-2">
-                    <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} toggleDriving={toggleDriving}/>
+                    <AttendeeList attendees={waitingList} expanded={expandedWaitList} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} togglePaid={togglePaid}/>
                   </div>
                 </>
               )}

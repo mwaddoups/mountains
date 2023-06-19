@@ -35,7 +35,7 @@ class EventViewSet(viewsets.ModelViewSet):
             user_id = request.data['userId']
             user = User.objects.get(pk=user_id)
 
-        is_driving = request.data.get('isDriving', False)
+        is_trip_paid = request.data.get('isTripPaid', False)
 
         actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
         all_attendees = list(event.attendees.all())
@@ -53,7 +53,7 @@ class EventViewSet(viewsets.ModelViewSet):
             if event_has_waiting_list or event_over_max_limit:
                 # Add to waiting list
                 attending_user.is_waiting_list = True
-                attending_user.is_driving = is_driving
+                attending_user.is_trip_paid = is_trip_paid
                 attending_user.save()
                 if user != request.user:
                     Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to waiting list for")
@@ -61,7 +61,7 @@ class EventViewSet(viewsets.ModelViewSet):
                     Activity.objects.create(user=user, event=event, action="joined waiting list for")
             else:
                 attending_user.is_waiting_list = False
-                attending_user.is_driving = is_driving
+                attending_user.is_trip_paid = is_trip_paid
                 attending_user.save()
                 if user != request.user:
                     Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to")
@@ -85,7 +85,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(updated_event.data)
 
     @action(methods=['patch', 'post'], detail=True, permission_classes=[IsEventEditorOrReadOnly])
-    def changedriving(self, request, pk=None):
+    def changepaid(self, request, pk=None):
         event = self.get_object()
         user = request.user
         if request.method == 'POST' and user_allowed_edit_events(request.user):
@@ -94,7 +94,7 @@ class EventViewSet(viewsets.ModelViewSet):
             user = User.objects.get(pk=user_id)
         wanted_au = AttendingUser.objects.filter(event=event, user=user).first()
 
-        wanted_au.is_driving = not wanted_au.is_driving
+        wanted_au.is_trip_paid = not wanted_au.is_trip_paid
         wanted_au.save()
 
         updated_event = EventSerializer(event, context={'request': request}) 

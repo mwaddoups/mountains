@@ -27,7 +27,7 @@ export interface AttendingUser extends NamedProfileUser {
   in_case_emergency: string | undefined;
   is_on_discord: boolean,
   is_waiting_list: boolean,
-  is_driving: boolean,
+  is_trip_paid: boolean,
   list_join_date: string,
 }
 
