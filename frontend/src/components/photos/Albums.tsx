@@ -23,7 +23,7 @@ export default function Albums() {
 
   return (
     <Loading loading={loading}>
-      {currentUser?.is_committee && <Link to="new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create album</button></Link>}
+      {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && <Link to="new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create album</button></Link>}
       <div>
         {albums
           .sort((a1, a2) => new Date(a2.event_date).getTime() - new Date(a1.event_date).getTime())

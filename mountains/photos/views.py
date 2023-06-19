@@ -12,6 +12,13 @@ class IsCommitteeOrReadOnly(permissions.BasePermission):
         else:
             return request.user.is_committee
 
+class IsWalkCoOrCommitteeOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, user_obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        else:
+            return request.user.is_committee or request.user.is_walk_coordinator
+
 class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
@@ -34,7 +41,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 class AlbumViewSet(viewsets.ModelViewSet):
     queryset = Album.objects.all()
-    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsCommitteeOrReadOnly)]
+    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsWalkCoOrCommitteeOrReadOnly)]
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
