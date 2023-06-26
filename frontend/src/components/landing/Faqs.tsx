@@ -104,6 +104,14 @@ export default function Faqs() {
           However, we are very much open to all!
         </Answer>
       </QA>
+      <QA>
+        <Question>A note on sharing space on our trips...</Question>
+        <Answer>
+          We are a welcoming club, and all our club walks and weekends have a communal feel, due to the nature of car sharing and the 
+          accommodation in mountain huts. If for any reason, you feel uncomfortable with this, please reach out for a confidential chat 
+          with one of the committee members. Occasionally women-only dorms are possible, but this depends on numbers and huts.
+        </Answer>
+      </QA>
 
     </div>
   )
