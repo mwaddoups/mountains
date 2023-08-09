@@ -8,6 +8,21 @@ import Loading from "../Loading";
 import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect } from "../base/Base";
 import { eventTypeMap } from "./EventList";
 
+import summerWalkURL from "./templates/SummerWalk.md";
+import summerWeekendURL from "./templates/SummerWeekend.md";
+import winterWalkURL from "./templates/WinterWalk.md";
+import winterWeekendURL from "./templates/WinterWeekend.md";
+import climbingURL from "./templates/Climbing.md";
+
+
+const descriptionTemplates: Partial<Record<EventType, string>> = {
+  SD: summerWalkURL,
+  SW: summerWeekendURL,
+  WD: winterWalkURL,
+  WW: winterWeekendURL,
+  CL: climbingURL
+};
+
 interface EventEditorProps {
   copyFrom: boolean
 }
@@ -21,6 +36,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
   const [eventType, setEventType] = useState<EventType | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [description, setDescription] = useState<string>('');
+  const [descriptionEdited, setDescriptionEdited] = useState<boolean>(false);
   const [eventDate, setEventDate] = useState<Date>(new Date());
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [membersOnly, setMembersOnly] = useState<boolean>(false);
@@ -43,6 +59,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         }
         setTitle(event.title);
         setDescription(event.description);
+        setDescriptionEdited(true)
         setEventDate(new Date(event.event_date));
         setShowPopup(event.show_popup);
         setMembersOnly(event.members_only);
@@ -89,7 +106,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
     }
   }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupOpen])
 
-  const setNewEventType = useCallback((newEventType: string) => {
+  const setNewEventType = useCallback((newEventType: EventType) => {
     if (Object.keys(eventTypeMap).includes(newEventType)) {
       setEventType(newEventType as EventType);
       if ((newEventType === 'CL') || (newEventType === 'SO')) {
@@ -106,7 +123,19 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setMembersOnly(false);
       }
     }
-  }, [setEventType, setShowPopup])
+
+    if (!descriptionEdited) {
+      let templateURL = descriptionTemplates[newEventType]
+      if (templateURL) {
+        fetch(templateURL).then(
+          res => res.text().then(
+            text => setDescription(text)
+        ))
+      } else {
+        setDescription('')
+      }
+    }
+  }, [setEventType, setShowPopup, descriptionEdited])
 
   if (submitted) {
     return <Navigate to={`../${eventId}`} />
@@ -130,7 +159,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
           <div className="w-full">
             <FormLabel htmlFor="eventtype">Event Type</FormLabel>
             <FormSelect id="eventtype" value={eventType ? eventType : ""} 
-              onChange={event => setNewEventType(event.target.value)}>
+              onChange={event => setNewEventType(event.target.value as EventType)}>
                 <option value=""></option>
                 {Object.entries(eventTypeMap).map(([eventType, [eventTypeLabel, _]]) => (
                   <option key={eventType} value={eventType}>{eventTypeLabel}</option>)
@@ -157,7 +186,10 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
           </div>
           <FormLabel htmlFor="description">Description</FormLabel>
           <FormTextArea id="description" 
-            value={description} onChange={event => setDescription(event.target.value)} />
+            value={description} onChange={event => {
+              setDescription(event.target.value)
+              setDescriptionEdited(true)
+            }} />
           {errorText && <Error>{errorText}</Error>}
           <div className="flex justify-between">
             <FormButton
