@@ -12,11 +12,11 @@ export default function Home() {
         <Paragraph>
           Our club operates on both this site, and on our Discord server. If you haven't used Discord before, 
           it's similar to Whatsapp but allows us to have multiple groups for different chats (avoiding the chaos)!
-          You can download the app both on your phone and on your laptop.
+          You can download the app both on your phone and on your laptop. You will need to join Discord before joining us on an event.
         </Paragraph>
         <Paragraph><a target="_blank" rel="noreferrer" className="text-blue-700 hover:text-blue-400" href="https://discord.gg/98K3CafRxk">Join our discord server here!</a></Paragraph>
         <Paragraph>
-          You can see our events, members and other information using the sidebar on the side. We go bouldering weekly on Tuesdays and climbing at GCC on Thursdays.
+          You can see our events, members and other information using the sidebar on the side. We go bouldering weekly on Tuesdays, and have monthly socials.
         </Paragraph>
         <Paragraph>
           You can adjust or update your profile using your profile link at the top of the page. Please add a picture 
@@ -24,7 +24,7 @@ export default function Home() {
           similar members in future.
         </Paragraph>
         <Paragraph>
-          If you like the sound of the club and want to keep coming to walks, as well as help support us and get Mountaineering Scotland membership, 
+          You do not need to be a member to come on your first trial walk - but if you like the sound of the club and want to keep coming to walks, as well as help support us and get Mountaineering Scotland membership, 
           you can join us using the link in the sidebar.
         </Paragraph>
       </Section>
@@ -64,14 +64,13 @@ export default function Home() {
           is able to take responsibility for their own choices on the hill.
         </Paragraph>
         <Paragraph>
-          We don't wish to be exclusionary with this policy at all - we just want to be well prepared for the risks of heading out in winter. We're
-          currently looking into trying to arrange a winter skills course with a guide just for the club, and will post details about this in the Discord. 
+          We don't wish to be exclusionary with this policy at all - we just want to be well prepared for the risks of heading out in winter. We usually arrange an annual winter skills course with a guide just for the club, and will post details about this in the Discord. 
         </Paragraph>
       </Section>
       <Section id="feedback">
-        <Heading>The club is a work-in-progress...</Heading>
+        <Heading>Club Feedback</Heading>
         <Paragraph>
-          The club is still very much a work-in-progress. Any ideas for our future or ways to plan ahead? Let us know in the Discord.
+          We are always happy to hear feedback and ideas. Either let us know by bringing up issues in the Discord or speaking privately to one of our committee members. We also would be keen to hear if you find anything confusing on the website or if any parts of our club process aren't clear.
         </Paragraph>
       </Section>
     </div>
