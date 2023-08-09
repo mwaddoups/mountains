@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { XCircle } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
@@ -9,7 +10,7 @@ import EventList, { eventTypeMap } from "./EventList";
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([])
-  const [filters, setFilters] = useState<Array<EventType>>(Object.keys(eventTypeMap).filter(e => e !== 'CM') as Array<EventType>)
+  const [selectedFilter, setSelectedFilter] = useState<EventType | null>(null)
   const [isLoading, setIsLoading] = useState(true);
 
   // Slightly complex logic needed to get the selectedEvent from the param
@@ -52,17 +53,17 @@ export default function Events() {
           <h1 className="text-xl md:text-3xl font-medium mb-2">Upcoming Events</h1>
           {currentUser?.is_committee && <Link to="../new"><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">Create event</button></Link>}
         </div>
-        <EventFilter filters={filters} setFilters={setFilters} />
+        <EventFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
         {eventList
           .filter(e => new Date(e.event_date) >= todayDate)
-          .filter(e => filters.includes(e.event_type))
+          .filter(e => selectedFilter === null || e.event_type == selectedFilter)
           .sort((e1, e2) => new Date(e1.event_date).getTime() - new Date(e2.event_date).getTime())
           .map(eventDisplay)
         }
         <h1 className="text-xl md:text-3xl font-medium mb-2">Past Events</h1>
         {eventList
           .filter(e => new Date(e.event_date) < todayDate)
-          .filter(e => filters.includes(e.event_type))
+          .filter(e => selectedFilter === null || e.event_type == selectedFilter)
           .sort((e1, e2) => new Date(e2.event_date).getTime() - new Date(e1.event_date).getTime())
           .map(eventDisplay)
         }
@@ -73,46 +74,69 @@ export default function Events() {
 }
 
 interface EventFilterProps {
-  filters: Array<EventType>,
-  setFilters: (a: Array<EventType>) => void,
+  selectedFilter: EventType | null,
+  setSelectedFilter: (a: EventType | null) => void,
 }
 
-function EventFilter({ filters, setFilters }: EventFilterProps) {
+function EventFilter({ selectedFilter, setSelectedFilter }: EventFilterProps) {
   let allFilters = Object.keys(eventTypeMap) as Array<EventType>
-  let [firstClick, setFirstClick] = useState(true)
 
   let handleClick = useCallback(e => {
-    let wanted_type = e.target.id;
-    if (firstClick) {
-      // First click we only select that type
-      setFirstClick(false);
-      setFilters([wanted_type])
-    } else if (filters.includes(wanted_type)) {
-      setFilters(filters.filter(e => e !== wanted_type))
-    } else {
-      setFilters(filters.concat([wanted_type]))
+    const wanted_type = e.target.id;
+    setSelectedFilter(wanted_type);
+  }, [selectedFilter, setSelectedFilter])
+  
+  const filterBarRef = useRef<HTMLDivElement>(null);
+  const leftFadeClass = "before:pointer-events-none before:ease-in-out before:opacity-0 before:transition-opacity before:content-[''] before:h-full before:absolute before:left-0 before:top-0 before:w-1/6 before:bg-gradient-to-r before:from-white"
+  const rightFadeClass = "after:pointer-events-none after:ease-in-out after:opacity-0 after:transition-opacity after:content-[''] after:h-full after:absolute after:right-0 after:top-0 after:w-1/6 after:bg-gradient-to-l after:from-white"
+ 
+  const [filterContainerClassList, setFilterContainerClassList] = useState('');
+  
+  useEffect(() => {
+    if(filterBarRef.current != null) {
+      setFilterContainerClassList(getScrollClasses())
     }
-  }, [filters, setFilters, firstClick])
+  },[])
 
-  let selectAll = useCallback(e => {
-    setFilters(allFilters)
-  }, [setFilters, allFilters])
+  const getScrollClasses = () => {
+    const filterBar = filterBarRef.current!;
+    let classList = ""
+
+    if(filterBar.scrollWidth > filterBar.clientWidth) {
+      if(filterBar.scrollLeft) {
+        classList += " before:opacity-100";
+      }
+
+      const scrolledTo = filterBar.scrollLeft + filterBar.clientWidth
+      if(scrolledTo +5 < filterBar.scrollWidth) {
+        classList += " after:opacity-100";
+      }
+    }
+    return classList
+  }
+
+  const onScrollFilters = () => {
+    setFilterContainerClassList(getScrollClasses())
+  }
 
   return (
     <div className="rounded shadow p-4">
-      <SmallHeading className="inline mr-4">Filter Event Types</SmallHeading>
-      <FilterBadge $badgeColor="gray" onClick={selectAll}>Select All</FilterBadge>
-      <div className={"py-1 flex overflow-scroll"}>
-        {allFilters.map(event_type => (
-          <FilterBadge 
-            key={event_type}
-            $badgeColor={eventTypeMap[event_type][1]} 
-            className={"py-0.5" + (filters.includes(event_type) ? " opacity-100" : " opacity-50")}
-            onClick={handleClick} id={event_type}>
-              {eventTypeMap[event_type][0]}
-          </FilterBadge>
-        ))}
-
+      <div className="flex">
+        <SmallHeading className="inline mr-4">Filter Event Types</SmallHeading>
+      </div>
+      <div className={`relative ${leftFadeClass} ${rightFadeClass} ${filterContainerClassList}`}>
+        <div ref={filterBarRef} onScroll={onScrollFilters} className={`py-1 flex overflow-auto items-center`}>
+          {allFilters.filter(event_type => selectedFilter == null ||event_type == selectedFilter).map((event_type, index) => (
+            <FilterBadge
+              key={event_type}
+              $badgeColor={eventTypeMap[event_type][1]} 
+              className={"py-0.5"}
+              onClick={handleClick} id={event_type}>
+                {eventTypeMap[event_type][0]}
+            </FilterBadge>
+          ))}
+          {selectedFilter !== null && <XCircle onClick={()=>setSelectedFilter(null)} className="ml-2 text-red-600 cursor-pointer text-2xl"></XCircle>}
+        </div>
       </div>
     </div>
   )

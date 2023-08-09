@@ -69,14 +69,9 @@ export default function Home() {
         </Paragraph>
       </Section>
       <Section id="feedback">
-        <Heading>The club and website is a work-in-progress...</Heading>
+        <Heading>The club is a work-in-progress...</Heading>
         <Paragraph>
           The club is still very much a work-in-progress. Any ideas for our future or ways to plan ahead? Let us know in the Discord.
-        </Paragraph>
-        <Paragraph>
-          The website is also still very new and we are actively looking for feedback. Let us know about
-          anything, big or small, that you'd like to see added by either posting up on our Feed here, or
-          by chatting in the Discord #website channel.
         </Paragraph>
       </Section>
     </div>
