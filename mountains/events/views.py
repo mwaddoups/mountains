@@ -1,5 +1,6 @@
 import datetime
 import pytz
+import itertools
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,12 +21,41 @@ class IsEventEditorOrReadOnly(permissions.BasePermission):
             return user_allowed_edit_events(request.user)
 
 class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsEventEditorOrReadOnly)]
 
-    def get_queryset(self, *args, **kwargs):
-        ago_90d = datetime.datetime.now() - datetime.timedelta(days=90)
-        return Event.objects.filter(event_date__gte=ago_90d, is_deleted=False).order_by('-event_date')
+    def list(self, request):
+        future = datetime.datetime.now() - datetime.timedelta(days=1)
+        future_events = Event.objects.filter(event_date__gte=future, is_deleted=False).order_by('event_date')
+        past_events = Event.objects.filter(event_date__lt=future, is_deleted=False).order_by('-event_date')
+        raw_events = itertools.chain(future_events, past_events)
+
+
+        selected_id = self.request.query_params.get('selectedId')
+        if selected_id is None:
+            limit = int(self.request.query_params.get('limit'))
+            offset = int(self.request.query_params.get('offset'))
+            events = list(itertools.islice(raw_events, offset, offset + limit))
+
+            last_offset = limit + offset
+        else:
+            selected_id = int(selected_id)
+            events = []
+            for event in raw_events:
+                events.append(event)
+                if event.id == selected_id:
+                    break
+
+            last_offset = len(events)
+                    
+            
+
+        serializer = self.serializer_class(events, many=True, context={'request': request})
+        return Response({
+            'results': serializer.data,
+            'last_offset': last_offset
+        })
 
     @action(methods=['patch', 'post'], detail=True, permission_classes=[permissions.IsAuthenticated])
     def attend(self, request, pk=None):

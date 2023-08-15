@@ -2,15 +2,19 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
-import { FilterBadge, SmallHeading } from "../base/Base";
+import { Button, FilterBadge, SmallHeading } from "../base/Base";
 import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";
+import dateFormat from "dateformat";
+
+const LIMIT_SIZE = 10;
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([])
   const [filters, setFilters] = useState<Array<EventType>>(Object.keys(eventTypeMap).filter(e => e !== 'CM') as Array<EventType>)
   const [isLoading, setIsLoading] = useState(true);
+  const [lastOffset, setlastOffset] = useState(0);
 
   // Slightly complex logic needed to get the selectedEvent from the param
   const [selectedEvent, setSelectedEvent] = useState<HTMLDivElement | null>(null);
@@ -24,17 +28,41 @@ export default function Events() {
     }
   }, [setSelectedEvent])
 
-  useEffect(() => {
+  const loadMoreEvents = useCallback((e) => {
     setIsLoading(true);
-    api.get("events/").then(response => {
-      setEventList(response.data);
+    api.get(`events/?limit=${LIMIT_SIZE}&offset=${lastOffset}`).then(response => {
+      setEventList(
+        eventList.concat(response.data['results'])
+      );
+      setlastOffset(response.data['last_offset'])
       setIsLoading(false);
     });
-  }, [setIsLoading, setEventList])
+
+  }, [eventList, lastOffset])
+
+  useEffect(() => {
+    if (eventList.length === 0) {
+      if (eventId) {
+        // Load events up to that selected id, on server side
+        setIsLoading(true);
+        api.get(`events/?selectedId=${eventId}`).then(response => {
+          setEventList(
+            eventList.concat(response.data['results'])
+          );
+          setlastOffset(response.data['last_offset'])
+          setIsLoading(false);
+        });
+
+      } else {
+        loadMoreEvents(null);
+      }
+    }
+  }, [eventList, loadMoreEvents, eventId])
 
   useEffect(() => {
     selectedEvent?.scrollIntoView();
   }, [selectedEvent])
+
 
   const eventDisplay = useCallback(event => (
     <EventList 
@@ -44,6 +72,10 @@ export default function Events() {
   
   const todayDate = new Date();
   todayDate.setHours(0,0,0,0);
+
+  const pastEvents = eventList
+    .filter(e => new Date(e.event_date) < todayDate)
+    .filter(e => filters.includes(e.event_type))
 
   return (
     <Loading loading={isLoading}>
@@ -56,17 +88,21 @@ export default function Events() {
         {eventList
           .filter(e => new Date(e.event_date) >= todayDate)
           .filter(e => filters.includes(e.event_type))
-          .sort((e1, e2) => new Date(e1.event_date).getTime() - new Date(e2.event_date).getTime())
           .map(eventDisplay)
         }
-        <h1 className="text-xl md:text-3xl font-medium mb-2">Past Events</h1>
-        {eventList
-          .filter(e => new Date(e.event_date) < todayDate)
-          .filter(e => filters.includes(e.event_type))
-          .sort((e1, e2) => new Date(e2.event_date).getTime() - new Date(e1.event_date).getTime())
-          .map(eventDisplay)
-        }
-        <p>Events older than 90 days are not shown.</p>
+        {(pastEvents.length > 0) && (
+          <>
+            <h1 className="text-xl md:text-3xl font-medium mb-2">Past Events</h1>
+            {pastEvents.map(eventDisplay)}
+          </>
+        )}
+        {eventList.length > 0 &&
+          <Button onClick={loadMoreEvents} className="w-full">Load more events ({
+          pastEvents.length === 0
+            ? `up to ${dateFormat(eventList[eventList.length - 1].event_date, "mmmm dS, yyyy")} so far`
+            : `back to ${dateFormat(eventList[eventList.length - 1].event_date, "mmmm dS, yyyy")} so far`
+          })</Button>
+}
       </div>
     </Loading>
   )
