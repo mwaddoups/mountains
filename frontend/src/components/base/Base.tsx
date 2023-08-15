@@ -12,7 +12,7 @@ export const SmallHeading = tw.h3`text-lg mb-2 font-semibold tracking-tight`
 export const Bolded = tw.span`font-bold`
 export const Italic = tw.span`italic`
 
-export const EventHeading = tw.h1`text-lg font-semibold tracking-tight hover:underline`
+export const EventHeading = tw.h1`md:text-lg font-semibold tracking-tight hover:underline`
 
 export const FormContainer = tw.div`w-3/4 rounded shadow p-8 m-4 bg-white mx-auto`
 export const FormLabel = tw.label`block text-gray-700 text-sm font-bold mb-2`
@@ -44,11 +44,11 @@ const colorVariants: Record<BadgeColor, any> = {
 }
 
 export const Badge = styled.span(({$badgeColor}: BadgeProps) => [
- tw`rounded-lg mr-2 px-2 py-0.5 text-sm flex-initial truncate inline`,
+ tw`rounded-lg mr-2 px-2 py-0.5 md:text-sm text-xs flex-initial truncate inline`,
  colorVariants[$badgeColor], 
 ])
 
 export const FilterBadge = styled.span(({$badgeColor}: BadgeProps) => [
- tw`rounded-lg mr-2 px-2 py-0.5 text-sm shrink-0 inline select-none cursor-pointer`,
+ tw`rounded-lg mr-2 px-2 py-0.5 md:text-sm text-xs shrink-0 inline select-none cursor-pointer`,
  colorVariants[$badgeColor], 
 ])

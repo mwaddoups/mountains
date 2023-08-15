@@ -174,7 +174,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
           <div className="flex">
             <CalendarDate dateStr={event.event_date}/>
             <div className="w-full">
-              <div className="flex items-center">
+              <div className="md:flex items-center">
                 <div className="md:flex md:items-center">
                   <EventHeading className={isInPast ? "text-gray-500" : "text-teal-900"}>
                     <Link to={`../${event.id}`}>{event.title}</Link>
@@ -182,20 +182,23 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                   <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
                   {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
                 </div>
-                <button onClick={refreshEvent}><ArrowClockwise /></button>
-                {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (<>
-                  <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
-                  <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
-                  <span onClick={toggleSignup} className="cursor-pointer">
-                    {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
-                  </span>
-                  <span onClick={() => setConfirmReminder(true)} className="cursor-pointer">
-                    <Envelope className="text-sm ml-2 inline" />
-                  </span>
-                  <span onClick={() => setConfirmDelete(true)} className="cursor-pointer">
-                    <Trash className="text-sm ml-2 inline" />
-                  </span>
-                </>)}
+                <div className="flex items-center">
+                  <button onClick={refreshEvent}><ArrowClockwise className="text-sm ml-2 inline" /></button>
+                  {(currentUser?.is_committee || currentUser?.is_walk_coordinator) && (
+                  <>
+                    <Link to={`../${event.id}/edit`}><PencilFill className="text-sm ml-2 inline" /></Link>
+                    <Link to={`../${event.id}/copy`}><ClipboardPlus className="text-sm ml-2 inline" /></Link>
+                    <span onClick={toggleSignup} className="cursor-pointer">
+                      {event.signup_open ? <DoorOpenFill className="text-green-500 text-sm ml-2 inline" /> : <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />}
+                    </span>
+                    <span onClick={() => setConfirmReminder(true)} className="cursor-pointer">
+                      <Envelope className="text-sm ml-2 inline" />
+                    </span>
+                    <span onClick={() => setConfirmDelete(true)} className="cursor-pointer">
+                      <Trash className="text-sm ml-2 inline" />
+                    </span>
+                  </>)}
+                </div>
               </div>
               <h6 className="text-[0.6rem] md:text-xs text-gray-400">Created by {getName(event.organiser)}. {describe_date(event.created_date)}</h6>
               <CalendarTime dateStr={event.event_date} />
