@@ -5,7 +5,7 @@ import { useAuth } from "./Layout";
 
 
 export default function Sidebar() {
-  const linkStyles = "block mx-1 py-2 sm:px-2 text-sm rounded hover:bg-teal-800 text-center";
+  const linkStyles = "block mx-1 py-2 sm:px-2 md:text-sm text-xs rounded hover:bg-teal-800 text-center";
   const linkStyler = ({isActive}: any) => isActive ? linkStyles + " bg-teal-700" : linkStyles;
 
   const iconStyles = "h-6 w-6 mx-auto mb-1 sm:mr-3 sm:ml-0 sm:mb-0";

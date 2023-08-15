@@ -170,7 +170,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
         ref={eventRef} 
         className={"w-full shadow" + (isInPast ? " striped-gradient" : "")}
         >
-        <div className="w-full p-4 mt-4">
+        <div className="w-full md:p-4 p-2 mt-4">
           <div className="flex">
             <CalendarDate dateStr={event.event_date}/>
             <div className="w-full">

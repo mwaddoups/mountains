@@ -29,19 +29,19 @@ export default function Albums() {
           .sort((a1, a2) => new Date(a2.event_date).getTime() - new Date(a1.event_date).getTime())
           .map((album, ix) => (
           <Link to={`${album.id}/`} key={ix}>
-            <div className="h-40 mb-4 p-4 rounded shadow w-full flex items-center justify-between">
+            <div className="md:h-40 mb-4 p-4 rounded shadow w-full md:flex items-center justify-between">
               <div>
                 <h2 className="text-2xl">{album.name}</h2>
                 <h3 className="text-xs text-gray-500">{album.event_date ? dateFormat(album.event_date, "dddd, mmmm dS, yyyy") : ""}</h3>
                 <div className="flex mt-2">
                   {album.contributors.map(user => (
-                    <Link to={`/platform/members/${user.id}`}>
+                    <Link to={`/platform/members/${user.id}`} key={user.id}>
                       <div className="mr-1 w-10 h-10"><ProfilePicture user={user} /></div>
                     </Link>
                   ))}
                 </div>
               </div>
-              <div className="flex overflow-hidden w-1/2 md:w-2/3">
+              <div className="flex overflow-hidden md:ml-auto md:pl-2 mt-2 md:mt-auto">
                 {album.photos.map((photo, jx) => (
                   <div className="rounded p-1 shadow border flex-none mr-2">
                     <img className="h-16 fit-cover" src={photo.photo} key={jx} alt="album preview" />
