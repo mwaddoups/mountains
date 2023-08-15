@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List } from "react-bootstrap-icons";
+import { BoxArrowRight, List } from "react-bootstrap-icons";
 import { Link, useLocation } from "react-router-dom";
 import { getName } from "../methods/user";
 import { AuthContext } from "../models";
@@ -18,7 +18,7 @@ export default function Navigation({ authContext }: NavigationProps) {
   useEffect(() => setMenuOpenMobile(false), [location])
 
 
-  const linkStyles = "block h-full p-4 hover:bg-gray-200 flex-none";
+  const linkStyles = "block h-full py-4 px-2.5 hover:bg-gray-200 flex-none";
 
   // Remember! If you are adding new links, you need to update the max-h- transition.
   // Currently it is 28 REM = 6 links + 1 logo = 7 * 4REM
@@ -27,9 +27,10 @@ export default function Navigation({ authContext }: NavigationProps) {
       "container lg:flex lg:sticky lg:items-center border-b-4 text-gray-900 bg-white lg:h-16 border-teal-600 overflow-hidden transition-[max-height]"
       + (menuOpenMobile ? " max-h-[28rem]" : " max-h-16")
     )}>
-      <div className="h-full p-4 ml-2 mr-4 flex-none flex w-full lg:w-auto">
+      <div className="h-full p-4 flex-none flex w-full lg:w-auto">
         <span className="font-semibold text-xl tracking-tight truncate">
-         <span className="bg-logo bg-cover bg-no-repeat pr-12 mr-2"></span> Clyde Mountaineering Club
+         <span className="bg-logo bg-cover bg-no-repeat pr-12 mr-2"></span> 
+         Clyde Mountaineering Club
         </span>
 
         <button onClick={() => setMenuOpenMobile(!menuOpenMobile)} className="ml-auto border rounded-lg lg:hidden "><List /></button>
@@ -44,7 +45,7 @@ export default function Navigation({ authContext }: NavigationProps) {
           <span className="mr-2">{getName(currentUser)}</span>
           <div className="w-7 h-7"><ProfilePicture user={currentUser} /></div>
         </Link>
-        <Link to="/" onClick={logout} className={linkStyles}>Logout</Link>
+        <Link to="/" onClick={logout} className={linkStyles + " flex items-center"}><BoxArrowRight /></Link>
         </>
     )}
     </nav>
