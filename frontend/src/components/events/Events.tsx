@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
@@ -116,6 +116,10 @@ interface EventFilterProps {
 function EventFilter({ filters, setFilters }: EventFilterProps) {
   let allFilters = Object.keys(eventTypeMap) as Array<EventType>
   let [firstClick, setFirstClick] = useState(true)
+  let [fadeLeft, setFadeLeft] = useState(false)
+  let [fadeRight, setFadeRight] = useState(false)
+
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   let handleClick = useCallback(e => {
     let wanted_type = e.target.id;
@@ -134,21 +138,54 @@ function EventFilter({ filters, setFilters }: EventFilterProps) {
     setFilters(allFilters)
   }, [setFilters, allFilters])
 
+  useEffect(() => {
+    // If the element is overflowing, add the right fade
+    if (scrollableDivRef.current) {
+      const div = scrollableDivRef.current
+      if (div.clientWidth < div.scrollWidth) {
+        setFadeRight(true)
+      }
+    }
+  }, [])
+
+  let handleScroll = useCallback(e => {
+    if (scrollableDivRef.current) {
+      const div = scrollableDivRef.current
+      const isAtLeftEdge = div.scrollLeft === 0
+      const isAtRightEdge = div.scrollLeft === (div.scrollWidth - div.clientWidth);
+
+      if (isAtLeftEdge) {
+        setFadeLeft(false)
+      } else {
+        setFadeLeft(true)
+      }
+
+      if (isAtRightEdge) {
+        setFadeRight(false)
+      } else {
+        setFadeRight(true)
+      }
+    }
+  }, [])
+
   return (
     <div className="rounded shadow p-4">
       <SmallHeading className="inline mr-4">Filter Event Types</SmallHeading>
       <FilterBadge $badgeColor="gray" onClick={selectAll}>Select All</FilterBadge>
-      <div className={"py-1 flex overflow-auto"}>
-        {allFilters.map(event_type => (
-          <FilterBadge 
-            key={event_type}
-            $badgeColor={eventTypeMap[event_type][1]} 
-            className={"py-0.5" + (filters.includes(event_type) ? " opacity-100" : " opacity-50")}
-            onClick={handleClick} id={event_type}>
-              {eventTypeMap[event_type][0]}
-          </FilterBadge>
-        ))}
-
+      <div className="relative">
+        <div className="py-1 flex overflow-auto relative" ref={scrollableDivRef} onScroll={handleScroll}>
+          {allFilters.map(event_type => (
+            <FilterBadge 
+              key={event_type}
+              $badgeColor={eventTypeMap[event_type][1]} 
+              className={"py-0.5" + (filters.includes(event_type) ? " opacity-100" : " opacity-50")}
+              onClick={handleClick} id={event_type}>
+                {eventTypeMap[event_type][0]}
+            </FilterBadge>
+          ))}
+        </div>
+        {fadeLeft && <div className="absolute inset-0 bg-gradient-to-r from-white w-1/6 h-full"></div>}
+        {fadeRight && <div className="absolute top-0 right-0 bg-gradient-to-l from-white w-1/6 h-full"></div>}
       </div>
     </div>
   )
