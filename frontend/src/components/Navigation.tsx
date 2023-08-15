@@ -24,7 +24,7 @@ export default function Navigation({ authContext }: NavigationProps) {
   // Currently it is 28 REM = 6 links + 1 logo = 7 * 4REM
   return (
     <nav className={(
-      "container lg:flex lg:sticky lg:items-center border-b-4 text-gray-900 bg-white lg:h-16 border-teal-600 overflow-hidden transition-[max-height]"
+      "w-full lg:flex lg:sticky lg:items-center border-b-4 text-gray-900 bg-white lg:h-16 border-teal-600 overflow-hidden transition-[max-height]"
       + (menuOpenMobile ? " max-h-[28rem]" : " max-h-16")
     )}>
       <div className="h-full p-4 flex-none flex w-full lg:w-auto">
