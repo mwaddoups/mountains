@@ -32,7 +32,7 @@ import Activity from "./components/Activity";
 
 function App() {
   return (
-    <div className="container mx-auto pr-2 xl:px-20">
+    <div className="container mx-auto xl:px-20">
       <CookieConsent>This website uses cookies to manage our user experience.</CookieConsent>
       <Router>
           <Routes>
