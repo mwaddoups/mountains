@@ -138,7 +138,7 @@ function EventFilter({ filters, setFilters }: EventFilterProps) {
     <div className="rounded shadow p-4">
       <SmallHeading className="inline mr-4">Filter Event Types</SmallHeading>
       <FilterBadge $badgeColor="gray" onClick={selectAll}>Select All</FilterBadge>
-      <div className={"py-1 flex overflow-scroll"}>
+      <div className={"py-1 flex overflow-auto"}>
         {allFilters.map(event_type => (
           <FilterBadge 
             key={event_type}
