@@ -26,7 +26,7 @@ class EventViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & IsEventEditorOrReadOnly)]
 
     def list(self, request):
-        future = datetime.datetime.now() - datetime.timedelta(days=1)
+        future = datetime.datetime.combine(datetime.date.today(), datetime.time(0))
         future_events = Event.objects.filter(event_date__gte=future, is_deleted=False).order_by('event_date')
         past_events = Event.objects.filter(event_date__lt=future, is_deleted=False).order_by('-event_date')
         raw_events = itertools.chain(future_events, past_events)
