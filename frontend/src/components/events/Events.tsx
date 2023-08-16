@@ -54,7 +54,15 @@ export default function Events() {
         });
 
       } else {
-        loadMoreEvents(null);
+        // Calling with no params loads just future events
+        setIsLoading(true);
+        api.get(`events/`).then(response => {
+          setEventList(
+            eventList.concat(response.data['results'])
+          );
+          setlastOffset(response.data['last_offset'])
+          setIsLoading(false);
+        });
       }
     }
   }, [eventList, loadMoreEvents, eventId])

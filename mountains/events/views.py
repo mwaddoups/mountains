@@ -33,13 +33,9 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
         selected_id = self.request.query_params.get('selectedId')
-        if selected_id is None:
-            limit = int(self.request.query_params.get('limit'))
-            offset = int(self.request.query_params.get('offset'))
-            events = list(itertools.islice(raw_events, offset, offset + limit))
-
-            last_offset = limit + offset
-        else:
+        limit = self.request.query_params.get('limit')
+        offset = self.request.query_params.get('offset')
+        if selected_id is not None:
             selected_id = int(selected_id)
             events = []
             for event in raw_events:
@@ -48,7 +44,16 @@ class EventViewSet(viewsets.ModelViewSet):
                     break
 
             last_offset = len(events)
-                    
+        elif limit is not None:
+            limit = int(limit)
+            offset = int(offset)
+            events = list(itertools.islice(raw_events, offset, offset + limit))
+
+            last_offset = limit + offset
+        else:
+            # Just return future events if no params passed
+            events = list(future_events)
+            last_offset = len(events)
             
 
         serializer = self.serializer_class(events, many=True, context={'request': request})
