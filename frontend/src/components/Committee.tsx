@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import api from "../api";
 import { User } from "../models";
 import Activity from "./Activity";
-import { Bolded, Heading, Paragraph, Section } from "./base/Base";
+import { Bolded, Button, Heading, LI, Paragraph, Section, UList } from "./base/Base";
 import Loading from "./Loading";
 
 export default function Committee() {
@@ -42,6 +42,13 @@ export default function Committee() {
         </Paragraph>
         <MembershipWatch />
       </Section>
+      <Section>
+        <Heading>Unpaid List</Heading>
+        <Paragraph>
+          This lists all the users on any weekend trip in the future which haven't paid yet.
+        </Paragraph>
+        <UnpaidWeekends />
+      </Section>
       <Activity />
     </div>
   )
@@ -53,10 +60,10 @@ type MemberWatch = {
 }
 
 function MembershipWatch() {
-  const [members, setMembers] = useState<Array<MemberWatch>>([]);
+  const [members, setMembers] = useState<Array<MemberWatch> | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const loadMembers = useCallback(() => {
     api.get(`events/needsmembership`).then(res => {
       setMembers(res.data);
       setLoading(false);
@@ -64,6 +71,37 @@ function MembershipWatch() {
   }, [])
 
   return <Loading loading={loading}>
-    {members.map(mw => <Paragraph key={mw.name}><Bolded>{mw.name}</Bolded> {mw.count} {mw.count > 1 ? "walks" : "walk"}.</Paragraph>)}
+    {members === null
+      ? <Button onClick={loadMembers}>Load members</Button>
+      : members.map(mw => <Paragraph key={mw.name}><Bolded>{mw.name}</Bolded> {mw.count} {mw.count > 1 ? "walks" : "walk"}.</Paragraph>)}
+  </Loading>
+}
+
+
+function UnpaidWeekends() {
+  const [unpaidList, setUnpaidList] = useState<Record<string, Array<string>> | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchUnpaid = useCallback(() => {
+    api.get(`events/unpaidweekends`).then(res => {
+      setUnpaidList(res.data);
+      setLoading(false);
+    })
+  }, [])
+
+  return <Loading loading={loading}>
+    {unpaidList !== null
+      ? Object.keys(unpaidList).map(
+          (event_name, ix) => (
+            <div key={ix}>
+              <Paragraph><Bolded>{event_name}</Bolded></Paragraph>
+              <UList>
+                {unpaidList[event_name].map((name, jx) => <LI key={jx}>{name}</LI>)}
+              </UList>
+            </div>
+          )
+        )
+      : <Button onClick={fetchUnpaid}>Load Unpaid</Button>
+    }
   </Loading>
 }

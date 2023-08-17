@@ -174,6 +174,23 @@ class EventViewSet(viewsets.ModelViewSet):
 
         return Response(users_to_prompt)
 
+    @action(methods=['get'], detail=False, permission_classes=[permissions.IsAuthenticated])
+    def unpaidweekends(self, request):
+        """Returns a list of users who have attended 1 or more walks but aren't yet a member"""
+        events_to_unpaid = {}
+        for au in AttendingUser.objects.all():
+            if au.event.event_type in ('SW', 'WW') and not au.event.is_deleted and au.event.event_date > timezone.now() and not au.is_trip_paid and not au.is_waiting_list:
+                event_str = au.event.event_date.strftime("%Y-%m-%d ") + au.event.title
+                if event_str not in events_to_unpaid:
+                    events_to_unpaid[event_str] = []
+                
+                user_name = au.user.first_name + ' ' + au.user.last_name
+                events_to_unpaid[event_str].append(user_name)
+
+        events_to_unpaid = {k: events_to_unpaid[k] for k in sorted(events_to_unpaid)}
+
+        return Response(events_to_unpaid)
+
     @action(methods=['post'], detail=True, permission_classes = [IsEventEditorOrReadOnly])
     def reminderemail(self, request, pk=None):
         event = self.get_object()
