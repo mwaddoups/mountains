@@ -45,7 +45,7 @@ export default function Navigation({ authContext }: NavigationProps) {
           <span className="mr-2">{getName(currentUser)}</span>
           <div className="w-7 h-7"><ProfilePicture user={currentUser} /></div>
         </Link>
-        <Link to="/" onClick={logout} className={linkStyles + " flex items-center"}><BoxArrowRight /></Link>
+        <Link to="/" onClick={logout} className={linkStyles + " flex items-center"}><BoxArrowRight /> {menuOpenMobile ? (<span className="ml-2">Logout</span>) : ""}</Link>
         </>
     )}
     </nav>
