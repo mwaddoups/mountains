@@ -7,10 +7,12 @@ import { Album, Photo } from "../../models";
 import Loading from "../Loading";
 import PhotoUploader from "./PhotoUploader";
 import StarPhoto from "./StarPhoto";
+import { Button } from "../base/Base";
 
 export default function Photos() {
   const [needsRefresh, setNeedsRefresh] = useState(true);
   const [album, setAlbum] = useState<Album | null>(null);
+  const [numDisplayedPhotos, setNumDisplayedPhotos] = useState(10)
   const [highlightedPhoto, setHighlightedPhoto] = useState<number | null>(null);
 
   const { albumId } = useParams();
@@ -22,8 +24,18 @@ export default function Photos() {
     })
   }, [needsRefresh, setAlbum, albumId])
 
+  const increaseDisplayedPhotos = useCallback(() => setNumDisplayedPhotos(numDisplayedPhotos + 10), [numDisplayedPhotos])
+
   const stepBack = useCallback(() => (highlightedPhoto !== null) && setHighlightedPhoto(Math.max(0, highlightedPhoto - 1)), [highlightedPhoto])
-  const stepForward = useCallback(() => (highlightedPhoto !== null) && album && setHighlightedPhoto(Math.min(album?.photos.length - 1, highlightedPhoto + 1)), [highlightedPhoto, album])
+  const stepForward = useCallback(() => {
+    if ((highlightedPhoto !== null) && album) {
+      setHighlightedPhoto(Math.min(album?.photos.length - 1, highlightedPhoto + 1))
+    }
+
+    if (highlightedPhoto && highlightedPhoto >= numDisplayedPhotos) {
+      increaseDisplayedPhotos()
+    }
+  }, [highlightedPhoto, album, increaseDisplayedPhotos, numDisplayedPhotos])
 
   const highlightedRef = useRef<HTMLDivElement>(null);
   useEffect(() => highlightedRef.current?.focus());
@@ -53,10 +65,15 @@ export default function Photos() {
         <div className="mb-1 lg:mb-2">
         </div>
         <div className="flex flex-wrap rounded shadow p-1">
-          {album?.photos.map((photo, ix) => <GalleryPhoto 
+          {album?.photos.slice(0, numDisplayedPhotos).map((photo, ix) => <GalleryPhoto 
             key={photo.id} photo={photo} 
             onClick={() => setHighlightedPhoto(ix)} />)}
         </div>
+        {album?.photos && numDisplayedPhotos < album.photos.length && (
+          <Button className="w-full text-sm" onClick={increaseDisplayedPhotos}>
+            Load more photos ({album.photos.length - numDisplayedPhotos})
+          </Button>
+        )}
       </Loading>
       {(highlightedPhoto !== null) && (
         <div 
