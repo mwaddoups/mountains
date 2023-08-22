@@ -25,7 +25,7 @@ export default function PhotoUploader({ setNeedsRefresh, albumId }: PhotoUploade
 
   return (
     <>
-      <input type="file" ref={fileInput} className="hidden" onChange={onChangeFile} multiple />
+      <input type="file" ref={fileInput} accept="capture=camera,image/*" className="hidden" onChange={onChangeFile} multiple />
       <button 
         className="w-full rounded-lg bg-blue-400 p-1.5 text-gray-100 text-xs lg:text-sm hover:bg-blue-600"
         onClick={onButtonClick}>Upload Photos</button>

@@ -93,7 +93,7 @@ interface GalleryPhotoProps {
 function GalleryPhoto({ photo, onClick }: GalleryPhotoProps) {
   return (
     <img 
-      className="w-60 p-2 flex-1 object-contain max-h-40 rounded-lg"
+      className="md:w-auto w-32 flex-auto object-cover max-h-40 hover:opacity-50"
       onClick={onClick}
       loading="lazy"
       src={photo.photo} alt="Mountains" />
