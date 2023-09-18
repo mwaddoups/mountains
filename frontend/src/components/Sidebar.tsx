@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRightCircleFill, Binoculars, Calendar, Discord, House, Images, InfoSquareFill, ListCheck, PeopleFill } from "react-bootstrap-icons";
+import { ArrowRightCircleFill, BagHeart, Binoculars, Calendar, Discord, House, Images, InfoSquareFill, ListCheck, PeopleFill } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./Layout";
 
@@ -43,6 +43,10 @@ export default function Sidebar() {
       <a target="_blank" rel="noreferrer" className={linkStyles} 
         href="https://discord.gg/98K3CafRxk">
         <span className="sm:flex"><Discord className={iconStyles} />Discord</span>
+      </a>
+      <a target="_blank" rel="noreferrer" className={linkStyles} 
+        href="https://www.tshirtstudio.com/marketplace/clyde-mountaineering-club">
+        <span className="sm:flex"><BagHeart className={iconStyles} />Club Kit!</span>
       </a>
       <div className="mt-20"></div>
     </nav>
