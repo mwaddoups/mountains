@@ -69,6 +69,7 @@ export interface Event extends BasicEvent {
   members_only: boolean,
   signup_open: boolean,
   is_deleted: boolean,
+  signup_open_date: string | null,
 }
 
 export type FeedPost = {

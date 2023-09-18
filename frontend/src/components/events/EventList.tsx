@@ -13,6 +13,7 @@ import AttendeeList from "./AttendeeList";
 import AttendPopup, { PopupStep } from "./AttendPopup";
 import CalendarDate, { CalendarTime } from "./CalendarDate";
 import Modal from "../base/Modal";
+import dateFormat from "dateformat";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null,
@@ -235,14 +236,16 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 </>
               )}
               {event.signup_open 
-                ? <Button onClick={handleAttend}>
-                    {isAttending 
-                      ? "Leave" 
-                      : (
-                        event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
-                      )
-                    }
-                  </Button>
+                ? (event.signup_open_date === null || new Date(event.signup_open_date) <= new Date())
+                    ? <Button onClick={handleAttend}>
+                      {isAttending 
+                        ? "Leave" 
+                        : (
+                          event.max_attendees && event.max_attendees > 0 && attendingList.length >= event.max_attendees ? "Join Waiting List" : "Attend"
+                        )
+                      }
+                    </Button>
+                    : <CancelButton>Signup opens at {dateFormat(event.signup_open_date, "dd mmm yyyy HH:MM")}</CancelButton>
                 : <CancelButton>Signup closed</CancelButton>
               }
             </div>

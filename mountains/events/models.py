@@ -26,6 +26,7 @@ class Event(models.Model):
     show_popup = models.BooleanField(blank=False, null=False, default=False)
     members_only = models.BooleanField(blank=False, null=False, default=False)
     signup_open = models.BooleanField(blank=False, null=False, default=True)
+    signup_open_date = models.DateTimeField(blank=True, null=True, default=None)
     is_deleted = models.BooleanField(blank=False, null=False, default=False)
 
 class AttendingUser(models.Model):

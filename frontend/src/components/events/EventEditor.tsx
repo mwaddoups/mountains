@@ -14,7 +14,6 @@ import winterWalkURL from "./templates/WinterWalk.md";
 import winterWeekendURL from "./templates/WinterWeekend.md";
 import climbingURL from "./templates/Climbing.md";
 
-
 const descriptionTemplates: Partial<Record<EventType, string>> = {
   SD: summerWalkURL,
   SW: summerWeekendURL,
@@ -38,6 +37,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
   const [description, setDescription] = useState<string>('');
   const [descriptionEdited, setDescriptionEdited] = useState<boolean>(false);
   const [eventDate, setEventDate] = useState<Date>(new Date());
+  const [eventSignupOpenDate, setEventSignupOpenDate] = useState<Date | undefined>(undefined);
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [membersOnly, setMembersOnly] = useState<boolean>(false);
   const [signupOpen, setSignupOpen] = useState<boolean>(true);
@@ -66,6 +66,9 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setMaxAttendees(event.max_attendees);
         setEventType(event.event_type);
         setSignupOpen(event.signup_open);
+        if (event.signup_open_date !== null) {
+          setEventSignupOpenDate(new Date(event.signup_open_date))
+        }
       })
     }
     setLoading(false);
@@ -81,6 +84,11 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
     newEvent.show_popup = showPopup;
     newEvent.members_only = membersOnly;
     newEvent.signup_open = signupOpen;
+    if (eventSignupOpenDate !== undefined) {
+      newEvent.signup_open_date = dateFormat(eventSignupOpenDate, "isoDateTime");
+    } else {
+      newEvent.signup_open_date = null
+    }
     newEvent.max_attendees = maxAttendees || 0;
     if (!currentEvent) {
       newEvent.attendees = [];
@@ -104,7 +112,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupOpen])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupOpen, eventSignupOpenDate])
 
   const setNewEventType = useCallback((newEventType: EventType) => {
     if (Object.keys(eventTypeMap).includes(newEventType)) {
@@ -154,7 +162,8 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
           </div>
           <div>
             <FormLabel>Date</FormLabel>
-            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventDate} value={eventDate} format="dd/MM/y h:mm a"/>
+            <DateTimePicker className="text-sm rounded shadow border mb-4" 
+              onChange={setEventDate} value={eventDate} format="dd/MM/y h:mm a"/>
           </div>
           <div className="w-full">
             <FormLabel htmlFor="eventtype">Event Type</FormLabel>
@@ -177,6 +186,10 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
           <div className="flex items-center">
             <FormLabel>Open signup for this event? (Usually yes)</FormLabel>
             <input className="-ml-1 md:ml-4" type="checkbox" checked={signupOpen} onChange={() => setSignupOpen(!signupOpen)} />
+          </div>
+          <div>
+            <FormLabel>Event Open Date (leave blank for always open)</FormLabel>
+            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventSignupOpenDate} value={eventSignupOpenDate} format="dd/MM/y h:mm a"/>
           </div>
           <div className="w-full">
             <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>
