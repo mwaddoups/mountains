@@ -11,7 +11,7 @@ export const SubHeading = tw.h2`text-2xl mb-2 font-medium tracking-tight`
 export const SmallHeading = tw.h3`text-lg mb-2 font-semibold tracking-tight`
 export const Bolded = tw.span`font-bold`
 export const Italic = tw.span`italic`
-export const Image = tw.img`w-auto object-cover h-64 rounded-lg my-2`
+export const Image = tw.img`w-auto object-cover h-64 rounded-lg mx-auto my-2`
 export const Link = tw.a`text-blue-700 hover:text-blue-400`
 
 export const EventHeading = tw.h1`md:text-lg font-semibold tracking-tight hover:underline`
