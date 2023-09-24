@@ -9,7 +9,7 @@ class PhotoSerializer(serializers.HyperlinkedModelSerializer):
         photo = self.context['request'].data['file']
         return Photo.objects.create(
             uploader=self.context['request'].user,  
-            album_id=self.context['request'].data['album'],
+            album_id=self.context['request'].data.get('album', None),
             photo=photo,
             **validated_data
         )

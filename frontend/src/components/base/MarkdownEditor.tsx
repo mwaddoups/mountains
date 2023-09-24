@@ -1,5 +1,7 @@
-import { ClipboardEventHandler, useRef } from "react"
+import { ClipboardEventHandler, useRef, useState } from "react"
 import { FormTextArea } from "./Base"
+import api from "../../api";
+import Loading from "../Loading";
 
 interface MarkdownEditorProps {
   id: string,
@@ -9,6 +11,7 @@ interface MarkdownEditorProps {
 
 export default function MarkdownEditor({id, value, setValue}: MarkdownEditorProps) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [loadingImage, setLoadingImage] = useState<boolean>(false);
 
   const handlePaste: ClipboardEventHandler = event => {
     for (let item of event.clipboardData.items) {
@@ -17,23 +20,34 @@ export default function MarkdownEditor({id, value, setValue}: MarkdownEditorProp
         if (image === null) {
           return
         }
-        let reader = new FileReader();
-        reader.onload = event => console.log(event.target?.result)
-        reader.readAsDataURL(image);
 
-        const textLoc = textAreaRef.current?.selectionStart || 0
-        let pastedText = "image pasted";
-        setValue(value.slice(0, textLoc) + pastedText + value.slice(textLoc))
+        const insertPastedText = (pastedText: string) => {
+          const textLoc = textAreaRef.current?.selectionStart || 0
+          setValue(value.slice(0, textLoc) + pastedText + value.slice(textLoc))
+        }
+        // Images are uploaded as photos with null album
+        setLoadingImage(true)
+        let form = new FormData();
+        form.append('file', image)
+        api.post('photos/', form).then(res => {
+          insertPastedText(`![](${res.data.photo})`)
+          setLoadingImage(false);
+        }).catch(err => {
+          insertPastedText("[Error uploading image!]")
+          setLoadingImage(false);
+        })
       }
     }
 
   }
 
   return (
-    <FormTextArea id={id} ref={textAreaRef}
-      value={value} onChange={event => setValue(event.target.value)}
-      onPaste={handlePaste}
-    />
+    <Loading loading={loadingImage}>
+      <FormTextArea id={id} ref={textAreaRef}
+        value={value} onChange={event => setValue(event.target.value)}
+        onPaste={handlePaste}
+      />
+    </Loading>
   )
 
 }
