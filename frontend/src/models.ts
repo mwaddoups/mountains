@@ -121,3 +121,14 @@ export type Activity = {
   timestamp: string,
   event: BasicEvent | null,
 }
+
+export type Report = {
+  id: number,
+  title: string,
+  report_date: string,
+  header_image: string,
+}
+
+export interface FullReport extends Report {
+  content: string
+}

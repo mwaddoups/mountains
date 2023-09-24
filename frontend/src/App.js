@@ -29,6 +29,8 @@ import Resources from "./components/Resources";
 import Faqs from "./components/landing/Faqs";
 import CommitteePage from "./components/landing/CommitteePage";
 import Activity from "./components/Activity";
+import Reports from "./components/reports/Reports";
+import SingleReport from "./components/reports/SingleReport";
 
 function App() {
   return (
@@ -41,6 +43,10 @@ function App() {
               <Route path="privacy" element={<Privacy />} />
               <Route path="faq" element={<Faqs />} />
               <Route path="committee" element={<CommitteePage />} />
+              <Route path="reports" element={<MemberContext />}>
+                <Route index element={<Reports />} />
+                <Route path=":reportId" element={<SingleReport />} />
+              </Route>
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
