@@ -30,8 +30,8 @@ export default function Reports() {
         <div className="mx-8">
           {reports.map(report => (
             <Link key={report.id} to={`../${report.id}`}>
-            <div key={report.id} className="h-60 w-full relative my-4 rounded-lg">
-              <img className="w-full h-60 object-cover absolute top-0 left-0 rounded-lg hover:opacity-50" src={report.header_image} alt='s' />
+            <div key={report.id} className="h-60 w-full relative my-4 rounded-lg bg-gradient-to-r from-teal-300 hover:opacity-50">
+              <img className="w-full h-60 object-cover absolute top-0 left-0 rounded-lg" src={report.header_image} alt='' />
               <div className="flex absolute bottom-2 left-5 flex-wrap items-center">
                 <p className="text-lg text-white drop-shadow">{report.title}</p>
                 <p className="ml-8 text-white drop-shadow">{dateFormat(report.report_date, "dd mmmm yyyy")}</p>

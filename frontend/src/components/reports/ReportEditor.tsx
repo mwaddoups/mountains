@@ -74,7 +74,7 @@ export default function ReportEditor() {
               value={title} onChange={event => setTitle(event.target.value)} />
           </div>
           <div className="w-full">
-            <FormLabel htmlFor="himage">Header Image URL (copy image link from somewhere)</FormLabel>
+            <FormLabel htmlFor="himage">Header Image URL (copy image link from somewhere else on site)</FormLabel>
             <FormInput 
               type="string" id="himage" 
               value={headerImage} onChange={event => setHeaderImage(event.target.value)} />
