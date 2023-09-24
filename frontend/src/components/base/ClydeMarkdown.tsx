@@ -1,7 +1,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import tw from "twin.macro";
-import { Bolded, Heading, Italic, LI, OList, Paragraph, SmallHeading, SubHeading, UList } from "./Base";
+import { Bolded, Heading, Italic, LI, OList, Paragraph, SmallHeading, SubHeading, UList, Image } from "./Base";
 
 const Link = tw.a`text-blue-700 hover:text-blue-400`
 
@@ -23,6 +23,7 @@ export default function ClydeMarkdown({ children }: ClydeMarkdownProps) {
         strong: Bolded,
         em: Italic,
         a: Link,
+        img: Image,
       }}>
       {children.toString()}
     </ReactMarkdown>
