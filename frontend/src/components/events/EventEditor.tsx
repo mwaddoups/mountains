@@ -5,7 +5,7 @@ import { Event, EventType } from "../../models";
 import DateTimePicker from 'react-datetime-picker';
 import dateFormat from "dateformat";
 import Loading from "../Loading";
-import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect } from "../base/Base";
+import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect, Link as BaseLink } from "../base/Base";
 import { eventTypeMap } from "./EventList";
 
 import summerWalkURL from "./templates/SummerWalk.md";
@@ -197,7 +197,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
               type="number" id="maxAttendees" 
               value={maxAttendees || 0} onChange={event => setMaxAttendees(+event.target.value)} />
           </div>
-          <FormLabel htmlFor="description">Description</FormLabel>
+          <FormLabel htmlFor="description">Description (uses <BaseLink href="https://www.markdownguide.org/basic-syntax/">markdown</BaseLink>)</FormLabel>
           <FormTextArea id="description" 
             value={description} onChange={event => {
               setDescription(event.target.value)
