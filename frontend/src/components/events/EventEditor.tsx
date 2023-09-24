@@ -5,7 +5,7 @@ import { Event, EventType } from "../../models";
 import DateTimePicker from 'react-datetime-picker';
 import dateFormat from "dateformat";
 import Loading from "../Loading";
-import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, FormTextArea, SubHeading, Error, FormSelect, Link as BaseLink } from "../base/Base";
+import { FormButton, FormCancelButton, FormContainer, FormInput, FormLabel, SubHeading, Error, FormSelect, Link as BaseLink } from "../base/Base";
 import { eventTypeMap } from "./EventList";
 
 import summerWalkURL from "./templates/SummerWalk.md";
@@ -13,6 +13,7 @@ import summerWeekendURL from "./templates/SummerWeekend.md";
 import winterWalkURL from "./templates/WinterWalk.md";
 import winterWeekendURL from "./templates/WinterWeekend.md";
 import climbingURL from "./templates/Climbing.md";
+import MarkdownEditor from "../base/MarkdownEditor";
 
 const descriptionTemplates: Partial<Record<EventType, string>> = {
   SD: summerWalkURL,
@@ -145,6 +146,11 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
     }
   }, [setEventType, setShowPopup, descriptionEdited])
 
+  const handleDescriptionChange = useCallback((newDescription: string) => {
+    setDescription(newDescription)
+    setDescriptionEdited(true)
+  }, [setDescription, setDescriptionEdited])
+
   if (submitted) {
     return <Navigate to={`../${eventId}`} />
   }
@@ -198,11 +204,10 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
               value={maxAttendees || 0} onChange={event => setMaxAttendees(+event.target.value)} />
           </div>
           <FormLabel htmlFor="description">Description (uses <BaseLink href="https://www.markdownguide.org/basic-syntax/">markdown</BaseLink>)</FormLabel>
-          <FormTextArea id="description" 
-            value={description} onChange={event => {
-              setDescription(event.target.value)
-              setDescriptionEdited(true)
-            }} />
+          <MarkdownEditor id="description" 
+            value={description} setValue={handleDescriptionChange}
+          />
+            
           {errorText && <Error>{errorText}</Error>}
           <div className="flex justify-between">
             <FormButton
