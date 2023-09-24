@@ -10,7 +10,7 @@ class IsWalkCoOrCommitteeOrReadOnly(permissions.BasePermission):
             return request.user.is_committee or request.user.is_walk_coordinator
 
 class ReportViewSet(viewsets.ModelViewSet):
-    queryset = Report.objects.all()
+    queryset = Report.objects.order_by('-report_date').all()
     permission_classes = [permissions.IsAdminUser | IsWalkCoOrCommitteeOrReadOnly]
 
     def get_serializer_class(self):

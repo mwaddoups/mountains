@@ -31,6 +31,7 @@ import CommitteePage from "./components/landing/CommitteePage";
 import Activity from "./components/Activity";
 import Reports from "./components/reports/Reports";
 import SingleReport from "./components/reports/SingleReport";
+import ReportEditor from "./components/reports/ReportEditor";
 
 function App() {
   return (
@@ -46,6 +47,8 @@ function App() {
               <Route path="reports" element={<MemberContext />}>
                 <Route index element={<Reports />} />
                 <Route path=":reportId" element={<SingleReport />} />
+                <Route path="new" element={<ReportEditor />} />
+                <Route path=":reportId/edit" element={<ReportEditor />} />
               </Route>
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
