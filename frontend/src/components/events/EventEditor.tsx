@@ -41,7 +41,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
   const [eventSignupOpenDate, setEventSignupOpenDate] = useState<Date | undefined>(undefined);
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const [membersOnly, setMembersOnly] = useState<boolean>(false);
-  const [signupOpen, setSignupOpen] = useState<boolean>(true);
+  const [signupClosed, setSignupClosed] = useState<boolean>(false);
   const [maxAttendees, setMaxAttendees] = useState<number>(0); 
 
   // use params to check if we are at event/x/edit or event/new
@@ -66,7 +66,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setMembersOnly(event.members_only);
         setMaxAttendees(event.max_attendees);
         setEventType(event.event_type);
-        setSignupOpen(event.signup_open);
+        setSignupClosed(!event.signup_open);
         if (event.signup_open_date !== null) {
           setEventSignupOpenDate(new Date(event.signup_open_date))
         }
@@ -74,6 +74,17 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
     }
     setLoading(false);
   }, [eventIdParam, copyFrom])
+
+  const setSignupOpenDateWithNull = useCallback(openDate => {
+    let wantedDate = new Date(openDate);
+    let currentDate = new Date();
+    if (wantedDate.getTime() <= currentDate.getTime()) {
+      setEventSignupOpenDate(undefined)
+    } else {
+      setEventSignupOpenDate(openDate)
+
+    }
+  }, [setEventSignupOpenDate])
 
   const updateEvent = useCallback(e => {
     e.preventDefault();
@@ -84,7 +95,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
     newEvent.event_date = dateFormat(eventDate, "isoDateTime");
     newEvent.show_popup = showPopup;
     newEvent.members_only = membersOnly;
-    newEvent.signup_open = signupOpen;
+    newEvent.signup_open = !signupClosed;
     if (eventSignupOpenDate !== undefined) {
       newEvent.signup_open_date = dateFormat(eventSignupOpenDate, "isoDateTime");
     } else {
@@ -103,6 +114,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
 
     if (eventId) {
       setErrorText(null);
+      console.log(newEvent)
       api.put(`events/${eventId}/`, newEvent).then(res => {
         setSubmitted(true);
       })
@@ -113,7 +125,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setSubmitted(true);
       })
     }
-  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupOpen, eventSignupOpenDate])
+  }, [title, description, eventDate, currentEvent, showPopup, eventId, eventType, maxAttendees, membersOnly, signupClosed, eventSignupOpenDate])
 
   const setNewEventType = useCallback((newEventType: EventType) => {
     if (Object.keys(eventTypeMap).includes(newEventType)) {
@@ -189,13 +201,9 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
             <FormLabel>Make this event members only? (Usually no, unless weekend)</FormLabel>
             <input className="-ml-1 md:ml-4" type="checkbox" checked={membersOnly} onChange={() => setMembersOnly(!membersOnly)} />
           </div>
-          <div className="flex items-center">
-            <FormLabel>Open signup for this event? (Usually yes)</FormLabel>
-            <input className="-ml-1 md:ml-4" type="checkbox" checked={signupOpen} onChange={() => setSignupOpen(!signupOpen)} />
-          </div>
           <div>
             <FormLabel>Event Open Date (leave blank for always open)</FormLabel>
-            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setEventSignupOpenDate} value={eventSignupOpenDate} format="dd/MM/y h:mm a"/>
+            <DateTimePicker className="text-sm rounded shadow border mb-4" onChange={setSignupOpenDateWithNull} value={eventSignupOpenDate} format="dd/MM/y h:mm a"/>
           </div>
           <div className="w-full">
             <FormLabel htmlFor="maxAttendees">Max Attendees (0 = no max)</FormLabel>
@@ -207,6 +215,10 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
           <MarkdownEditor id="description" 
             value={description} setValue={handleDescriptionChange}
           />
+          <div className="flex items-center">
+            <FormLabel>Lock signup forever for this event? (Usually no, unless it's a draft!)</FormLabel>
+            <input className="-ml-1 md:ml-4" type="checkbox" checked={signupClosed} onChange={() => setSignupClosed(!signupClosed)} />
+          </div>
             
           {errorText && <Error>{errorText}</Error>}
           <div className="flex justify-between">

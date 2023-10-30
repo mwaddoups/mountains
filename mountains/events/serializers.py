@@ -28,6 +28,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
   attendees = AttendingUserSerializer(source='attendinguser_set', many=True, read_only=True)
 
   def create(self, validated_data):
+    print(validated_data)
     created = Event.objects.create(
       organiser=self.context['request'].user,
       **validated_data,
