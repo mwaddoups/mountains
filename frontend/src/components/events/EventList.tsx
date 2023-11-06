@@ -217,10 +217,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                 </button>
               </div>
               <div className="w-full my-2">
-                {attendingList.length > 0
-                  ? <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} togglePaid={togglePaid}/>
-                  : <p className="text-gray-400 h-10">None yet!</p>
-                }
+                <AttendeeList attendees={attendingList} expanded={expandedAttendees} toggleWaitingList={toggleWaitingList} toggleAttendance={toggleAttendance} togglePaid={togglePaid}/>
               </div>
               {waitingList.length > 0 && (
                 <>

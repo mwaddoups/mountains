@@ -39,6 +39,8 @@ export default function AttendeeList({ attendees, expanded, toggleWaitingList, t
                 </div>
             ))
             }
+            {attendees.length === 0 && <p className="text-gray-400 h-10">None yet!</p>}
+            
             {expanded && isEditor && <AttendeeAdder toggleAttendance={toggleAttendance} />}
         </div>
     )
