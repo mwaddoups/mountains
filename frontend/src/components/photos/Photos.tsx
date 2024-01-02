@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowLeftCircleFill, ArrowRightCircleFill } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
+import { useInView } from 'react-intersection-observer';
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Album, Photo } from "../../models";
@@ -15,6 +16,7 @@ export default function Photos() {
   const [numDisplayedPhotos, setNumDisplayedPhotos] = useState(10)
   const [highlightedPhoto, setHighlightedPhoto] = useState<number | null>(null);
 
+
   const { albumId } = useParams();
 
   useEffect(() => {
@@ -25,6 +27,14 @@ export default function Photos() {
   }, [needsRefresh, setAlbum, albumId])
 
   const increaseDisplayedPhotos = useCallback(() => setNumDisplayedPhotos(numDisplayedPhotos + 10), [numDisplayedPhotos])
+  // Auto load more if button in view
+  const increaseDisplayedPhotosInView= useCallback((inView, entry) => {
+    if (inView) {
+      console.log('Increasing displayed photos...')
+      increaseDisplayedPhotos()
+    }
+  }, [increaseDisplayedPhotos])
+  const { ref: loadMoreRef } = useInView({onChange: increaseDisplayedPhotosInView});
 
   const stepBack = useCallback(() => (highlightedPhoto !== null) && setHighlightedPhoto(Math.max(0, highlightedPhoto - 1)), [highlightedPhoto])
   const stepForward = useCallback(() => {
@@ -70,7 +80,7 @@ export default function Photos() {
             onClick={() => setHighlightedPhoto(ix)} />)}
         </div>
         {album?.photos && numDisplayedPhotos < album.photos.length && (
-          <Button className="w-full text-sm" onClick={increaseDisplayedPhotos}>
+          <Button ref={loadMoreRef} className="w-full text-sm" onClick={increaseDisplayedPhotos}>
             Load more photos ({album.photos.length - numDisplayedPhotos})
           </Button>
         )}
