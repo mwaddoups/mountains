@@ -21,7 +21,7 @@ export default function JoinClub() {
     <Section>
       <Heading>Joining the Club</Heading>
       <Paragraph>
-        If you're new to the club you are welcome to come along for a trial walk before committing to membership - or catch us at one of the city events.  
+        If you're new to the club you are welcome to come along for a trial walk or two before committing to membership - or catch us at one of the city events.  
         You need to join the club in order to come on our walks and events. 
       </Paragraph>
       <Paragraph>
@@ -39,10 +39,16 @@ export default function JoinClub() {
       </Paragraph>
     </Section>
     <Section>
+      <Heading>Membership Closed</Heading>
+      <Paragraph>
+        Our membership is now closed until the AGM on 13th March. Note that membership is not needed for joining a few trial day walks with the club if you want to meet people - it is only needed for weekend events.
+      </Paragraph>
+    </Section>
+    {/* <Section>
       <Heading> Join or Renew Now! </Heading>
       <Paragraph> Just fill in the details below and the treasurer will be in touch with our bank details and the pro-rated payment amount.</Paragraph>
       <JoinClubForm />
-    </Section>
+    </Section> */}
     </>
   )
 }
