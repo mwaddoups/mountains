@@ -46,7 +46,7 @@ export default function Sidebar() {
       </a>
       <a target="_blank" rel="noreferrer" className={linkStyles} 
         href="https://www.tshirtstudio.com/marketplace/clyde-mountaineering-club">
-        <span className="sm:flex"><BagHeart className={iconStyles} />Club Merch!</span>
+        <span className="sm:flex"><BagHeart className={iconStyles} />Merch!</span>
       </a>
       <div className="mt-20"></div>
     </nav>

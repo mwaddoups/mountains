@@ -133,3 +133,29 @@ export type Report = {
 export interface FullReport extends Report {
   content: string
 }
+export type SmallKit = {
+  id: string,
+  description: string,
+}
+
+export interface Kit extends SmallKit {
+  id: string,
+  description: string,
+  brand: string,
+  color: string,
+  type: string,
+  purchased_on: string,
+  added_on: string,
+  seller: string,
+  price: number,
+  last_checked: string,
+  last_condition: string,
+  notes: string,
+}
+
+export type KitBorrow = {
+  kit: SmallKit,
+  user: User,
+  start_date: string,
+  end_date: string,
+}

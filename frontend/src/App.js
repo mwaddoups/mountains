@@ -32,6 +32,7 @@ import Activity from "./components/Activity";
 import Reports from "./components/reports/Reports";
 import SingleReport from "./components/reports/SingleReport";
 import ReportEditor from "./components/reports/ReportEditor";
+import Kit from "./components/kit/Kit";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
+                <Route path="kit" element={<Kit />} />
                 <Route path="activity" element={<Activity />} />
                 <Route path="members" element={<MemberContext />}>
                   <Route index element={<Members />} />
