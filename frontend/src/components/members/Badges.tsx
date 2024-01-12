@@ -1,6 +1,7 @@
 import React from "react";
 import { User } from "../../models";
 import { Badge } from "../base/Base";
+import { Snow } from "react-bootstrap-icons";
 
 interface BadgesProps {
   user: User | null;
@@ -25,6 +26,7 @@ export function BadgesLong({ user }: BadgesProps) {
     {user?.is_paid 
       ? <Badge $badgeColor="blue">Member</Badge>
       : <Badge $badgeColor="green">Guest</Badge>}
+    {user?.is_winter_skills && <Badge $badgeColor="lightblue"><Snow /></Badge>}
   </>
   )
 }

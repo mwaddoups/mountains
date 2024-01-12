@@ -32,12 +32,24 @@ export default function AdminTools({ user, setNeedsRefresh }: ApprovalButtonProp
 
   }, [user, setNeedsRefresh])
 
+  const toggleWinter = useCallback(() => {
+    if (!user) {
+      return null;
+    } else {
+      console.log(user.is_winter_skills)
+      api.patch(`users/${user.id}/`, {'is_winter_skills': !user.is_winter_skills}).then(res => setNeedsRefresh(true))
+
+    }
+
+  }, [user, setNeedsRefresh])
+
   if (user && currentUser?.is_committee) {
     return (
       <div className="rounded shadow p-2">
         <h1 className="text-lg mb-3">Admin Tools</h1>
         {!user.is_approved && <ProfileButton onClick={approveUser}>Approve User</ProfileButton>}
         <span className="ml-2"><ProfileButton onClick={togglePaid}>Toggle Member/Guest</ProfileButton></span>
+        <span className="ml-2"><ProfileButton onClick={toggleWinter}>Toggle Winter Skills</ProfileButton></span>
         <span className="ml-2 text-sm">Email: {user.email}</span>
       </div>
     )

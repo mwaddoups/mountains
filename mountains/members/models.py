@@ -55,6 +55,7 @@ class User(AbstractUser):
     in_case_emergency = models.TextField('emergency', blank=True)
     is_paid = models.BooleanField(default=False)
     is_on_discord = models.BooleanField(default=False)
+    is_winter_skills = models.BooleanField(default=False)
 
     COMMITTEE_ROLES = [
         ('Chair', 'Chair'),
