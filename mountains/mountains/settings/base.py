@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'photos',
     'activity',
     'reports',
+    'kit',
 ]
 
 AUTH_USER_MODEL = 'members.User'
