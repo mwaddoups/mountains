@@ -37,8 +37,8 @@ const colorVariants: Record<BadgeColor, any> = {
   red: tw`bg-red-400 text-gray-100`,
   green: tw`bg-green-400 text-gray-100`,
   purple: tw`bg-purple-400 text-gray-100`,
-  blue: tw`bg-blue-400 text-gray-100`,
-  lightblue: tw`bg-blue-200 text-gray-100`,
+  blue: tw`bg-blue-500 text-gray-100`,
+  lightblue: tw`bg-blue-300 text-gray-100`,
   darkgreen: tw`bg-green-700 text-gray-100`,
   darkblue: tw`bg-blue-700 text-gray-100`,
   orange: tw`bg-orange-400 text-gray-100`,
@@ -47,7 +47,7 @@ const colorVariants: Record<BadgeColor, any> = {
 }
 
 export const Badge = styled.span(({$badgeColor}: BadgeProps) => [
- tw`rounded-lg mr-2 px-2 py-0.5 md:text-sm text-xs flex-initial truncate inline items-center flex`,
+ tw`rounded-lg mr-2 px-2 py-0.5 md:text-sm text-xs flex-initial truncate inline-flex items-center`,
  colorVariants[$badgeColor], 
 ])
 

@@ -181,7 +181,7 @@ export default function EventList({ event: initialEvent, eventRef }: EventListPr
                     <Link to={`../${event.id}`}>{event.title}</Link>
                   </EventHeading>
                   <Badge className="md:ml-2" $badgeColor={eventTypeMap[event.event_type][1]}>{eventTypeMap[event.event_type][0]}</Badge>
-                  {event.members_only && <Badge className="truncate" $badgeColor="blue">Members Only</Badge>}
+                  {event.members_only && <Badge $badgeColor="blue">Members Only</Badge>}
                 </div>
                 <div className="flex items-center">
                   <button onClick={refreshEvent}><ArrowClockwise className="text-sm ml-2 inline" /></button>
