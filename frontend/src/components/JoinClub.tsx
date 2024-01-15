@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import api from "../api";
 import { getName } from "../methods/user";
-import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButton } from "./base/Base";
+import { Heading, Section, Paragraph, FormLabel, FormInput, FormSelect, FormButton, StrongParagraph } from "./base/Base";
 import { useAuth } from "./Layout";
 
 export default function JoinClub() {
@@ -20,6 +20,13 @@ export default function JoinClub() {
     <>
     <Section>
       <Heading>Joining the Club</Heading>
+      <StrongParagraph>
+        Please note: Membership is not required to come on your first few day walks! 
+        
+        Our membership year ends on April 1, 2024, so is unlikely to be good value unless you want to join a members-only trip before then, or make use of our kit borrowing or Mountaineering Scotland membership.
+
+        Otherwise we advise waiting until the end of March and purchasing a new full years membership then!
+      </StrongParagraph>
       <Paragraph>
         If you're new to the club you are welcome to come along for a trial walk or two before committing to membership - or catch us at one of the city events.  
         You need to join the club in order to come on our walks and events. 
@@ -39,16 +46,10 @@ export default function JoinClub() {
       </Paragraph>
     </Section>
     <Section>
-      <Heading>Membership Closed</Heading>
-      <Paragraph>
-        Our membership is now closed until the AGM on 13th March. Note that membership is not needed for joining a few trial day walks with the club if you want to meet people - it is only needed for weekend events.
-      </Paragraph>
-    </Section>
-    {/* <Section>
       <Heading> Join or Renew Now! </Heading>
       <Paragraph> Just fill in the details below and the treasurer will be in touch with our bank details and the pro-rated payment amount.</Paragraph>
       <JoinClubForm />
-    </Section> */}
+    </Section>
     </>
   )
 }

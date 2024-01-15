@@ -4,6 +4,7 @@ import tw from "twin.macro";
 export const Section = tw.div`rounded shadow md:p-4 p-2 mb-4`
 export const Heading = tw.h1`text-3xl font-medium mb-2`
 export const Paragraph = tw.p`mb-2 font-light text-sm`
+export const StrongParagraph = tw.p`mb-2 font-bold`
 export const UList = tw.ul`list-disc ml-6 mb-2 text-sm font-light tracking-wide`
 export const OList = tw.ol`list-decimal ml-6 mb-2 text-sm font-light tracking-wide`
 export const LI = tw.li`font-light tracking-wide text-sm`
