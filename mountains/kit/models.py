@@ -15,7 +15,7 @@ class Kit(models.Model):
     price = models.FloatField()
     last_checked = models.DateField()
     last_condition = models.CharField(max_length=50)
-    notes = models.TextField()
+    notes = models.TextField(blank=True, null=True)
 
 class KitBorrow(models.Model):
     kit = models.ForeignKey(Kit, on_delete=models.SET_NULL, null=True)
