@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'anymail',
     'members',
-    'social',
     'events',
     'photos',
     'activity',

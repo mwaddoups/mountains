@@ -1,2 +1,0 @@
-from members.serializers import SmallUserSerializer
-from rest_framework import serializers
