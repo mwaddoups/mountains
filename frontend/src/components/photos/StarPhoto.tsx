@@ -21,12 +21,12 @@ export default function StarPhoto({ photo }: StarPhotoProps) {
   const toggleStarred = useCallback(e => {
     e.stopPropagation();
 
-    api.post(
-        `photos/${photo.id}/star/`, { }
+    api.patch(
+        `photos/${photo.id}/`, { 'starred': !starred}
     ).then(
         res => setStarred(res.data.starred)
     ); 
-  }, [photo])
+  }, [photo, starred])
 
     return (
         <button className="ml-2" onClick={toggleStarred}>

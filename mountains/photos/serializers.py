@@ -20,21 +20,16 @@ class PhotoSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ['uploader', 'uploaded', 'photo']
 
 
-class AlbumSerializer(serializers.HyperlinkedModelSerializer):
-    photos = PhotoSerializer(many=True, source='sample_photos')
+class AlbumListSerializer(serializers.HyperlinkedModelSerializer):
+    photos = PhotoSerializer(many=True, source='sample_photos') # this refers to a function on the model!
     contributors = SmallUserSerializer(many=True)
-
-    def create(self, validated_data):
-        return Album.objects.create(
-            name=self.context['request'].data['name'],
-        )
 
     class Meta:
         model = Album
         fields = ['id', 'name', 'event_date', 'created', 'photos', 'contributors']
         read_only_fields = ['id', 'name', 'event_date', 'created', 'photos', 'contributors']
 
-class AlbumDetailSerializer(AlbumSerializer):
+class AlbumDetailSerializer(AlbumListSerializer):
     photos = PhotoSerializer(many=True)
 
 

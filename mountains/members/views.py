@@ -25,6 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
     ]
 
     def create(self, request):
+        # This is basically needed for security
         response = {'message': 'User creation not allowed on this path.'}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
