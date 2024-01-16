@@ -73,23 +73,6 @@ export interface Event extends BasicEvent {
   signup_open_date: string | null,
 }
 
-export type FeedPost = {
-  id: number,
-  url: string,
-  user: User,
-  posted: string,
-  text: string,
-  comments: Array<Comment>,
-}
-
-export type Comment = {
-  id: number,
-  post_id: string,
-  user: User,
-  posted: string,
-  text: string,
-}
-
 export type Photo = {
   id: number,
   uploader: User,
