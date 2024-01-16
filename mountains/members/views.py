@@ -1,35 +1,33 @@
-import datetime
 from rest_framework import viewsets, permissions, generics, status, views
 from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
+from .permissions import ReadOnly, IsCommittee
 from .models import Experience, User
 from .serializers import CommitteeSerializer, ExperienceSerializer, FullUserSerializer, ProfilePictureSerializer, SmallUserSerializerCommittee, SmallUserSerializer, UserSerializer
 
-class IsUserOwnerOrReadOnly(permissions.BasePermission):
+class IsUserOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, user_obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        else:
-            return user_obj.id == request.user.id
+        return user_obj.id == request.user.id
 
-class IsCommittee(permissions.BasePermission):
-    def has_object_permission(self, request, view, user_obj):
-        return request.user.is_committee
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [
-        permissions.IsAdminUser | (permissions.IsAuthenticated & IsUserOwnerOrReadOnly) 
+        permissions.IsAdminUser | (permissions.IsAuthenticated & (IsUserOwner | ReadOnly)) 
     ]
 
     def create(self, request):
-        # This is basically needed for security
+        # This is needed for security
         response = {'message': 'User creation not allowed on this path.'}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
     def get_serializer_class(self):
+        if not isinstance(self.request.user, User):
+            # This should never happen because of permissions
+            return SmallUserSerializer
+
         if self.action == 'list':
             if self.request.user.is_committee:
                 return SmallUserSerializerCommittee

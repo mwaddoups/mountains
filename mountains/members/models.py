@@ -35,6 +35,7 @@ def get_profile_pic_filename(instance, filename):
     return os.path.join('uploads', 'profile', filename)
 
 class User(AbstractUser):
+    id: int # Meeded for typing
     username = None
     # We redefine email because it must be set as unique
     email = models.EmailField('email address', unique=True)
