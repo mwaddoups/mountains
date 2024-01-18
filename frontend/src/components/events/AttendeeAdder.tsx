@@ -6,53 +6,83 @@ import Loading from "../Loading";
 import ProfilePicture from "../members/ProfilePicture";
 
 interface AttendeeAdderProps {
-    toggleAttendance: (userId: number) => (() => void);
+  eventId: number;
+  refreshEvent: () => void;
 }
 
-export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) {
-  let [isLoading, setIsLoading] = useState(false)
-  let [userList, setUserList] = useState<Array<User> | null>(null)
-  let [searchList, setSearchList] = useState<Array<User> | null>(null)
+export default function AttendeeAdder({
+  eventId,
+  refreshEvent,
+}: AttendeeAdderProps) {
+  let [isLoading, setIsLoading] = useState(false);
+  let [userList, setUserList] = useState<Array<User> | null>(null);
+  let [searchList, setSearchList] = useState<Array<User> | null>(null);
   let [searchString, setSearchString] = useState<string | null>(null);
 
-  let handleValue = useCallback(searchValue => {
-    if (!userList && !isLoading) {
-      setIsLoading(true);
-      api.get("users/").then(response => {
-        setUserList(response.data);
-        setIsLoading(false);
-      });
-    }
-    
-    setSearchString(searchValue);
+  let handleValue = useCallback(
+    (searchValue) => {
+      if (!userList && !isLoading) {
+        setIsLoading(true);
+        api.get("users/").then((response) => {
+          setUserList(response.data);
+          setIsLoading(false);
+        });
+      }
 
-    if (userList && searchString) {
-      setSearchList(searchUsers(userList, searchString));
-    }
+      setSearchString(searchValue);
 
-  }, [isLoading, setIsLoading, setUserList, setSearchList, searchString, userList])
+      if (userList && searchString) {
+        setSearchList(searchUsers(userList, searchString));
+      }
+    },
+    [
+      isLoading,
+      setIsLoading,
+      setUserList,
+      setSearchList,
+      searchString,
+      userList,
+    ]
+  );
 
-  let addUserToEvent = useCallback(user => {
-    return () => {
-      setSearchString(null);
-      setSearchList(null);
-      toggleAttendance(user.id)();
-    }
-  }, [toggleAttendance, setSearchString, setSearchList])
-
+  let addUserToEvent = useCallback(
+    (user) => {
+      return () => {
+        setSearchString(null);
+        setSearchList(null);
+        api
+          .post(`events/${eventId}/attend/`, { userId: user.id })
+          .then(refreshEvent);
+      };
+    },
+    [refreshEvent, setSearchString, setSearchList, eventId]
+  );
 
   return (
     <div>
-      <input className="w-full shadow p-2 text-sm text-gray-500" type="text" 
-        onClick={() => {if (searchString === null) {setSearchString("")}}}
-        onChange={e => handleValue(e.target.value)} 
-        value={(searchString === null) ? "Add a new user..." : searchString} />
+      <input
+        className="w-full shadow p-2 text-sm text-gray-500"
+        type="text"
+        onClick={() => {
+          if (searchString === null) {
+            setSearchString("");
+          }
+        }}
+        onChange={(e) => handleValue(e.target.value)}
+        value={searchString === null ? "Add a new user..." : searchString}
+      />
       <Loading loading={isLoading}>
         {searchList && (
           <div className="border-gray-400 ml-5 p-2 border-1 rounded bg-white">
-            {searchList.map(user => (
-              <div key={user.id} onClick={addUserToEvent(user)} className="hover:bg-blue-400 h-10 flex items-center my-1">
-                <div className="w-10"><ProfilePicture user={user} /></div>
+            {searchList.map((user) => (
+              <div
+                key={user.id}
+                onClick={addUserToEvent(user)}
+                className="hover:bg-blue-400 h-10 flex items-center my-1"
+              >
+                <div className="w-10">
+                  <ProfilePicture user={user} />
+                </div>
                 <p className="text-sm text-gray-500">{getName(user)}</p>
               </div>
             ))}
@@ -60,5 +90,5 @@ export default function AttendeeAdder({ toggleAttendance }: AttendeeAdderProps) 
         )}
       </Loading>
     </div>
-  )
+  );
 }

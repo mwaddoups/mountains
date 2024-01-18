@@ -29,6 +29,20 @@ class Event(models.Model):
     signup_open_date = models.DateTimeField(blank=True, null=True, default=None)
     is_deleted = models.BooleanField(blank=False, null=False, default=False)
 
+    def is_full(self) -> bool:
+        """
+        Checks if the event is full (0 is interpreted as no limit)
+        """
+        num_attendees = self.attendees.filter(attendinguser__is_waiting_list=False).count()
+        return self.max_attendees != 0 and num_attendees >= self.max_attendees
+
+    def has_waiting_list(self) -> bool:
+        """
+        Returns true if either the event is full, or it already has a waiting list
+        """
+        waiting_list_size = self.attendees.filter(attendinguser__is_waiting_list=True).count()
+        return self.is_full() or waiting_list_size > 0
+
 class AttendingUser(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     list_join_date = models.DateTimeField(auto_now_add=True) # Gets updated manually by waiting list changes

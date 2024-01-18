@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView, UserJoinView
-from events.views import EventViewSet
+from events.views import EventViewSet, AttendingUserViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
 from activity.views import ActivityViewSet
 from reports.views import ReportViewSet
@@ -29,6 +29,7 @@ from kit.views import KitViewSet, KitBorrowViewSet
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'events', EventViewSet, basename='Event')
+router.register(r'attendingusers', AttendingUserViewSet)
 router.register(r'experiences', ExperienceViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'albums', AlbumViewSet)

@@ -1,14 +1,16 @@
 import datetime
 import pytz
 import itertools
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import AttendingUser, Event, User
-from .serializers import BasicEventSerializer, EventSerializer
+from members.permissions import IsCommittee, IsWalkCo, ReadOnly
+from members.models import User
+from .models import AttendingUser, Event
+from .serializers import BasicEventSerializer, EventSerializer, AttendingUserSerializer
 from activity.models import Activity
 from django.utils import timezone
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 
 def user_allowed_edit_events(user):
     return user.is_committee or user.is_walk_coordinator
@@ -64,73 +66,27 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @action(methods=['patch', 'post'], detail=True, permission_classes=[permissions.IsAuthenticated])
     def attend(self, request, pk=None):
-        event = self.get_object()
-        user = request.user
+        event: Event = self.get_object()
+        user: User = request.user
         if request.method == 'POST' and user_allowed_edit_events(request.user):
             user_id = request.data['userId']
             user = User.objects.get(pk=user_id)
 
-        is_trip_paid = request.data.get('isTripPaid', False)
-
-        actual_attendees = [au.user.id for au in AttendingUser.objects.filter(event=event, is_waiting_list=False).all()]
-        all_attendees = list(event.attendees.all())
-        if user in all_attendees:
-            event.attendees.remove(user)
+        attending_user, _was_created = AttendingUser.objects.get_or_create(user=user, event=event)
+        if event.has_waiting_list():
+            attending_user.is_waiting_list = True
+            attending_user.save()
             if user != request.user:
-                Activity.objects.create(user=request.user, event=event, action=f"removed {user.first_name} {user.last_name} from")
+                Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to waiting list for")
             else:
-                Activity.objects.create(user=user, event=event, action="left")
+                Activity.objects.create(user=user, event=event, action="joined waiting list for")
         else:
-            event_has_waiting_list = len(all_attendees) > len(actual_attendees)
-            event_over_max_limit = event.max_attendees > 0 and len(actual_attendees) >= event.max_attendees
-            attending_user, _was_created = AttendingUser.objects.get_or_create(user=user, event=event)
-            print(attending_user)
-            if event_has_waiting_list or event_over_max_limit:
-                # Add to waiting list
-                attending_user.is_waiting_list = True
-                attending_user.is_trip_paid = is_trip_paid
-                attending_user.save()
-                if user != request.user:
-                    Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to waiting list for")
-                else:
-                    Activity.objects.create(user=user, event=event, action="joined waiting list for")
+            attending_user.is_waiting_list = False
+            attending_user.save()
+            if user != request.user:
+                Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to")
             else:
-                attending_user.is_waiting_list = False
-                attending_user.is_trip_paid = is_trip_paid
-                attending_user.save()
-                if user != request.user:
-                    Activity.objects.create(user=request.user, event=event, action=f"added {user.first_name} {user.last_name} to")
-                else:
-                    Activity.objects.create(user=user, event=event, action="joined")
-
-        updated_event = EventSerializer(event, context={'request': request}) 
-        return Response(updated_event.data)
-
-    @action(methods=['post'], detail=True, permission_classes=[IsEventEditorOrReadOnly])
-    def changelist(self, request, pk=None):
-        event = self.get_object()
-        user_id = request.data['userId']
-        wanted_au = AttendingUser.objects.filter(event=event, user=user_id).first()
-
-        wanted_au.is_waiting_list = not wanted_au.is_waiting_list
-        wanted_au.list_join_date = timezone.now()
-        wanted_au.save()
-
-        updated_event = EventSerializer(event, context={'request': request}) 
-        return Response(updated_event.data)
-
-    @action(methods=['patch', 'post'], detail=True, permission_classes=[IsEventEditorOrReadOnly])
-    def changepaid(self, request, pk=None):
-        event = self.get_object()
-        user = request.user
-        if request.method == 'POST' and user_allowed_edit_events(request.user):
-            # POST for changing others, PATCH for changing self
-            user_id = request.data['userId']
-            user = User.objects.get(pk=user_id)
-        wanted_au = AttendingUser.objects.filter(event=event, user=user).first()
-
-        wanted_au.is_trip_paid = not wanted_au.is_trip_paid
-        wanted_au.save()
+                Activity.objects.create(user=user, event=event, action="joined")
 
         updated_event = EventSerializer(event, context={'request': request}) 
         return Response(updated_event.data)
@@ -228,3 +184,30 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
         return Response({'is_approved': True})
+
+# Mixins avoid including list, which we would never want
+class AttendingUserViewSet(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
+    queryset = AttendingUser.objects.all()
+    serializer_class = AttendingUserSerializer
+    permission_classes = [permissions.IsAdminUser | (permissions.IsAuthenticated & (IsCommittee | IsWalkCo | ReadOnly))]
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        We subclass for Activity creation here.
+        """
+        att_user = self.get_object()
+
+        if att_user.user != request.user:
+            Activity.objects.create(
+                user=request.user, 
+                event=att_user.event, 
+                action=f"removed {att_user.user.first_name} {att_user.user.last_name} from"
+            )
+        else:
+            Activity.objects.create(user=att_user.user, event=att_user.event, action="left")
+
+        return super().destroy(request, *args, **kwargs)
