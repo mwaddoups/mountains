@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ArrowClockwise,
   ClipboardPlus,
@@ -29,8 +29,8 @@ import AttendeeList from "./AttendeeList";
 import AttendPopup, { PopupStep } from "./AttendPopup";
 import CalendarDate, { CalendarTime } from "./CalendarDate";
 import Modal from "../base/Modal";
-import dateFormat from "dateformat";
 import AttendeeAdder from "./AttendeeAdder";
+import EventAttendButton from "./EventAttendButton";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null;
@@ -63,30 +63,12 @@ export default function EventList({
   const { currentUser } = useAuth();
   const isEditor =
     currentUser?.is_committee || currentUser?.is_walk_coordinator || false;
-  const isAttending = useMemo(
-    () =>
-      currentUser &&
-      event.attendees.map((user) => user.id).includes(currentUser.id),
-    [event, currentUser]
-  );
-
-  const attendingList = useMemo(
-    () =>
-      event.attendees
-        .filter((user) => !user.is_waiting_list)
-        .sort(
-          (u1, u2) =>
-            new Date(u1.list_join_date).getTime() -
-            new Date(u2.list_join_date).getTime()
-        ),
-    [event]
-  );
 
   const refreshEvent = useCallback(() => {
     api.get(`events/${event.id}/`).then((res) => setEvent(res.data));
   }, [event]);
 
-  const toggleCurrentAttendance = useCallback(() => {
+  const attendEvent = useCallback(() => {
     api.patch(`events/${event.id}/attend/`).then((res) => setEvent(res.data));
   }, [event]);
 
@@ -109,43 +91,40 @@ export default function EventList({
     });
   }, [event]);
 
-  const handleAttend = useCallback(() => {
-    if (isAttending) {
-      toggleCurrentAttendance();
-    } else {
-      // Setup the steps
-      let steps: Array<PopupStep> = [];
-      if (currentUser && !currentUser.is_paid && event.members_only) {
-        // If it's members only,
-        steps.push("members_only");
-      }
-
-      if (currentUser && !currentUser.is_on_discord) {
-        steps.push("discord");
-      }
-
-      if (currentUser && event.show_popup) {
-        // We just show this for any event which requires participation statement
-        steps.push("ice");
-      }
-      if (event.show_popup) {
-        steps.push("participation");
-      }
-
-      if (steps.length > 0) {
-        setAttendPopupSteps(steps);
-        setAttendPopupVisible(true);
-      } else {
-        toggleCurrentAttendance();
-      }
+  const showAttendPopup = useCallback(() => {
+    // Setup the steps
+    let steps: Array<PopupStep> = [];
+    if (currentUser && !currentUser.is_paid && event.members_only) {
+      // If it's members only,
+      steps.push("members_only");
     }
-  }, [
-    isAttending,
-    toggleCurrentAttendance,
-    setAttendPopupVisible,
-    currentUser,
-    event,
-  ]);
+
+    if (currentUser && !currentUser.is_on_discord) {
+      steps.push("discord");
+    }
+
+    if (currentUser && event.show_popup) {
+      // We just show this for any event which requires participation statement
+      steps.push("ice");
+    }
+    if (event.show_popup) {
+      steps.push("participation");
+    }
+
+    if (steps.length > 0) {
+      setAttendPopupSteps(steps);
+      setAttendPopupVisible(true);
+    } else {
+      attendEvent();
+    }
+  }, [attendEvent, setAttendPopupVisible, currentUser, event]);
+
+  const leaveEvent = useCallback(() => {
+    const attUser = event.attendees.find((u) => u.id === currentUser?.id);
+    if (attUser) {
+      api.delete(`attendingusers/${attUser.au_id}/`).then(refreshEvent);
+    }
+  }, [currentUser, event, refreshEvent]);
 
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
@@ -277,27 +256,11 @@ export default function EventList({
                     refreshEvent={refreshEvent}
                   />
                 )}
-                {event.signup_open ? (
-                  event.signup_open_date === null ||
-                  new Date(event.signup_open_date) <= new Date() ? (
-                    <Button onClick={handleAttend}>
-                      {isAttending
-                        ? "Leave"
-                        : event.max_attendees &&
-                          event.max_attendees > 0 &&
-                          attendingList.length >= event.max_attendees
-                        ? "Join Waiting List"
-                        : "Attend"}
-                    </Button>
-                  ) : (
-                    <CancelButton>
-                      Signup opens at{" "}
-                      {dateFormat(event.signup_open_date, "dd mmm yyyy HH:MM")}
-                    </CancelButton>
-                  )
-                ) : (
-                  <CancelButton>Signup closed</CancelButton>
-                )}
+                <EventAttendButton
+                  event={event}
+                  attendEvent={showAttendPopup}
+                  leaveEvent={leaveEvent}
+                />
               </div>
             </div>
           </div>
@@ -305,7 +268,7 @@ export default function EventList({
         {attendPopupVisible && (
           <AttendPopup
             steps={attendPopupSteps}
-            toggleCurrentAttendance={toggleCurrentAttendance}
+            attendEvent={attendEvent}
             setVisible={setAttendPopupVisible}
           />
         )}

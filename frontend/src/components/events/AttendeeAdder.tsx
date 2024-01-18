@@ -59,7 +59,7 @@ export default function AttendeeAdder({
   );
 
   return (
-    <div>
+    <div className="py-2">
       <input
         className="w-full shadow p-2 text-sm text-gray-500"
         type="text"
