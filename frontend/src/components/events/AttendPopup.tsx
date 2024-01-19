@@ -11,18 +11,19 @@ import {
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
+import { Event } from "../../models";
 import participationStatementURL from "./ParticipationStatement.md";
 
 export type PopupStep = "participation" | "ice" | "discord" | "members_only";
 
 interface AttendPopupProps {
-  steps: Array<PopupStep>;
+  event: Event;
   attendEvent: () => void;
   setVisible: (a: boolean) => void;
 }
 
 export default function AttendPopup({
-  steps,
+  event,
   attendEvent,
   setVisible,
 }: AttendPopupProps) {
@@ -38,17 +39,55 @@ export default function AttendPopup({
     f().then((text) => setParticipationStatement(text));
   }, []);
 
+  const { currentUser } = useAuth();
+  const calcSteps = () => {
+    // Setup the steps
+    let steps: Array<PopupStep> = [];
+    if (currentUser && !currentUser.is_paid && event.members_only) {
+      // If it's members only,
+      steps.push("members_only");
+    }
+
+    if (currentUser && !currentUser.is_on_discord) {
+      steps.push("discord");
+    }
+
+    if (currentUser && event.show_popup) {
+      // We just show this for any event which requires participation statement
+      steps.push("ice");
+    }
+    if (event.show_popup) {
+      steps.push("participation");
+    }
+
+    return steps;
+  };
+
+  const steps = calcSteps();
+
+  useEffect(() => {
+    // This essentially short-circuits the popup if no steps are generated.
+    // This needs to only run once, on initial run
+    if (steps.length === 0) {
+      attendEvent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const isFinalStep = steps !== null && currentStep >= steps.length - 1; // Use >= just to catch any weird issues
 
   const advanceStep = useCallback(() => {
     if (isFinalStep) {
       // Final step - we can toggle attendance and close
       attendEvent();
-      setVisible(false);
     } else {
       setCurrentStep((c) => c + 1);
     }
-  }, [attendEvent, setVisible, isFinalStep]);
+  }, [attendEvent, isFinalStep]);
+
+  if (steps.length === 0) {
+    return null;
+  }
 
   return (
     <Modal>

@@ -1,36 +1,21 @@
 import React, { useCallback, useState } from "react";
-import {
-  ArrowClockwise,
-  ClipboardPlus,
-  DoorClosedFill,
-  DoorOpenFill,
-  Envelope,
-  PencilFill,
-  Trash,
-} from "react-bootstrap-icons";
+import { ArrowClockwise } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import {
-  Button,
-  Badge,
-  EventHeading,
-  BadgeColor,
-  CancelButton,
-  Bolded,
-  Paragraph,
-} from "../base/Base";
+import { Badge, EventHeading, BadgeColor } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
 import AttendeeList from "./AttendeeList";
-import AttendPopup, { PopupStep } from "./AttendPopup";
+import AttendPopup from "./AttendPopup";
 import CalendarDate, { CalendarTime } from "./CalendarDate";
-import Modal from "../base/Modal";
 import AttendeeAdder from "./AttendeeAdder";
 import EventAttendButton from "./EventAttendButton";
+import Loading from "../Loading";
+import EventAdminTools from "./EventAdminTools";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null;
@@ -52,72 +37,28 @@ export default function EventList({
   event: initialEvent,
   eventRef,
 }: EventListProps) {
+  const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
-  const [attendPopupSteps, setAttendPopupSteps] = useState<Array<PopupStep>>(
-    []
-  );
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmReminder, setConfirmReminder] = useState(false);
 
   const { currentUser } = useAuth();
   const isEditor =
     currentUser?.is_committee || currentUser?.is_walk_coordinator || false;
 
   const refreshEvent = useCallback(() => {
-    api.get(`events/${event.id}/`).then((res) => setEvent(res.data));
+    setLoading(true);
+    api.get(`events/${event.id}/`).then((res) => {
+      setEvent(res.data);
+      setLoading(false);
+    });
   }, [event]);
 
   const attendEvent = useCallback(() => {
-    api.patch(`events/${event.id}/attend/`).then((res) => setEvent(res.data));
-  }, [event]);
-
-  const toggleSignup = useCallback(() => {
-    api
-      .patch(`events/${event.id}/`, { signup_open: !event.signup_open })
-      .then((res) => setEvent(res.data));
-  }, [event]);
-
-  const deleteEvent = useCallback(() => {
-    api.patch(`events/${event.id}/`, { is_deleted: true }).then((res) => {
-      setConfirmDelete(false);
+    api.patch(`events/${event.id}/attend/`).then((res) => {
       setEvent(res.data);
+      setAttendPopupVisible(false);
     });
   }, [event]);
-
-  const sendReminder = useCallback(() => {
-    api.post(`events/${event.id}/reminderemail/`, {}).then((res) => {
-      setConfirmReminder(false);
-    });
-  }, [event]);
-
-  const showAttendPopup = useCallback(() => {
-    // Setup the steps
-    let steps: Array<PopupStep> = [];
-    if (currentUser && !currentUser.is_paid && event.members_only) {
-      // If it's members only,
-      steps.push("members_only");
-    }
-
-    if (currentUser && !currentUser.is_on_discord) {
-      steps.push("discord");
-    }
-
-    if (currentUser && event.show_popup) {
-      // We just show this for any event which requires participation statement
-      steps.push("ice");
-    }
-    if (event.show_popup) {
-      steps.push("participation");
-    }
-
-    if (steps.length > 0) {
-      setAttendPopupSteps(steps);
-      setAttendPopupVisible(true);
-    } else {
-      attendEvent();
-    }
-  }, [attendEvent, setAttendPopupVisible, currentUser, event]);
 
   const leaveEvent = useCallback(() => {
     const attUser = event.attendees.find((u) => u.id === currentUser?.id);
@@ -134,37 +75,7 @@ export default function EventList({
     return null;
   } else {
     return (
-      <>
-        {confirmDelete && (
-          <Modal>
-            <Paragraph>Are you sure you want to delete this event?</Paragraph>
-            <Paragraph>
-              <Bolded>{event.title}</Bolded>
-            </Paragraph>
-            <Button onClick={deleteEvent}>Delete event</Button>
-            <CancelButton onClick={() => setConfirmDelete(false)}>
-              Cancel
-            </CancelButton>
-          </Modal>
-        )}
-        {confirmReminder && (
-          <Modal>
-            <Paragraph>
-              Are you sure you want to send an email reminder?
-            </Paragraph>
-            <Paragraph>
-              Please only do this <Bolded>after</Bolded> you have created the
-              walk thread in #trips
-            </Paragraph>
-            <Paragraph>
-              This will email <Bolded>{event.attendees.length}</Bolded> people.
-            </Paragraph>
-            <Button onClick={sendReminder}>Send reminder</Button>
-            <CancelButton onClick={() => setConfirmReminder(false)}>
-              Cancel
-            </CancelButton>
-          </Modal>
-        )}
+      <Loading loading={loading}>
         <div
           ref={eventRef}
           className={"w-full shadow" + (isInPast ? " striped-gradient" : "")}
@@ -196,33 +107,10 @@ export default function EventList({
                     </button>
                     {(currentUser?.is_committee ||
                       currentUser?.is_walk_coordinator) && (
-                      <>
-                        <Link to={`../${event.id}/edit`}>
-                          <PencilFill className="text-sm ml-2 inline" />
-                        </Link>
-                        <Link to={`../${event.id}/copy`}>
-                          <ClipboardPlus className="text-sm ml-2 inline" />
-                        </Link>
-                        <span onClick={toggleSignup} className="cursor-pointer">
-                          {event.signup_open ? (
-                            <DoorOpenFill className="text-green-500 text-sm ml-2 inline" />
-                          ) : (
-                            <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />
-                          )}
-                        </span>
-                        <span
-                          onClick={() => setConfirmReminder(true)}
-                          className="cursor-pointer"
-                        >
-                          <Envelope className="text-sm ml-2 inline" />
-                        </span>
-                        <span
-                          onClick={() => setConfirmDelete(true)}
-                          className="cursor-pointer"
-                        >
-                          <Trash className="text-sm ml-2 inline" />
-                        </span>
-                      </>
+                      <EventAdminTools
+                        event={event}
+                        refreshEvent={refreshEvent}
+                      />
                     )}
                   </div>
                 </div>
@@ -258,7 +146,7 @@ export default function EventList({
                 )}
                 <EventAttendButton
                   event={event}
-                  attendEvent={showAttendPopup}
+                  attendEvent={() => setAttendPopupVisible(true)}
                   leaveEvent={leaveEvent}
                 />
               </div>
@@ -267,12 +155,12 @@ export default function EventList({
         </div>
         {attendPopupVisible && (
           <AttendPopup
-            steps={attendPopupSteps}
+            event={event}
             attendEvent={attendEvent}
             setVisible={setAttendPopupVisible}
           />
         )}
-      </>
+      </Loading>
     );
   }
 }
