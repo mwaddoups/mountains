@@ -66,3 +66,20 @@ If you're keen to pick up more gear cheaply, Decathlon is one of the best option
 - Sleeping bag liner
 - Dry clothes for sleeping in
 - Casual clothes if we're in a hut
+
+
+### First aid kit
+The contents of a kit is personal and the best way to understand what to take is to do an outdoor first aid course.
+That being said, this is what we have in the club first aid kits.
+- Vaseline
+- Microporous tape
+- Triangular bandage 90x90x127
+- 2x Crepe bandage (7.5cmx4.5m)
+- Conforming bandage (10cmx4m, 5cmx4m)
+- 2x Adhesive dressing (10cmx8cm) 
+- 2x Non adhererent absorbent dressing (10cmx10cm)
+- Trauma (major bleed) dressing (10cmx18cm)
+- Scissors
+- Tick remover
+- Selection of plasters (inc. blister plasters)
+- Rehydration treatment and painkillers
