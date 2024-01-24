@@ -18,63 +18,10 @@ WEBHOOK_SECRET = (
 )
 
 
-class ProductView(APIView):
-    """
-    Output sample price/product pair below
-
-    {
-        "id": "price_1OYx6mHeSU2riQUJJOrq28YX",
-        "object": "price",
-        "active": true,
-        "billing_scheme": "per_unit",
-        "created": 1705351812,
-        "currency": "gbp",
-        "custom_unit_amount": null,
-        "livemode": false,
-        "lookup_key": null,
-        "metadata": {},
-        "nickname": null,
-        "product": {
-            "id": "prod_PNiXJZykJTv0UY",
-            "object": "product",
-            "active": true,
-            "attributes": [],
-            "created": 1705351812,
-            "default_price": null,
-            "description": null,
-            "features": [],
-            "images": [],
-            "livemode": false,
-            "metadata": {},
-            "name": "Full membership",
-            "package_dimensions": null,
-            "shippable": null,
-            "statement_descriptor": null,
-            "tax_code": null,
-            "type": "service",
-            "unit_label": null,
-            "updated": 1705351812,
-            "url": null
-        },
-        "recurring": {
-            "aggregate_usage": null,
-            "interval": "year",
-            "interval_count": 1,
-            "trial_period_days": null,
-            "usage_type": "licensed"
-        },
-        "tax_behavior": "unspecified",
-        "tiers_mode": null,
-        "transform_quantity": null,
-        "type": "recurring",
-        "unit_amount": 4200,
-        "unit_amount_decimal": "4200"
-    }
-    """
-
+class ProductViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAdminUser | IsCommittee]
 
-    def get(self, request):
+    def list(self, request):
         # Nest the products under the prices
         prices = stripe.Price.list(active=True)["data"]
         products = stripe.Product.list()["data"]
@@ -83,6 +30,15 @@ class ProductView(APIView):
             matching_products = [p for p in products if p["id"] == price["product"]]
             price["product"] = matching_products[0]
         return Response(prices)
+
+    def retrieve(self, request, pk=None):
+        price = stripe.Price.retrieve(id=pk)
+        product = stripe.Product.retrieve(id=price["product"])
+
+        # Nest the product here
+        price["product"] = product
+
+        return Response(price)
 
 
 class MemberJoinView(APIView):

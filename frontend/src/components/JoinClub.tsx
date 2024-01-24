@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import api from "../api";
 import { getName } from "../methods/user";
 import {
@@ -14,9 +14,28 @@ import {
   SmallHeading,
   Button,
   SmallButton,
+  SmallRedButton,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
+
+// partial but good enough
+type StripeProduct = {
+  id: string;
+  name: string;
+};
+
+type StripePriceProduct = {
+  id: string;
+  product: StripeProduct;
+  unit_amount: number;
+  currency: string;
+};
+
+type MembershipPrice = {
+  url: string;
+  price_id: string;
+};
 
 export default function JoinClub() {
   const { currentUser } = useAuth();
@@ -75,22 +94,27 @@ function JoinClubForm() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState("");
-  const [membership, setMembership] = useState<"regular" | "concession">(
-    "regular"
+  const [memberships, setMemberships] = useState<Array<StripePriceProduct>>([]);
+  const [membershipPriceId, setMembershipPriceId] = useState<string | null>(
+    null
   );
   const [mscot, setMscot] = useState("");
 
   const { currentUser } = useAuth();
 
-  const currentMonth = new Date().getMonth();
-
-  const isHalfYearFee = currentMonth > 8 || currentMonth < 2;
-  const regularFee = isHalfYearFee ? 22 : 39;
-  const concessionFee = isHalfYearFee ? 12 : 21;
-  const feeForThisUser = membership === "regular" ? regularFee : concessionFee;
-
   const location = useLocation();
   const query = new URLSearchParams(window.location.search);
+
+  useEffect(() => {
+    api.get("payments/membershipprice/").then((res) => {
+      Promise.all(
+        res.data.map(async (p: MembershipPrice) => {
+          const res = await api.get(`payments/products/${p.price_id}/`);
+          return res.data;
+        })
+      ).then((res) => setMemberships(res));
+    });
+  }, []);
 
   const handleJoin = useCallback(
     (event) => {
@@ -104,10 +128,8 @@ function JoinClubForm() {
         dob,
         address,
         mobile,
-        membership,
         mscot,
-        amount: feeForThisUser,
-        price_id: "price_1OcBydHeSU2riQUJflrmTETI",
+        price_id: membershipPriceId,
         return_domain: window.location.origin + location.pathname,
       };
 
@@ -116,16 +138,7 @@ function JoinClubForm() {
         window.location.assign(res.data);
       });
     },
-    [
-      dob,
-      address,
-      mobile,
-      membership,
-      mscot,
-      currentUser,
-      feeForThisUser,
-      location,
-    ]
+    [dob, address, mobile, mscot, membershipPriceId, currentUser, location]
   );
 
   if (query.get("success")) {
@@ -170,11 +183,14 @@ function JoinClubForm() {
 
       <FormLabel>Membership Type</FormLabel>
       <FormSelect
-        value={membership}
-        onChange={(e) => setMembership(e.target.value as any)}
+        value={membershipPriceId || ""}
+        onChange={(e) => setMembershipPriceId(e.target.value as any)}
       >
-        <option value="regular">Regular (£{regularFee})</option>
-        <option value="concession">Concession (£{concessionFee})</option>
+        {memberships.map((m) => (
+          <option key={m.id} value={m.id}>
+            {m.product.name} (£{m.unit_amount / 100})
+          </option>
+        ))}
       </FormSelect>
 
       <FormLabel>
@@ -196,25 +212,6 @@ function JoinClubForm() {
     </form>
   );
 }
-
-// partial but good enough
-type StripeProduct = {
-  id: string;
-  name: string;
-};
-
-type StripePriceProduct = {
-  id: string;
-  product: StripeProduct;
-  unit_amount: number;
-  currency: string;
-};
-
-type MembershipPrice = {
-  url: URL;
-  price_id: string;
-  type: string;
-};
 
 function JoinAdminTools() {
   const [products, setProducts] = useState<Array<StripePriceProduct>>([]);
@@ -238,18 +235,28 @@ function JoinAdminTools() {
     });
   }, [loadMembershipPrice]);
 
-  const setPrice = useCallback(
-    (priceType, priceId) => {
+  const addPrice = useCallback(
+    (priceId) => {
       return () => {
         api
           .post("payments/membershipprice/", {
             price_id: priceId,
-            type: priceType,
           })
           .then((res) => loadMembershipPrice());
       };
     },
     [loadMembershipPrice]
+  );
+  const removePrice = useCallback(
+    (priceId) => {
+      return () => {
+        const mp = membershipProducts.find((p) => p.price_id === priceId)?.url;
+        if (mp) {
+          api.delete(mp).then((res) => loadMembershipPrice());
+        }
+      };
+    },
+    [loadMembershipPrice, membershipProducts]
   );
 
   if (!loaded) {
@@ -259,26 +266,21 @@ function JoinAdminTools() {
       <Section>
         <SmallHeading>Admin Tools</SmallHeading>
         <StrongParagraph>Membership Products</StrongParagraph>
-        {membershipProducts.map((p) => (
-          <div className="flex">
-            <Paragraph>
-              {p.price_id} {p.type} ({p.id})
-            </Paragraph>
-          </div>
-        ))}
-        <StrongParagraph>All Products</StrongParagraph>
         {products.map((p) => (
-          <div className="flex items-center">
+          <div key={p.id} className="flex items-center">
+            {membershipProducts.map((mp) => mp.price_id).includes(p.id) ? (
+              <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
+                Remove
+              </SmallRedButton>
+            ) : (
+              <SmallButton className="mr-4" onClick={addPrice(p.id)}>
+                Add
+              </SmallButton>
+            )}
             <Paragraph className="mr-4">
               {p.product.name} - {p.unit_amount / 100}
               {p.currency} ({p.id})
             </Paragraph>
-            <SmallButton className="mr-4" onClick={setPrice("regular", p.id)}>
-              Regular
-            </SmallButton>
-            <SmallButton onClick={setPrice("concession", p.id)}>
-              Concession
-            </SmallButton>
           </div>
         ))}
       </Section>
