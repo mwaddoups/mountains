@@ -11,11 +11,16 @@ import {
   FormButton,
   StrongParagraph,
   Error,
+  SmallHeading,
+  Button,
+  SmallButton,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
 
 export default function JoinClub() {
+  const { currentUser } = useAuth();
+
   return (
     <>
       <Section>
@@ -61,6 +66,7 @@ export default function JoinClub() {
         <Heading> Join or Renew Now! </Heading>
         <JoinClubForm />
       </Section>
+      {currentUser?.is_committee && <JoinAdminTools />}
     </>
   );
 }
@@ -189,4 +195,93 @@ function JoinClubForm() {
       <FormButton type="submit">Submit</FormButton>
     </form>
   );
+}
+
+// partial but good enough
+type StripeProduct = {
+  id: string;
+  name: string;
+};
+
+type StripePriceProduct = {
+  id: string;
+  product: StripeProduct;
+  unit_amount: number;
+  currency: string;
+};
+
+type MembershipPrice = {
+  url: URL;
+  price_id: string;
+  type: string;
+};
+
+function JoinAdminTools() {
+  const [products, setProducts] = useState<Array<StripePriceProduct>>([]);
+  const [membershipProducts, setMembershipProducts] = useState<
+    Array<MembershipPrice>
+  >([]);
+  const [loaded, setLoaded] = useState(false);
+
+  const loadMembershipPrice = useCallback(() => {
+    api
+      .get("payments/membershipprice/")
+      .then((res) => setMembershipProducts(res.data));
+  }, []);
+
+  const loadData = useCallback(() => {
+    loadMembershipPrice();
+
+    api.get("payments/products/").then((res) => {
+      setProducts(res.data);
+      setLoaded(true);
+    });
+  }, [loadMembershipPrice]);
+
+  const setPrice = useCallback(
+    (priceType, priceId) => {
+      return () => {
+        api
+          .post("payments/membershipprice/", {
+            price_id: priceId,
+            type: priceType,
+          })
+          .then((res) => loadMembershipPrice());
+      };
+    },
+    [loadMembershipPrice]
+  );
+
+  if (!loaded) {
+    return <Button onClick={loadData}>Load admin tools</Button>;
+  } else {
+    return (
+      <Section>
+        <SmallHeading>Admin Tools</SmallHeading>
+        <StrongParagraph>Membership Products</StrongParagraph>
+        {membershipProducts.map((p) => (
+          <div className="flex">
+            <Paragraph>
+              {p.price_id} {p.type} ({p.id})
+            </Paragraph>
+          </div>
+        ))}
+        <StrongParagraph>All Products</StrongParagraph>
+        {products.map((p) => (
+          <div className="flex items-center">
+            <Paragraph className="mr-4">
+              {p.product.name} - {p.unit_amount / 100}
+              {p.currency} ({p.id})
+            </Paragraph>
+            <SmallButton className="mr-4" onClick={setPrice("regular", p.id)}>
+              Regular
+            </SmallButton>
+            <SmallButton onClick={setPrice("concession", p.id)}>
+              Concession
+            </SmallButton>
+          </div>
+        ))}
+      </Section>
+    );
+  }
 }

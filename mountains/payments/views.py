@@ -76,7 +76,7 @@ class ProductView(APIView):
 
     def get(self, request):
         # Nest the products under the prices
-        prices = stripe.Price.list()["data"]
+        prices = stripe.Price.list(active=True)["data"]
         products = stripe.Product.list()["data"]
 
         for price in prices:

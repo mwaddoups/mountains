@@ -31,7 +31,12 @@ from photos.views import PhotoViewSet, AlbumViewSet
 from activity.views import ActivityViewSet
 from reports.views import ReportViewSet
 from kit.views import KitViewSet, KitBorrowViewSet
-from payments.views import handle_order, ProductView, MemberJoinView
+from payments.views import (
+    handle_order,
+    ProductView,
+    MemberJoinView,
+    MembershipPriceViewSet,
+)
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
@@ -44,6 +49,7 @@ router.register(r"activity", ActivityViewSet)
 router.register(r"reports", ReportViewSet)
 router.register(r"kit/inventory", KitViewSet)
 router.register(r"kit/borrow", KitBorrowViewSet)
+router.register(r"payments/membershipprice", MembershipPriceViewSet)
 
 urlpatterns = [
     path(r"payments/products/", ProductView.as_view()),
