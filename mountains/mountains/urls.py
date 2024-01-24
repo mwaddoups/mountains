@@ -19,31 +19,40 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from members.views import ExperienceViewSet, UserViewSet, SelfUserView, ProfileUpdateView, UserJoinView
+from members.views import (
+    ExperienceViewSet,
+    UserViewSet,
+    SelfUserView,
+    ProfileUpdateView,
+    UserJoinView,
+)
 from events.views import EventViewSet, AttendingUserViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
 from activity.views import ActivityViewSet
 from reports.views import ReportViewSet
 from kit.views import KitViewSet, KitBorrowViewSet
+from payments.views import handle_order, ProductView, MemberJoinView
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'events', EventViewSet, basename='Event')
-router.register(r'attendingusers', AttendingUserViewSet)
-router.register(r'experiences', ExperienceViewSet)
-router.register(r'photos', PhotoViewSet)
-router.register(r'albums', AlbumViewSet)
-router.register(r'activity', ActivityViewSet)
-router.register(r'reports', ReportViewSet)
-router.register(r'kit/inventory', KitViewSet)
-router.register(r'kit/borrow', KitBorrowViewSet)
+router.register(r"users", UserViewSet)
+router.register(r"events", EventViewSet, basename="Event")
+router.register(r"attendingusers", AttendingUserViewSet)
+router.register(r"experiences", ExperienceViewSet)
+router.register(r"photos", PhotoViewSet)
+router.register(r"albums", AlbumViewSet)
+router.register(r"activity", ActivityViewSet)
+router.register(r"reports", ReportViewSet)
+router.register(r"kit/inventory", KitViewSet)
+router.register(r"kit/borrow", KitBorrowViewSet)
 
 urlpatterns = [
-    path(r'users/self/', SelfUserView.as_view()),
-    path(r'users/profile/', ProfileUpdateView.as_view()),
-    path(r'users/join/', UserJoinView.as_view()),
-    path(r'', include(router.urls)),
-    path(r'admin/', admin.site.urls),
-    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path(r'', include('drfpasswordless.urls')),
+    path(r"payments/products/", ProductView.as_view()),
+    path(r"payments/handleorder/", handle_order),
+    path(r"payments/memberjoin/", MemberJoinView.as_view()),
+    path(r"users/self/", SelfUserView.as_view()),
+    path(r"users/profile/", ProfileUpdateView.as_view()),
+    path(r"", include(router.urls)),
+    path(r"admin/", admin.site.urls),
+    path(r"api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path(r"", include("drfpasswordless.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
