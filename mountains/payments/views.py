@@ -8,14 +8,13 @@ from members.permissions import IsCommittee
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
+from django.conf import settings
 from members.models import User
 from .models import MembershipPrice
 from .serializers import MembershipPriceSerializer
 
-stripe.api_key = "sk_test_51OYx3RHeSU2riQUJ7HfIwdzw7X7bVz2qzGbDd7ClgJOkoIAYECXMVXTVwD6CMrmfu2eJ3TlcPK8XkjcvBIJriOAH00qtp0QAV0"
-WEBHOOK_SECRET = (
-    "whsec_1aec727bacac0c0b5406a9d4270b0f8f494bf64bc3aaa6d4dbffb8358f1c9e3b"
-)
+stripe.api_key = settings.STRIPE_API_KEY
+WEBHOOK_SECRET = settings.STRIPE_WEBHOOK_SECRET
 
 
 class ProductViewSet(viewsets.ViewSet):

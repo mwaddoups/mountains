@@ -15,6 +15,7 @@ import {
   Button,
   SmallButton,
   SmallRedButton,
+  Bolded,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
@@ -27,6 +28,7 @@ type StripeProduct = {
 
 type StripePriceProduct = {
   id: string;
+  nickname: string;
   product: StripeProduct;
   unit_amount: number;
   currency: string;
@@ -188,7 +190,8 @@ function JoinClubForm() {
       >
         {memberships.map((m) => (
           <option key={m.id} value={m.id}>
-            {m.product.name} (£{m.unit_amount / 100})
+            {m.product.name} ({m.nickname}) (£{(m.unit_amount / 100).toFixed(2)}
+            )
           </option>
         ))}
       </FormSelect>
@@ -247,6 +250,7 @@ function JoinAdminTools() {
     },
     [loadMembershipPrice]
   );
+
   const removePrice = useCallback(
     (priceId) => {
       return () => {
@@ -259,28 +263,50 @@ function JoinAdminTools() {
     [loadMembershipPrice, membershipProducts]
   );
 
+  const isMemberProduct = (priceId: string) =>
+    membershipProducts.map((p) => p.price_id).includes(priceId);
+
+  const getProductName = (p: StripePriceProduct) =>
+    `${p.product.name} - (${p.nickname}) ${p.unit_amount / 100}${p.currency} (${
+      p.id
+    })`;
+
   if (!loaded) {
     return <Button onClick={loadData}>Load admin tools</Button>;
   } else {
     return (
       <Section>
         <SmallHeading>Admin Tools</SmallHeading>
-        <StrongParagraph>Membership Products</StrongParagraph>
+        <Paragraph>
+          In Stripe, you can set up products in the Product Catalog and attach
+          prices to those products. For example, one product might be Membership
+          2023/2024, and that can have prices for concession, regular, maybe
+          some one-off. When someone joins they see a list of prices you select.{" "}
+          <Bolded>
+            Make sure every price has the right description and products have
+            the right name.
+          </Bolded>
+        </Paragraph>
+        <StrongParagraph>Select Membership Product / Prices</StrongParagraph>
         {products.map((p) => (
           <div key={p.id} className="flex items-center">
-            {membershipProducts.map((mp) => mp.price_id).includes(p.id) ? (
-              <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
-                Remove
-              </SmallRedButton>
+            {isMemberProduct(p.id) ? (
+              <>
+                <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
+                  Remove
+                </SmallRedButton>
+                <Paragraph className="mr-4">
+                  <Bolded>{getProductName(p)}</Bolded>
+                </Paragraph>
+              </>
             ) : (
-              <SmallButton className="mr-4" onClick={addPrice(p.id)}>
-                Add
-              </SmallButton>
+              <>
+                <SmallButton className="mr-4" onClick={addPrice(p.id)}>
+                  Add
+                </SmallButton>
+                <Paragraph className="mr-4">{getProductName(p)}</Paragraph>
+              </>
             )}
-            <Paragraph className="mr-4">
-              {p.product.name} - {p.unit_amount / 100}
-              {p.currency} ({p.id})
-            </Paragraph>
           </div>
         ))}
       </Section>

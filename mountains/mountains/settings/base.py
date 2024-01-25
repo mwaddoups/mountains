@@ -155,3 +155,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Image settings
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = False
+
+
+# Stripe settings (from env)
+STRIPE_API_KEY = os.environ["STRIPE_API_KEY"]
+
+STRIPE_WEBHOOK_SECRET = os.environ["STRIPE_WEBHOOK_SECRET"]

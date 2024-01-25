@@ -131,3 +131,4 @@ dmypy.json
 # Custom stuff
 mountains/media
 mountains/datadump.json
+mountains/*.env
