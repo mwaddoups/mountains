@@ -114,7 +114,10 @@ function JoinClubForm() {
           const res = await api.get(`payments/products/${p.price_id}/`);
           return res.data;
         })
-      ).then((res) => setMemberships(res));
+      ).then((res) => {
+        setMemberships(res);
+        setMembershipPriceId(res[0].id);
+      });
     });
   }, []);
 
