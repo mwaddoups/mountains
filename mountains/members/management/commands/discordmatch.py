@@ -44,7 +44,7 @@ class Command(BaseCommand):
         client.run(settings.DISCORD_API_KEY)
 
 
-def match_user_to_member(users: list[User], member: discord.Member):
+def match_user_to_member(users, member):
     possible_members = []
     dn = member.display_name.lower().strip("0123456789_")
     for user in users:
