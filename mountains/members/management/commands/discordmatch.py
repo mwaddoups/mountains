@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from members.models import User
 from asgiref.sync import sync_to_async
 import discord
+from django.conf import settings
 
 
 class Command(BaseCommand):
@@ -40,9 +41,7 @@ class Command(BaseCommand):
 
             await client.close()
 
-        client.run(
-            "MTE5NDQxNTQ5Mjc3ODE4MDY0OA.GChz6y.DT0ymE7dJCtKH46nxushWR4qp_pczZk_e6oNqs"
-        )
+        client.run(settings.DISCORD_API_KEY)
 
 
 def match_user_to_member(users: list[User], member: discord.Member):
