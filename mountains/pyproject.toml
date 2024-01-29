@@ -5,7 +5,7 @@ description = ""
 authors = ["Mark Waddoups <mwaddoups@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.8, <3.9"
+python = ">=3.8, <4.0"
 Django = "^3.2"
 django-rest-framework = "^0.1.0"
 django-cors-headers = "^3.10.1"

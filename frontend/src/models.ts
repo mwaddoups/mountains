@@ -16,6 +16,7 @@ export interface User extends NamedProfileUser {
   in_case_emergency: string | undefined;
   is_on_discord: boolean,
   is_winter_skills: boolean,
+  discord_username: string,
 }
 
 export interface AttendingUser extends NamedProfileUser {
