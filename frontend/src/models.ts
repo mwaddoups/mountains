@@ -72,6 +72,7 @@ export interface Event extends BasicEvent {
   signup_open: boolean,
   is_deleted: boolean,
   signup_open_date: string | null,
+  price_id: string | null,
 }
 
 export type Photo = {

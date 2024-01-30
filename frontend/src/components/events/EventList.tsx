@@ -16,6 +16,7 @@ import AttendeeAdder from "./AttendeeAdder";
 import EventAttendButton from "./EventAttendButton";
 import Loading from "../Loading";
 import EventAdminTools from "./EventAdminTools";
+import EventPaymentButton from "./EventPaymentButton";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null;
@@ -70,6 +71,7 @@ export default function EventList({
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
   const isInPast = new Date(event.event_date) < todayDate;
+  const attUser = event.attendees.find((u) => u.id === currentUser?.id);
 
   if (event.is_deleted) {
     return null;
@@ -149,6 +151,9 @@ export default function EventList({
                   attendEvent={() => setAttendPopupVisible(true)}
                   leaveEvent={leaveEvent}
                 />
+                {event.price_id && attUser && (
+                  <EventPaymentButton attUser={attUser} />
+                )}
               </div>
             </div>
           </div>
