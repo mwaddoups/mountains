@@ -35,6 +35,7 @@ from payments.views import (
     handle_order,
     ProductViewSet,
     MemberJoinView,
+    EventPaymentView,
     MembershipPriceViewSet,
 )
 
@@ -55,6 +56,7 @@ router.register(r"payments/products", ProductViewSet, basename="product")
 urlpatterns = [
     path(r"payments/handleorder/", handle_order),
     path(r"payments/memberjoin/", MemberJoinView.as_view()),
+    path(r"payments/event/", EventPaymentView.as_view()),
     path(r"users/self/", SelfUserView.as_view()),
     path(r"users/profile/", ProfileUpdateView.as_view()),
     path(r"", include(router.urls)),

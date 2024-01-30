@@ -35,6 +35,7 @@ class Event(models.Model):
     signup_open = models.BooleanField(blank=False, null=False, default=True)
     signup_open_date = models.DateTimeField(blank=True, null=True, default=None)
     is_deleted = models.BooleanField(blank=False, null=False, default=False)
+    price_id = models.CharField(max_length=200, blank=True, null=True, default=None)
 
     def is_full(self) -> bool:
         """

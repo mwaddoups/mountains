@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.conf import settings
 from members.models import User
+from events.models import Event, AttendingUser
 from .models import MembershipPrice
 from .serializers import MembershipPriceSerializer
 
@@ -65,7 +66,33 @@ class MemberJoinView(APIView):
         except Exception as e:
             raise e
 
-        # TODO: Edit and send emails
+        return Response(checkout_session.url)
+
+
+class EventPaymentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        user_data = request.data
+
+        try:
+            price_id = user_data["price_id"]
+            domain = user_data["return_domain"]
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        "price": price_id,
+                        "quantity": 1,
+                    },
+                ],
+                mode="payment",
+                success_url=domain + "?success=true",
+                cancel_url=domain + "?canceled=true",
+                metadata=user_data,
+            )
+        except Exception as e:
+            raise e
+
         return Response(checkout_session.url)
 
 
@@ -149,6 +176,9 @@ def handle_order(request: HttpRequest):
         line_items = session.line_items
 
         membership_ids = [p.price_id for p in MembershipPrice.objects.all()]
+        event_ids_to_event = {
+            e.price_id for e in Event.objects.exclude(price_id__isnull=True)
+        }
 
         for item in line_items:
             if item["price"]["id"] in membership_ids:
@@ -161,6 +191,12 @@ def handle_order(request: HttpRequest):
                 member.save()
 
                 send_joining_emails(user_data)
+            elif item["price"]["id"] in event_ids_to_event:
+                # They've paid for an event, let's handle it
+                user_data = session.metadata
+                att_user = AttendingUser.objects.get(id=user_data["au_id"])
+                att_user.is_trip_paid = True
+                att_user.save()
             else:
                 send_error_email(item)
 
