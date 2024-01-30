@@ -1,11 +1,10 @@
-from django.shortcuts import redirect
 import stripe
 import stripe.error
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, viewsets
 from members.permissions import IsCommittee
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.conf import settings
@@ -76,6 +75,7 @@ class EventPaymentView(APIView):
         user_data = request.data
 
         try:
+            assert "au_id" in user_data
             price_id = user_data["price_id"]
             domain = user_data["return_domain"]
             checkout_session = stripe.checkout.Session.create(
@@ -173,7 +173,10 @@ def handle_order(request: HttpRequest):
             expand=["line_items"],
         )
 
-        line_items = session.line_items
+        if session.line_items is None:
+            line_items = []
+        else:
+            line_items = session.line_items
 
         membership_ids = [p.price_id for p in MembershipPrice.objects.all()]
         event_ids_to_event = {
@@ -184,19 +187,20 @@ def handle_order(request: HttpRequest):
             if item["price"]["id"] in membership_ids:
                 # They've paid for membership - let's handle it!
                 user_data = session.metadata
+                if user_data is not None:
+                    # Set paid to true
+                    member = User.objects.get(id=user_data["member_id"])
+                    member.is_paid = True
+                    member.save()
 
-                # Set paid to true
-                member = User.objects.get(id=user_data["member_id"])
-                member.is_paid = True
-                member.save()
-
-                send_joining_emails(user_data)
+                    send_joining_emails(user_data)
             elif item["price"]["id"] in event_ids_to_event:
                 # They've paid for an event, let's handle it
                 user_data = session.metadata
-                att_user = AttendingUser.objects.get(id=user_data["au_id"])
-                att_user.is_trip_paid = True
-                att_user.save()
+                if user_data is not None:
+                    att_user = AttendingUser.objects.get(id=user_data["au_id"])
+                    att_user.is_trip_paid = True
+                    att_user.save()
             else:
                 send_error_email(item)
 

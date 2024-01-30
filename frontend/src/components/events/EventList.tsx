@@ -152,7 +152,7 @@ export default function EventList({
                   leaveEvent={leaveEvent}
                 />
                 {event.price_id && attUser && (
-                  <EventPaymentButton attUser={attUser} />
+                  <EventPaymentButton event={event} attUser={attUser} />
                 )}
               </div>
             </div>
