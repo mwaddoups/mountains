@@ -24,7 +24,6 @@ from members.views import (
     UserViewSet,
     SelfUserView,
     ProfileUpdateView,
-    DiscordMemberView,
 )
 from events.views import EventViewSet, AttendingUserViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
@@ -59,7 +58,6 @@ urlpatterns = [
     path(r"payments/event/", EventPaymentView.as_view()),
     path(r"users/self/", SelfUserView.as_view()),
     path(r"users/profile/", ProfileUpdateView.as_view()),
-    path(r"users/discord/setmember/", DiscordMemberView.as_view()),
     path(r"", include(router.urls)),
     path(r"admin/", admin.site.urls),
     path(r"api-auth/", include("rest_framework.urls", namespace="rest_framework")),

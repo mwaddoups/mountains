@@ -1,8 +1,8 @@
-from members.discord import set_member_role
 from rest_framework import viewsets, permissions, generics, status, views
 from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
+from .discord import set_member_role, remove_member_role
 from .permissions import ReadOnly, IsCommittee
 from .models import Experience, User
 from .serializers import (
@@ -55,45 +55,27 @@ class UserViewSet(viewsets.ModelViewSet):
                 return UserSerializer
 
     @action(methods=["post"], detail=True, permission_classes=[IsCommittee])
-    def approve(self, request, pk=None):
-        target_user = self.get_object()
-        target_user.is_approved = True
-        target_user.save()
-
-        email_body = (
-            "Thank you for registering!\n\n"
-            "You have now been approved and should have full access to our site at http://clydemc.org.\n"
-            "There are more details on there about joining our Discord channel and getting involved.\n\n"
-            "See you there!"
-        )
-        email_html = (
-            "<h1>Thank you for registering!</h1>\n"
-            "<p>You have now been approved and should have full access to our site at <a href='http://clydemc.org'>http://clydemc.org</a>.</p>\n"
-            "<p>There are more details on there about joining our Discord channel and getting involved.</p>\n"
-            "<p>See you there!</p>"
-        )
-
-        send_mail(
-            "Clyde Mountaineering Club - Approved",
-            email_body,
-            "noreply@clydemc.org",
-            [target_user.email],
-            fail_silently=True,
-            html_message=email_html,
-        )
-
-        return Response({"is_approved": True})
-
-    @action(methods=["post"], detail=True, permission_classes=[IsCommittee])
     def paid(self, request, pk=None):
-        target_user = self.get_object()
+        """
+        We need a separate method for this to enforce committee positions
+        """
+        target_user: User = self.get_object()
         target_user.is_paid = not target_user.is_paid
         target_user.save()
+
+        if target_user.discord_id is not None:
+            if target_user.is_paid:
+                set_member_role(target_user.discord_id)
+            else:
+                remove_member_role(target_user.discord_id)
 
         return Response({"is_paid": True})
 
     @action(methods=["get"], detail=False, permission_classes=[])
     def committee(self, request):
+        """
+        To list our committee in the publicly accessible part of the website.
+        """
         committee = User.objects.filter(is_committee=True)
         serializer = CommitteeSerializer(
             committee, many=True, context={"request": request}
@@ -141,6 +123,9 @@ class ExperienceViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = ExperienceSerializer(data=request.data)
         if serializer.is_valid():
+            assert isinstance(
+                serializer.validated_data, dict
+            )  # always true when is_valid, needed for typing
             experience, created = Experience.objects.update_or_create(
                 user=request.user,
                 activity=serializer.validated_data["activity"],
@@ -152,20 +137,3 @@ class ExperienceViewSet(viewsets.ModelViewSet):
             return Response(ExperienceSerializer(experience).data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DiscordMemberView(views.APIView):
-    permission_classes = [IsCommittee]
-
-    def put(self, request):
-        user_id = request.data["user_id"]
-        user = User.objects.get(id=user_id)
-        if user.discord_id is not None:
-            set_member_role(user.discord_id)
-            return Response({"details": "Set discord ID to Member!"})
-        else:
-            return Response({"details": "User has no discord ID!"})
-
-    def delete(self, request):
-        user_id = request.data["user_id"]
-        user = User.objects.get(id=user_id)

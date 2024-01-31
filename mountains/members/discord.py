@@ -44,9 +44,21 @@ def set_member_role(user_id: str):
             f"https://discord.com/api/v10/guilds/{GUILD_ID}/members/{user_id}/roles/{MEMBER_ROLE_ID}",
             headers=_api_headers(),
         )
-        print(res.json())
-        return res.json()
+        print(res.content)
     else:
         print(
             f"DEBUG: Not actually posting to Discord, would set user_id {user_id} to member!"
+        )
+
+
+def remove_member_role(user_id: str):
+    if not settings.DEBUG:
+        res = requests.delete(
+            f"https://discord.com/api/v10/guilds/{GUILD_ID}/members/{user_id}/roles/{MEMBER_ROLE_ID}",
+            headers=_api_headers(),
+        )
+        print(res.content)
+    else:
+        print(
+            f"DEBUG: Not actually posting to Discord, would remove member from user_id {user_id}!"
         )
