@@ -5,7 +5,14 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import { Badge, EventHeading, BadgeColor } from "../base/Base";
+import {
+  Badge,
+  EventHeading,
+  BadgeColor,
+  CancelButton,
+  Paragraph,
+  SubHeading,
+} from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
@@ -17,6 +24,7 @@ import EventAttendButton from "./EventAttendButton";
 import Loading from "../Loading";
 import EventAdminTools from "./EventAdminTools";
 import EventPaymentButton from "./EventPaymentButton";
+import Modal from "../base/Modal";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null;
@@ -41,6 +49,7 @@ export default function EventList({
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState<Event>(initialEvent);
   const [attendPopupVisible, setAttendPopupVisible] = useState(false);
+  const [paymentPopupVisible, setPaymentPopupVisible] = useState(false);
 
   const { currentUser } = useAuth();
   const isEditor =
@@ -58,6 +67,9 @@ export default function EventList({
     api.patch(`events/${event.id}/attend/`).then((res) => {
       setEvent(res.data);
       setAttendPopupVisible(false);
+      if (event.price_id) {
+        setPaymentPopupVisible(true);
+      }
     });
   }, [event]);
 
@@ -151,13 +163,34 @@ export default function EventList({
                   attendEvent={() => setAttendPopupVisible(true)}
                   leaveEvent={leaveEvent}
                 />
-                {event.price_id && attUser && (
+                {event.price_id && attUser && !attUser.is_waiting_list && (
                   <EventPaymentButton event={event} attUser={attUser} />
                 )}
               </div>
             </div>
           </div>
         </div>
+        {paymentPopupVisible &&
+          attUser &&
+          !attUser.is_trip_paid &&
+          !attUser.is_waiting_list && (
+            <>
+              <Modal>
+                <SubHeading>Trip Payment</SubHeading>
+                <Paragraph>
+                  This trip requires payment to confirm your place.
+                </Paragraph>
+                <Paragraph>
+                  Please pay for the trip now if you can! If you need to pay
+                  later there is a link on the event.
+                </Paragraph>
+                <EventPaymentButton event={event} attUser={attUser} />
+                <CancelButton onClick={() => setPaymentPopupVisible(false)}>
+                  I'll pay later..
+                </CancelButton>
+              </Modal>
+            </>
+          )}
         {attendPopupVisible && (
           <AttendPopup
             event={event}
