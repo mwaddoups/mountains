@@ -1,3 +1,4 @@
+from members.discord import set_member_role
 import stripe
 import stripe.error
 from rest_framework.views import APIView
@@ -12,6 +13,7 @@ from members.models import User
 from events.models import Event, AttendingUser
 from .models import MembershipPrice
 from .serializers import MembershipPriceSerializer
+from stripe import SignatureVerificationError
 
 stripe.api_key = settings.STRIPE_API_KEY
 WEBHOOK_SECRET = settings.STRIPE_WEBHOOK_SECRET
@@ -31,6 +33,7 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(prices)
 
     def retrieve(self, request, pk=None):
+        assert pk is not None
         price = stripe.Price.retrieve(id=pk)
         product = stripe.Product.retrieve(id=price["product"])
 
@@ -163,7 +166,7 @@ def handle_order(request: HttpRequest):
     except ValueError as e:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except SignatureVerificationError as e:
         # Invalid signature
         return HttpResponse(status=400)
 
@@ -192,6 +195,11 @@ def handle_order(request: HttpRequest):
                     member = User.objects.get(id=user_data["member_id"])
                     member.is_paid = True
                     member.save()
+
+                    # Set discord member
+                    if member.discord_id is not None:
+                        if member.is_paid:
+                            set_member_role(member.discord_id)
 
                     send_joining_emails(user_data)
             elif item["price"]["id"] in event_ids_to_event:
