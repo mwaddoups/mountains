@@ -12,7 +12,7 @@ import { BadgesLong } from "./Badges";
 import ExperienceRecord from "./ExperienceRecord";
 import AdminTools from "./AdminTools";
 import dateFormat from "dateformat";
-import { Discord } from "react-bootstrap-icons";
+import DiscordSelector from "./DiscordSelector";
 
 interface ProfileButtonProps {
   $loading?: boolean;
@@ -28,14 +28,13 @@ export const ProfileButton = styled.button(
 export default function Profile() {
   const [user, setUser] = useState<FullUser | null>(null);
   const [editingExperience, setEditingExperience] = useState(false);
-  const [needsRefresh, setNeedsRefresh] = useState(false);
   const [attendedEvents, setAttendedEvents] = useState<Array<BasicEvent>>([]);
   const { memberId } = useParams();
   const { currentUser, refreshUser } = useAuth();
 
   const isUser = currentUser && user && currentUser.id === user.id;
 
-  useEffect(() => {
+  const refreshProfile = useCallback(() => {
     api.get(`users/${memberId}/`).then((response) => {
       let foundUser = response.data;
       setUser(foundUser);
@@ -48,21 +47,17 @@ export default function Profile() {
       if (isUser) {
         refreshUser();
       }
-      setNeedsRefresh(false);
     });
-  }, [
-    setUser,
-    memberId,
-    editingExperience,
-    needsRefresh,
-    setNeedsRefresh,
-    isUser,
-    refreshUser,
-  ]);
+  }, [setUser, memberId, isUser, refreshUser]);
+
+  useEffect(() => {
+    refreshProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Loading loading={!user}>
-      <AdminTools user={user} setNeedsRefresh={setNeedsRefresh} />
+      <AdminTools user={user} refreshUser={refreshProfile} />
       <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow flex-auto flex lg:block items-center">
           <div className="w-32 h-32 lg:w-64 lg:h-64">
@@ -70,7 +65,7 @@ export default function Profile() {
           </div>
           <div className="flex justify-center h-8 m-2">
             {isUser && (
-              <ProfileUploaderButton setNeedsRefresh={setNeedsRefresh} />
+              <ProfileUploaderButton refreshProfile={refreshProfile} />
             )}
           </div>
         </div>
@@ -99,12 +94,7 @@ export default function Profile() {
               {user?.mobile_number}
             </p>
             {user?.discord_username && (
-              <>
-                <Discord className="ml-2 text-gray-500 text-sm" />
-                <p className="ml-1 text-sm text-gray-500 tracking-wide">
-                  {user?.discord_username}
-                </p>
-              </>
+              <DiscordSelector user={user} refreshProfile={refreshProfile} />
             )}
           </div>
           <div className="pt-4 flex">
@@ -127,7 +117,12 @@ export default function Profile() {
               </h2>
               {isUser && (
                 <ProfileButton
-                  onClick={() => setEditingExperience(!editingExperience)}
+                  onClick={() => {
+                    setEditingExperience(!editingExperience);
+                    if (editingExperience) {
+                      refreshProfile();
+                    }
+                  }}
                 >
                   {editingExperience ? "Finish Editing" : "Edit"}
                 </ProfileButton>
@@ -177,12 +172,10 @@ export default function Profile() {
 }
 
 interface ProfileUploaderButtonProps {
-  setNeedsRefresh: (a: boolean) => void;
+  refreshProfile: () => void;
 }
 
-function ProfileUploaderButton({
-  setNeedsRefresh,
-}: ProfileUploaderButtonProps) {
+function ProfileUploaderButton({ refreshProfile }: ProfileUploaderButtonProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorText, setErrorText] = useState("");
@@ -204,7 +197,7 @@ function ProfileUploaderButton({
         .patch("users/profile/", form)
         .then((res) => {
           setLoading(false);
-          setNeedsRefresh(true);
+          refreshProfile();
         })
         .catch((err) => {
           const errorText =
@@ -214,7 +207,7 @@ function ProfileUploaderButton({
           setLoading(false);
         });
     },
-    [setLoading, setNeedsRefresh, setErrorText]
+    [setLoading, refreshProfile, setErrorText]
   );
 
   return (

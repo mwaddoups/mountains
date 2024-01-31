@@ -6,24 +6,19 @@ import { ProfileButton } from "./Profile";
 
 interface ApprovalButtonProps {
   user: FullUser | null;
-  setNeedsRefresh: (a: boolean) => void;
+  refreshUser: () => void;
 }
 
-export default function AdminTools({
-  user,
-  setNeedsRefresh,
-}: ApprovalButtonProps) {
+export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
   const { currentUser } = useAuth();
 
   const togglePaid = useCallback(() => {
     if (!user) {
       return null;
     } else {
-      api
-        .post(`users/${user.id}/paid/`, {})
-        .then((res) => setNeedsRefresh(true));
+      api.post(`users/${user.id}/paid/`, {}).then((res) => refreshUser());
     }
-  }, [user, setNeedsRefresh]);
+  }, [user, refreshUser]);
 
   const toggleWinter = useCallback(() => {
     if (!user) {
@@ -34,9 +29,9 @@ export default function AdminTools({
         .patch(`users/${user.id}/`, {
           is_winter_skills: !user.is_winter_skills,
         })
-        .then((res) => setNeedsRefresh(true));
+        .then((res) => refreshUser());
     }
-  }, [user, setNeedsRefresh]);
+  }, [user, refreshUser]);
 
   if (user && currentUser?.is_committee) {
     return (

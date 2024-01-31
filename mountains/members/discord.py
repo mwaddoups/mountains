@@ -62,3 +62,14 @@ def remove_member_role(user_id: str):
         print(
             f"DEBUG: Not actually posting to Discord, would remove member from user_id {user_id}!"
         )
+
+
+def member_username(member: DiscordMember) -> str:
+    """
+    Helper function to get username in form we store internally
+    """
+
+    display_name = (
+        member["nick"] if member["nick"] is not None else member["user"]["username"]
+    )
+    return f'{display_name} ({member["user"]["username"]})'

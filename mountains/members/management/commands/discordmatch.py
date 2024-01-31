@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from members.models import User
-from members.discord import fetch_all_members, DiscordMember
+from members.discord import fetch_all_members, DiscordMember, member_username
 
 
 class Command(BaseCommand):
@@ -48,7 +48,7 @@ class Command(BaseCommand):
 
         for display_name, (user, member) in matches.items():
             print(display_name, "|", user.first_name, user.last_name)
-            user.discord_username = f'{display_name} ({member["user"]["username"]})'
+            user.discord_username = member_username(member)
             user.discord_id = member["user"]["id"]
             user.save()
 
