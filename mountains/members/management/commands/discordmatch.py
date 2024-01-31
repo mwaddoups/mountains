@@ -1,70 +1,58 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from members.models import User
-from asgiref.sync import sync_to_async
-import discord
-from django.conf import settings
+from members.discord import fetch_all_members, DiscordMember
 
 
 class Command(BaseCommand):
-    help = "Updates users with their matched discord users"
+    help = "Updates users with their matched discord users. Designed to be ran one-time only."
 
     def handle(self, *args, **kwargs):
-        intents = discord.Intents.default()
-        intents.members = True
-        client = discord.Client(intents=intents)
-
         users = list(User.objects.all())
-        existing_names = set(u.discord_username for u in users)
 
-        @sync_to_async
-        def save_user(user):
-            user.save()
+        matches = 0
+        total = 0
+        for member in fetch_all_members():
+            display_name = (
+                member["nick"]
+                if member["nick"] is not None
+                else member["user"]["username"]
+            )
+            user = match_user_to_member(users, display_name)
+            total += 1
+            if user is None:
+                print(display_name, "| no match")
+            else:
+                print(display_name, "|", user.first_name, user.last_name)
+                matches += 1
+                user.discord_username = member["user"]["username"]
+                user.discord_id = member["user"]["id"]
+                user.save()
 
-        @client.event
-        async def on_ready():
-            print(f"We have logged in as {client.user}")
-            matches = 0
-            total = 0
-            for member in client.get_all_members():
-                if member.name not in existing_names:
-                    user = match_user_to_member(users, member)
-                    total += 1
-                    if user is None:
-                        print(member.display_name, "| no match")
-                    else:
-                        print(member.display_name, "|", user.first_name, user.last_name)
-                        matches += 1
-                        user.discord_username = member.name
-                        await save_user(user)
-
-            print("Matched and updated", matches, "/", total)
-
-            await client.close()
-
-        client.run(settings.DISCORD_API_KEY)
+        print("Matched and updated", matches, "/", total)
 
 
-def match_user_to_member(users, member):
+def match_user_to_member(users: list[User], display_name: str) -> User | None:
     possible_members = []
-    dn = member.display_name.lower().strip("0123456789_")
+    dn = display_name.lower().strip("0123456789_.")
     for user in users:
         fn = user.first_name.lower()
         ln = user.last_name.lower()
-        if len(fn) > 1 and len(ln) > 1 and user.discord_username is None:
-            if (fn == dn[: len(fn)]) and (ln == dn[-len(ln) :]):
+        if len(fn) > 1 and len(ln) > 1:
+            if fn[0] == dn[0] and ln == dn[-len(ln) :]:
+                # begins with first initial, ends with last name
                 possible_members.append(user)
-            elif (fn + ln) == dn:
+            elif (fn == dn[: len(fn)]) and (ln[0] == dn[-1]):
+                # begins with first name, ends with last initial
                 possible_members.append(user)
-            elif (fn + " " + ln) == dn:
-                possible_members.append(user)
-            elif (fn[0] + ln) == dn:
-                possible_members.append(user)
-            elif (fn[0] + " " + ln) == dn:
-                possible_members.append(user)
-            elif (fn + ln[0]) == dn:
-                possible_members.append(user)
-            elif (fn + " " + ln[0]) == dn:
-                possible_members.append(user)
+
+    if len(possible_members) == 0:
+        # We try some last-ditch stuff
+        for user in users:
+            fn = user.first_name.lower()
+            ln = user.last_name.lower()
+            if len(fn) > 1 and len(ln) > 1:
+                if fn[:3] in dn and ln[:3] in dn:
+                    possible_members.append(user)
 
     if len(possible_members) == 1:
         return possible_members[0]
