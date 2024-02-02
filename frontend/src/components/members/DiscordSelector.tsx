@@ -20,7 +20,9 @@ export default function DiscordSelector({
   refreshProfile,
 }: DiscordSelectorProps) {
   const [userList, setUserList] = useState<Array<DiscordUser>>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string>("null");
+  const [selectedUserId, setSelectedUserId] = useState<string>(
+    user.discord_id || ""
+  );
   const [displayName, setDisplayName] = useState<string>(
     "<No Discord user found>"
   );
@@ -29,11 +31,12 @@ export default function DiscordSelector({
   const getUserList = useCallback(() => {
     api.get("users/discord/members/").then((res) => {
       setUserList(res.data);
+      setSelectedUserId("");
     });
   }, []);
 
   const fetchandSetDisplayName = (discord_id: string | null) => {
-    if (discord_id) {
+    if (discord_id && discord_id.length > 0) {
       api.get(`users/discord/members/${discord_id}/`).then((res) => {
         setDisplayName(
           `${res.data.nick || res.data.user.username} (${
@@ -51,7 +54,7 @@ export default function DiscordSelector({
   }, [user]);
 
   const saveUsername = useCallback(() => {
-    const new_discord_id = selectedUserId === "null" ? null : selectedUserId;
+    const new_discord_id = selectedUserId === "" ? null : selectedUserId;
     api
       .patch(`users/${user.id}/`, {
         discord_id: new_discord_id,
@@ -89,7 +92,7 @@ export default function DiscordSelector({
             onChange={(e) => setSelectedUserId(e.target.value)}
             className="text-xs text-gray-500 w-32 px-1 py-1"
           >
-            <option value={"null"} className="text-xs">
+            <option value={""} className="text-xs">
               No username
             </option>
             {userList.map((u) => (
