@@ -8,7 +8,7 @@ from .discord import (
     member_username,
     set_member_role,
     remove_member_role,
-    MEMBER_ROLE_ID,
+    is_member_role,
 )
 from .permissions import ReadOnly, IsCommittee
 from .models import Experience, User
@@ -147,13 +147,15 @@ class ExperienceViewSet(viewsets.ModelViewSet):
 
 
 class DiscordMembersViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
     def list(self, request):
         member_names = sorted(
             [
                 {
                     "id": m["user"]["id"],
                     "username": member_username(m),
-                    "is_member": MEMBER_ROLE_ID in m["roles"],
+                    "is_member": is_member_role(m),
                 }
                 for m in fetch_all_members()
             ],
@@ -165,5 +167,4 @@ class DiscordMembersViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         assert pk is not None
         member = get_member(pk)
-        member["is_member"] = MEMBER_ROLE_ID in member["roles"]
-        return Response(member)
+        return Response({**member, "is_member": is_member_role(member)})

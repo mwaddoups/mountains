@@ -73,6 +73,10 @@ def remove_member_role(user_id: str):
         )
 
 
+def is_member_role(member: DiscordMember) -> bool:
+    return MEMBER_ROLE_ID in member["roles"]
+
+
 def member_username(member: DiscordMember) -> str:
     """
     Helper function to get username in form we store internally

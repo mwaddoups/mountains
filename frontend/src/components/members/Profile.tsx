@@ -93,7 +93,7 @@ export default function Profile() {
             <p className="text-sm text-gray-500 font-bold tracking-wide">
               {user?.mobile_number}
             </p>
-            {user?.discord_id && (
+            {user && (
               <DiscordSelector user={user} refreshProfile={refreshProfile} />
             )}
           </div>

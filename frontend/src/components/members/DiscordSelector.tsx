@@ -20,42 +20,38 @@ export default function DiscordSelector({
   refreshProfile,
 }: DiscordSelectorProps) {
   const [userList, setUserList] = useState<Array<DiscordUser>>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string>();
+  const [selectedUserId, setSelectedUserId] = useState<string>("null");
   const [displayName, setDisplayName] = useState<string>("<No user found>");
   const { currentUser } = useAuth();
 
   const getUserList = useCallback(() => {
     api.get("users/discord/members/").then((res) => {
       setUserList(res.data);
-      setSelectedUserId(res.data[0].id);
     });
   }, []);
 
   useEffect(() => {
-    api.get(`users/discord/members/${user.discord_id}/`).then((res) => {
-      setDisplayName(
-        `${res.data.nick || res.data.user.username} (${
-          res.data.user.username
-        }) ${res.data.is_member ? "[M]" : ""}`
-      );
-    });
+    if (user.discord_id) {
+      api.get(`users/discord/members/${user.discord_id}/`).then((res) => {
+        setDisplayName(
+          `${res.data.nick || res.data.user.username} (${
+            res.data.user.username
+          }) ${res.data.is_member ? "[M]" : ""}`
+        );
+      });
+    }
   }, [user.discord_id]);
 
   const saveUsername = useCallback(() => {
-    if (selectedUserId) {
-      const selectedUser = userList.find((x) => x.id === selectedUserId);
-      if (selectedUser) {
-        api
-          .patch(`users/${user.id}/`, {
-            discord_id: selectedUser.id,
-          })
-          .then((res) => {
-            setUserList([]);
-            refreshProfile();
-          });
-      }
-    }
-  }, [selectedUserId, userList, user, refreshProfile]);
+    api
+      .patch(`users/${user.id}/`, {
+        discord_id: selectedUserId === "null" ? null : selectedUserId,
+      })
+      .then((res) => {
+        setUserList([]);
+        refreshProfile();
+      });
+  }, [selectedUserId, user, refreshProfile]);
 
   const isUser = currentUser && user && currentUser.id === user.id;
 
@@ -81,6 +77,9 @@ export default function DiscordSelector({
             onChange={(e) => setSelectedUserId(e.target.value)}
             className="text-xs text-gray-500 w-32 px-1 py-1"
           >
+            <option value={"null"} className="text-xs">
+              No username
+            </option>
             {userList.map((u) => (
               <option key={u.id} value={u.id} className="text-xs">
                 {u.username}
