@@ -21,7 +21,9 @@ export default function DiscordSelector({
 }: DiscordSelectorProps) {
   const [userList, setUserList] = useState<Array<DiscordUser>>([]);
   const [selectedUserId, setSelectedUserId] = useState<string>("null");
-  const [displayName, setDisplayName] = useState<string>("<No user found>");
+  const [displayName, setDisplayName] = useState<string>(
+    "<No Discord user found>"
+  );
   const { currentUser } = useAuth();
 
   const getUserList = useCallback(() => {
@@ -30,30 +32,40 @@ export default function DiscordSelector({
     });
   }, []);
 
-  useEffect(() => {
-    if (user.discord_id) {
-      api.get(`users/discord/members/${user.discord_id}/`).then((res) => {
+  const fetchandSetDisplayName = (discord_id: string | null) => {
+    if (discord_id) {
+      api.get(`users/discord/members/${discord_id}/`).then((res) => {
         setDisplayName(
           `${res.data.nick || res.data.user.username} (${
             res.data.user.username
           }) ${res.data.is_member ? "[M]" : ""}`
         );
       });
+    } else {
+      setDisplayName("<No Discord user found>");
     }
-  }, [user.discord_id]);
+  };
+
+  useEffect(() => {
+    fetchandSetDisplayName(user.discord_id);
+  }, [user]);
 
   const saveUsername = useCallback(() => {
+    const new_discord_id = selectedUserId === "null" ? null : selectedUserId;
     api
       .patch(`users/${user.id}/`, {
-        discord_id: selectedUserId === "null" ? null : selectedUserId,
+        discord_id: new_discord_id,
       })
       .then((res) => {
         setUserList([]);
+        fetchandSetDisplayName(new_discord_id);
         refreshProfile();
       });
   }, [selectedUserId, user, refreshProfile]);
 
   const isUser = currentUser && user && currentUser.id === user.id;
+
+  console.log(selectedUserId);
 
   return (
     <div className="flex items-center">

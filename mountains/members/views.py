@@ -150,6 +150,9 @@ class DiscordMembersViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def list(self, request):
+        existing_ids = {
+            u.discord_id for u in User.objects.filter(discord_id__isnull=False)
+        }
         member_names = sorted(
             [
                 {
@@ -158,6 +161,7 @@ class DiscordMembersViewSet(viewsets.ViewSet):
                     "is_member": is_member_role(m),
                 }
                 for m in fetch_all_members()
+                if m["user"]["id"] not in existing_ids
             ],
             key=lambda x: x["username"],
         )

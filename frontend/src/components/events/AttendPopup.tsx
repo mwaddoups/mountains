@@ -13,6 +13,7 @@ import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
 import { Event } from "../../models";
 import participationStatementURL from "./ParticipationStatement.md";
+import DiscordSelector from "../members/DiscordSelector";
 
 export type PopupStep = "participation" | "ice" | "discord" | "members_only";
 
@@ -48,7 +49,7 @@ export default function AttendPopup({
       steps.push("members_only");
     }
 
-    if (currentUser && !currentUser.is_on_discord) {
+    if (currentUser && !currentUser.discord_id) {
       steps.push("discord");
     }
 
@@ -234,8 +235,14 @@ function DiscordStep({ isFinalStep, advanceStep }: StepProps) {
         </a>
       </Paragraph>
       <Paragraph>
-        Can you confirm you have signed up? We will only ask this once.
+        Please set your username below or in your profile to remove this
+        message. (If your ID is not listed, just drop a message in Discord.)
       </Paragraph>
+      {currentUser && (
+        <div className="m-6">
+          <DiscordSelector user={currentUser} refreshProfile={() => null} />
+        </div>
+      )}
       <Button onClick={setDiscordAndAdvance}>
         {isFinalStep
           ? "Yes - I have signed up to Discord. Sign me up!"
