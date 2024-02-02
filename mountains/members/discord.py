@@ -38,6 +38,15 @@ def fetch_all_members() -> list[DiscordMember]:
     return members
 
 
+def get_member(member_id: str) -> DiscordMember:
+    res = requests.get(
+        f"https://discord.com/api/v10/guilds/{GUILD_ID}/members/{member_id}",
+        headers=_api_headers(),
+    )
+
+    return res.json()
+
+
 def set_member_role(user_id: str):
     if not settings.DEBUG:
         res = requests.put(

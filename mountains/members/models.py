@@ -61,7 +61,6 @@ class User(AbstractUser):
     is_paid = models.BooleanField(default=False)
     is_on_discord = models.BooleanField(default=False)
     is_winter_skills = models.BooleanField(default=False)
-    discord_username = models.CharField(max_length=100, null=True, default=None)
     discord_id = models.CharField(max_length=100, null=True, default=None)
 
     COMMITTEE_ROLES = [

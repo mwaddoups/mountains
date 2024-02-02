@@ -28,7 +28,7 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
             "is_on_discord",
             "is_winter_skills",
             "mobile_number",
-            "discord_username",
+            "discord_id",
         ]
         read_only_fields = ["profile_picture"]
 

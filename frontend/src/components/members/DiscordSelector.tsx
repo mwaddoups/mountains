@@ -2,7 +2,7 @@ import { Discord } from "react-bootstrap-icons";
 import { User } from "../../models";
 import { useAuth } from "../Layout";
 import { SmallButton, SmallCancelButton } from "../base/Base";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "../../api";
 
 interface DiscordSelectorProps {
@@ -21,6 +21,7 @@ export default function DiscordSelector({
 }: DiscordSelectorProps) {
   const [userList, setUserList] = useState<Array<DiscordUser>>([]);
   const [selectedUserId, setSelectedUserId] = useState<string>();
+  const [displayName, setDisplayName] = useState<string>("<No user found>");
   const { currentUser } = useAuth();
 
   const getUserList = useCallback(() => {
@@ -30,6 +31,16 @@ export default function DiscordSelector({
     });
   }, []);
 
+  useEffect(() => {
+    api.get(`users/discord/members/${user.discord_id}/`).then((res) => {
+      setDisplayName(
+        `${res.data.nick || res.data.user.username} (${
+          res.data.user.username
+        }) ${res.data.is_member ? "[M]" : ""}`
+      );
+    });
+  }, [user.discord_id]);
+
   const saveUsername = useCallback(() => {
     if (selectedUserId) {
       const selectedUser = userList.find((x) => x.id === selectedUserId);
@@ -37,7 +48,6 @@ export default function DiscordSelector({
         api
           .patch(`users/${user.id}/`, {
             discord_id: selectedUser.id,
-            discord_username: selectedUser.username,
           })
           .then((res) => {
             setUserList([]);
@@ -55,7 +65,7 @@ export default function DiscordSelector({
       {userList.length === 0 && (
         <>
           <p className="ml-1 text-sm text-gray-500 tracking-wide">
-            {user.discord_username || "<No user found>"}
+            {displayName}
           </p>
           {isUser && (
             <SmallButton className="ml-1" onClick={getUserList}>

@@ -48,7 +48,6 @@ class Command(BaseCommand):
 
         for display_name, (user, member) in matches.items():
             print(display_name, "|", user.first_name, user.last_name)
-            user.discord_username = member_username(member)
             user.discord_id = member["user"]["id"]
             user.save()
 

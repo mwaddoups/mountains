@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -24,7 +25,7 @@ from members.views import (
     UserViewSet,
     SelfUserView,
     ProfileUpdateView,
-    DiscordMembersView,
+    DiscordMembersViewSet,
 )
 from events.views import EventViewSet, AttendingUserViewSet
 from photos.views import PhotoViewSet, AlbumViewSet
@@ -52,6 +53,7 @@ router.register(r"kit/inventory", KitViewSet)
 router.register(r"kit/borrow", KitBorrowViewSet)
 router.register(r"payments/membershipprice", MembershipPriceViewSet)
 router.register(r"payments/products", ProductViewSet, basename="product")
+router.register(r"users/discord/members", DiscordMembersViewSet, basename="discord")
 
 urlpatterns = [
     path(r"payments/handleorder/", handle_order),
@@ -59,7 +61,6 @@ urlpatterns = [
     path(r"payments/event/", EventPaymentView.as_view()),
     path(r"users/self/", SelfUserView.as_view()),
     path(r"users/profile/", ProfileUpdateView.as_view()),
-    path(r"users/discord/members/", DiscordMembersView.as_view()),
     path(r"", include(router.urls)),
     path(r"admin/", admin.site.urls),
     path(r"api-auth/", include("rest_framework.urls", namespace="rest_framework")),

@@ -162,6 +162,10 @@ function JoinClubForm() {
     );
   }
 
+  // TODO: Warn people not to join if they haven't been matched to Discord!
+  // TODO: Reconsider if we want to store discord display names or use their API (what if people change their name?)
+  // TODO: Add a prompt to enter your discord username on every trip signup.
+
   return (
     <form className="ml-2 mt-2" onSubmit={handleJoin}>
       {query.get("canceled") && (

@@ -3,10 +3,12 @@ from rest_framework.decorators import permission_classes, action
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from .discord import (
+    get_member,
     fetch_all_members,
     member_username,
     set_member_role,
     remove_member_role,
+    MEMBER_ROLE_ID,
 )
 from .permissions import ReadOnly, IsCommittee
 from .models import Experience, User
@@ -144,14 +146,24 @@ class ExperienceViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DiscordMembersView(views.APIView):
-    def get(self, request):
+class DiscordMembersViewSet(viewsets.ViewSet):
+    def list(self, request):
         member_names = sorted(
             [
-                {"id": m["user"]["id"], "username": member_username(m)}
+                {
+                    "id": m["user"]["id"],
+                    "username": member_username(m),
+                    "is_member": MEMBER_ROLE_ID in m["roles"],
+                }
                 for m in fetch_all_members()
             ],
             key=lambda x: x["username"],
         )
 
         return Response(member_names)
+
+    def retrieve(self, request, pk=None):
+        assert pk is not None
+        member = get_member(pk)
+        member["is_member"] = MEMBER_ROLE_ID in member["roles"]
+        return Response(member)
