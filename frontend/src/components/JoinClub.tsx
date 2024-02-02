@@ -19,6 +19,7 @@ import {
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
+import DiscordSelector from "./members/DiscordSelector";
 
 // partial but good enough
 type StripeProduct = {
@@ -217,6 +218,20 @@ function JoinClubForm() {
         Mountaineering Club. I also consent to my personal information being
         passed to Mountaineering Scotland in order to set up my membership.
       </FormLabel>
+
+      {currentUser && !currentUser.discord_id && (
+        <div className="bg-red-100 rounded-xl p-4 m-4 w-full">
+          <StrongParagraph className="text-red-400">
+            Your account doesn't have a Discord username associated with it yet!
+            We strongly suggest ensuring this is set before joining the club.
+            You can set it below.
+          </StrongParagraph>
+          <DiscordSelector
+            user={currentUser}
+            refreshProfile={() => undefined}
+          />
+        </div>
+      )}
       <FormButton type="submit">Submit</FormButton>
     </form>
   );
