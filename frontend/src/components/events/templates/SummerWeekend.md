@@ -2,7 +2,7 @@ Trip Organiser: [Enter name]
 
 [Describe in one or two sentences what the weekend trip is]
 
-**To confirm your place on the trip you will need to join this event and transfer the trip cost to the club bank account. The details for this are in the text below.**
+**To confirm your place on the trip you will need to join this event and pay for the trip via card payment ASAP. You will be prompted on signup, or there is a payment button on the event.**
 
 [Include any other headline info (e.g. does the hut permit dogs? are there waiting list options?)]
 
@@ -56,17 +56,7 @@ Otherwise, bring all the gear you would normally bring for a day walk. Our kit l
 
 It costs [£xxxx] to cover [how many nights?] nights in the hut. Also factor in some petrol money for drivers, and costs towards the shared food if interested.
 
-### Payment
-
-Our club bank details are
-
-Name: Clyde Mountaineering Club
-
-Account: 23104562, Sort Code: 80-22-60
-
-Reference: [Write an appropriate reference for the trip, e.g. "MuirCottage"]
-
-Let us know when you've paid so we can keep an eye out for the payment!
+Payment is via card payment (the Pay Now button below).
 
 
 ### Questions?
