@@ -97,9 +97,15 @@ export default function Profile() {
               <DiscordSelector user={user} refreshProfile={refreshProfile} />
             )}
           </div>
-          <div className="pt-4 flex">
+          <div className="pt-4 flex items-center">
             <BadgesLong user={user} />
+            {user?.membership_expiry && (
+              <p className="ml-auto text-xs text-gray-400">
+                Membership expires: {user.membership_expiry}{" "}
+              </p>
+            )}
           </div>
+          <div></div>
           <div className="min-h-[10rem] mt-4">
             <h2 className="text-xl lg:text-3xl font-medium">About</h2>
             {user?.about ? (

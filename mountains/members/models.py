@@ -58,7 +58,8 @@ class User(AbstractUser):
     is_committee = models.BooleanField(default=False)
     is_walk_coordinator = models.BooleanField(default=False)
     in_case_emergency = models.TextField("emergency", blank=True)
-    is_paid = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)  # deprecated
+    membership_expiry = models.DateField(default=None, null=True, blank=True)
     is_on_discord = models.BooleanField(default=False)
     is_winter_skills = models.BooleanField(default=False)
     discord_id = models.CharField(max_length=100, null=True, default=None, unique=True)

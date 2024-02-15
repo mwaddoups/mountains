@@ -12,6 +12,7 @@ export interface User extends NamedProfileUser {
   is_committee: boolean,
   is_walk_coordinator: boolean,
   is_paid: boolean,
+  membership_expiry: string,
   mobile_number: string,
   in_case_emergency: string | undefined;
   is_on_discord: boolean,

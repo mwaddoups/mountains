@@ -25,6 +25,7 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
             "is_committee",
             "is_walk_coordinator",
             "is_paid",
+            "membership_expiry",
             "is_on_discord",
             "is_winter_skills",
             "mobile_number",
