@@ -152,7 +152,7 @@ class EventViewSet(viewsets.ModelViewSet):
         """Returns a list of users who have attended 1 or more walks but aren't yet a member"""
         attended_users = list(
             AttendingUser.objects.filter(
-                user__is_paid=False,
+                user__membership_expiry=None,
                 event__event_type__in=("SD", "SW", "WD", "WW"),
                 event__event_date__lt=timezone.now(),
                 is_waiting_list=False,

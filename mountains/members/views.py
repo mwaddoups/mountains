@@ -64,7 +64,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(methods=["post"], detail=True, permission_classes=[IsCommittee])
     def paid(self, request, pk=None):
         """
-        We need a separate method for this to enforce committee positions
+        We need a separate method for this to enforce committee permissions, and to set Discord
         """
         target_user: User = self.get_object()
         target_user.is_paid = not target_user.is_paid

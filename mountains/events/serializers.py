@@ -15,6 +15,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
     is_committee = serializers.ReadOnlyField(source="user.is_committee")
     is_walk_coordinator = serializers.ReadOnlyField(source="user.is_walk_coordinator")
     is_paid = serializers.ReadOnlyField(source="user.is_paid")
+    membership_expiry = serializers.ReadOnlyField(source="user.membership_expiry")
     mobile_number = serializers.ReadOnlyField(source="user.mobile_number")
     in_case_emergency = serializers.ReadOnlyField(source="user.in_case_emergency")
 
@@ -29,6 +30,7 @@ class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
             "is_approved",
             "is_committee",
             "is_paid",
+            "membership_expiry",
             "mobile_number",
             "in_case_emergency",
             "is_waiting_list",
