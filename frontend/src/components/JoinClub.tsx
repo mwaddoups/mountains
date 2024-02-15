@@ -16,6 +16,7 @@ import {
   SmallButton,
   SmallRedButton,
   Bolded,
+  CancelButton,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
@@ -38,6 +39,7 @@ type StripePriceProduct = {
 type MembershipPrice = {
   url: string;
   price_id: string;
+  expiry_date: string;
 };
 
 export default function JoinClub() {
@@ -260,11 +262,12 @@ function JoinAdminTools() {
   }, [loadMembershipPrice]);
 
   const addPrice = useCallback(
-    (priceId) => {
+    (priceId, dateStr) => {
       return () => {
         api
           .post("payments/membershipprice/", {
             price_id: priceId,
+            expiry_date: dateStr,
           })
           .then((res) => loadMembershipPrice());
       };
@@ -313,6 +316,14 @@ function JoinAdminTools() {
           <div key={p.id} className="flex items-center">
             {isMemberProduct(p.id) ? (
               <>
+                <CancelButton className="mr-4 text-xs cursor-default">
+                  Selected (
+                  {
+                    membershipProducts.find((mp) => mp.price_id === p.id)
+                      ?.expiry_date
+                  }
+                  )
+                </CancelButton>
                 <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
                   Remove
                 </SmallRedButton>
@@ -322,8 +333,17 @@ function JoinAdminTools() {
               </>
             ) : (
               <>
-                <SmallButton className="mr-4" onClick={addPrice(p.id)}>
-                  Add
+                <SmallButton
+                  className="mr-4"
+                  onClick={addPrice(p.id, "2024-03-31")}
+                >
+                  Add (2024-03-31)
+                </SmallButton>
+                <SmallButton
+                  className="mr-4"
+                  onClick={addPrice(p.id, "2025-03-31")}
+                >
+                  Add (2025-03-31)
                 </SmallButton>
                 <Paragraph className="mr-4">{getProductName(p)}</Paragraph>
               </>

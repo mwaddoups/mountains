@@ -87,7 +87,6 @@ class User(AbstractUser):
     def is_paid(self):
         if self.membership_expiry is not None:
             not_expired = self.membership_expiry >= timezone.now().date()
-            print(self.membership_expiry, timezone.now().date())
             return not_expired
         else:
             return False

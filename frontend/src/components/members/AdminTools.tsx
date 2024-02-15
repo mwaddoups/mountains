@@ -11,16 +11,19 @@ interface ApprovalButtonProps {
 
 export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
   const { currentUser } = useAuth();
+  const endDate = "2024-03-31";
 
-  const togglePaid = useCallback(() => {
-    if (!user) {
-      return null;
-    } else {
-      if (!user.is_paid) {
-        api.post(`users/${user.id}/member/`, {}).then((res) => refreshUser());
-      } else {
-        api.delete(`users/${user.id}/member/`).then((res) => refreshUser());
-      }
+  const setMember = useCallback(() => {
+    if (user) {
+      api
+        .post(`users/${user.id}/membership/`, { membership_expiry: endDate })
+        .then((res) => refreshUser());
+    }
+  }, [user, refreshUser, endDate]);
+
+  const unsetMember = useCallback(() => {
+    if (user) {
+      api.delete(`users/${user.id}/membership/`).then((res) => refreshUser());
     }
   }, [user, refreshUser]);
 
@@ -42,9 +45,12 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
       <div className="rounded shadow p-2">
         <h1 className="text-lg mb-3">Admin Tools</h1>
         <span className="ml-2">
-          <ProfileButton onClick={togglePaid}>
-            Toggle Member/Guest
+          <ProfileButton onClick={setMember}>
+            Set Member ({endDate})
           </ProfileButton>
+        </span>
+        <span className="ml-2">
+          <ProfileButton onClick={unsetMember}>Remove Member</ProfileButton>
         </span>
         <span className="ml-2">
           <ProfileButton onClick={toggleWinter}>

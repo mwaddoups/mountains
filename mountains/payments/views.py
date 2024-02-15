@@ -181,25 +181,28 @@ def handle_order(request: HttpRequest):
         else:
             line_items = session.line_items
 
-        membership_ids = [p.price_id for p in MembershipPrice.objects.all()]
+        membership_ids = {
+            p.price_id: p.expiry_date for p in MembershipPrice.objects.all()
+        }
         event_ids_to_event = {
             e.price_id for e in Event.objects.exclude(price_id__isnull=True)
         }
 
         for item in line_items:
-            if item["price"]["id"] in membership_ids:
+            if (membership_id := item["price"]["id"]) in membership_ids:
                 # They've paid for membership - let's handle it!
                 user_data = session.metadata
                 if user_data is not None:
-                    # Set paid to true
+                    expiry_date = membership_ids[membership_id]
                     member = User.objects.get(id=user_data["member_id"])
-                    member.is_paid = True
+
+                    # This code is replicated from somewhere else
+                    member.membership_expiry = expiry_date
                     member.save()
 
                     # Set discord member
                     if member.discord_id is not None:
-                        if member.is_paid:
-                            set_member_role(member.discord_id)
+                        set_member_role(member.discord_id)
 
                     send_joining_emails(user_data)
             elif item["price"]["id"] in event_ids_to_event:
