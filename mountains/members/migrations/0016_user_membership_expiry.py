@@ -8,7 +8,7 @@ def set_membership_end_date(apps, schema_editor):
     User = apps.get_model("members", "User")
     for user in User.objects.all():
         if user.is_paid:
-            user.membership_expiry = date(2023, 3, 31)
+            user.membership_expiry = date(2024, 3, 31)
         user.save()
 
 

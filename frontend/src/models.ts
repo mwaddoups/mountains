@@ -11,6 +11,7 @@ export interface User extends NamedProfileUser {
   is_approved: boolean,
   is_committee: boolean,
   is_walk_coordinator: boolean,
+  is_paid: boolean,
   membership_expiry: string,
   mobile_number: string,
   in_case_emergency: string | undefined;
@@ -26,6 +27,7 @@ export interface AttendingUser extends NamedProfileUser {
   is_walk_coordinator: boolean,
   membership_expiry: string,
   mobile_number: string,
+  is_paid: boolean,
   in_case_emergency: string | undefined;
   is_on_discord: boolean,
   is_waiting_list: boolean,

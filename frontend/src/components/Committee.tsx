@@ -27,7 +27,7 @@ export default function Committee() {
   }, [userList]);
 
   let numMembers = useMemo(() => {
-    return userList.filter((u) => u.membership_expiry).length;
+    return userList.filter((u) => u.is_paid).length;
   }, [userList]);
 
   return (

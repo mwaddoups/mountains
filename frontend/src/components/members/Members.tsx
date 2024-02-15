@@ -44,15 +44,9 @@ export default function Members() {
           return -1;
         } else if (!lowerUser.is_committee && higherUser.is_committee) {
           return 1;
-        } else if (
-          lowerUser.membership_expiry &&
-          !higherUser.membership_expiry
-        ) {
+        } else if (lowerUser.is_paid && !higherUser.is_paid) {
           return -1;
-        } else if (
-          !lowerUser.membership_expiry &&
-          higherUser.membership_expiry
-        ) {
+        } else if (!lowerUser.is_paid && higherUser.is_paid) {
           return 1;
         } else {
           return lowerUser.id - higherUser.id;

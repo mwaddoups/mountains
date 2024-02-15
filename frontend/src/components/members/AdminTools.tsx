@@ -16,7 +16,11 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
     if (!user) {
       return null;
     } else {
-      api.post(`users/${user.id}/paid/`, {}).then((res) => refreshUser());
+      if (!user.is_paid) {
+        api.post(`users/${user.id}/member/`, {}).then((res) => refreshUser());
+      } else {
+        api.delete(`users/${user.id}/member/`).then((res) => refreshUser());
+      }
     }
   }, [user, refreshUser]);
 

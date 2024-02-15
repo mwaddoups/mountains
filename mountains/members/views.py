@@ -21,6 +21,7 @@ from .serializers import (
     SmallUserSerializer,
     UserSerializer,
 )
+import datetime
 
 
 class IsUserOwner(permissions.BasePermission):
@@ -61,19 +62,27 @@ class UserViewSet(viewsets.ModelViewSet):
             else:
                 return UserSerializer
 
-    @action(methods=["post"], detail=True, permission_classes=[IsCommittee])
-    def paid(self, request, pk=None):
+    @action(methods=["post", "delete"], detail=True, permission_classes=[IsCommittee])
+    def membership(self, request, pk=None):
         """
         We need a separate method for this to enforce committee permissions, and to set Discord
         """
-        target_user: User = self.get_object()
-        target_user.is_paid = not target_user.is_paid
-        target_user.save()
+        if request.method == "POST":
+            expiry_date_str: str = request.data["membership_expiry"]
+            expiry_date = datetime.datetime.strptime(expiry_date_str, "%Y-%m-%d").date()
 
-        if target_user.discord_id is not None:
-            if target_user.is_paid:
+            target_user: User = self.get_object()
+            target_user.membership_expiry = expiry_date
+            target_user.save()
+
+            if target_user.discord_id is not None:
                 set_member_role(target_user.discord_id)
-            else:
+        elif request.method == "DELETE":
+            target_user: User = self.get_object()
+            target_user.membership_expiry = None
+            target_user.save()
+
+            if target_user.discord_id is not None:
                 remove_member_role(target_user.discord_id)
 
         return Response({"is_paid": True})

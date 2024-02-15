@@ -44,7 +44,7 @@ export default function AttendPopup({
   const calcSteps = () => {
     // Setup the steps
     let steps: Array<PopupStep> = [];
-    if (currentUser && !currentUser.membership_expiry && event.members_only) {
+    if (currentUser && !currentUser.is_paid && event.members_only) {
       // If it's members only,
       steps.push("members_only");
     }

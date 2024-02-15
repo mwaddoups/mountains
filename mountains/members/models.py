@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django_resized import ResizedImageField
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -58,7 +59,6 @@ class User(AbstractUser):
     is_committee = models.BooleanField(default=False)
     is_walk_coordinator = models.BooleanField(default=False)
     in_case_emergency = models.TextField("emergency", blank=True)
-    is_paid = models.BooleanField(default=False)  # deprecated
     membership_expiry = models.DateField(default=None, null=True, blank=True)
     is_on_discord = models.BooleanField(default=False)
     is_winter_skills = models.BooleanField(default=False)
@@ -82,6 +82,15 @@ class User(AbstractUser):
 
     # Use our custom user manager
     objects = UserManager()
+
+    @property
+    def is_paid(self):
+        if self.membership_expiry is not None:
+            not_expired = self.membership_expiry >= timezone.now().date()
+            print(self.membership_expiry, timezone.now().date())
+            return not_expired
+        else:
+            return False
 
 
 class Experience(models.Model):
