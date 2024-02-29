@@ -155,8 +155,8 @@ function JoinClubForm() {
         <Paragraph>Thank you for joining!</Paragraph>
         <Paragraph>
           Your membership on site should be confirmed shortly. Membership status
-          on Discord may take some time as our treasurer needs to set this
-          manually.
+          on Discord should happen fairly automatically - if this hasn't
+          happened in the next few hours let the treasurer know.
         </Paragraph>
         <Paragraph>
           Any questions, get in touch at treasurer@clydemc.org.
@@ -164,9 +164,6 @@ function JoinClubForm() {
       </>
     );
   }
-
-  // TODO: Warn people not to join if they haven't been matched to Discord!
-  // TODO: Add a prompt to enter your discord username on every trip signup.
 
   return (
     <form className="ml-2 mt-2" onSubmit={handleJoin}>

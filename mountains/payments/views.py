@@ -104,7 +104,7 @@ def send_joining_emails(user_data):
     email_body = (
         "Thank you for joining!\n\n"
         "Your membership on the website should now be confirmed.\n\n"
-        "The treasurer will ensure your membership is set up on Discord, and will register you for Mountaineering Scotland as soon as they are able. \n\n"
+        "Your membership should shortly be set up on Discord, and the treasurer will register you for Mountaineering Scotland as soon as they are able. \n\n"
         "Thank you!"
     )
     email_html = "\n".join(["<p>" + line + "</p>" for line in email_body.split("\n")])
