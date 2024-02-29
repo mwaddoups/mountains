@@ -24,7 +24,7 @@ class ProductViewSet(viewsets.ViewSet):
 
     def list(self, request):
         # Nest the products under the prices
-        prices = stripe.Price.list(active=True)["data"]
+        prices = stripe.Price.list(active=True, limit=100)["data"]
         products = stripe.Product.list()["data"]
 
         for price in prices:
