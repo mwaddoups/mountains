@@ -49,14 +49,14 @@ export default function JoinClub() {
     <>
       <Section>
         <Heading>Joining the Club</Heading>
-        <StrongParagraph>
+        {/* <StrongParagraph>
           Please note: Membership is not required to come on your first few day
           walks! Our membership year ends on April 1, 2024, so is unlikely to be
           good value unless you want to join a members-only trip before then, or
           make use of our kit borrowing or Mountaineering Scotland membership.
           Otherwise we advise waiting until the end of March and purchasing a
           new full years membership then!
-        </StrongParagraph>
+        </StrongParagraph> */}
         <Paragraph>
           If you're new to the club you are welcome to come along for a trial
           walk or two before committing to membership - or catch us at one of
@@ -73,7 +73,7 @@ export default function JoinClub() {
         <Paragraph>
           The cost is £39 for the year, or £21 for those that can't afford the
           full fee - this choice is up to you. Our membership year runs until
-          April 1, 2024 so the fee will cover you until then. If you join after
+          April 1, 2025 so the fee will cover you until then. If you join after
           October we offer a reduced rate of £22 or £12 for concessions.
         </Paragraph>
         <Paragraph>
@@ -207,7 +207,7 @@ function JoinClubForm() {
 
       <FormLabel>
         If you are already a Mountaineering Scotland member, what is your
-        membership number?
+        membership number? (Not needed for renewals!)
       </FormLabel>
       <FormInput
         type="text"
