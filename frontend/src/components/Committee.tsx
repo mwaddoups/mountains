@@ -26,8 +26,9 @@ export default function Committee() {
     return userList.filter((u) => u.is_approved).length;
   }, [userList]);
 
-  let numMembers = useMemo(() => {
-    return userList.filter((u) => u.is_paid).length;
+  let uniqueExpiries = useMemo(() => {
+    let expiries = userList.map((u) => u.membership_expiry);
+    return [...new Set(expiries)];
   }, [userList]);
 
   return (
@@ -35,7 +36,15 @@ export default function Committee() {
       <Section>
         <Heading>Member Statistics</Heading>
         <Paragraph>{numApproved} approved users on site!</Paragraph>
-        <Paragraph>{numMembers} paid members!</Paragraph>
+        {uniqueExpiries.map(
+          (expiry) =>
+            expiry && (
+              <Paragraph key={expiry}>
+                {userList.filter((u) => u.membership_expiry === expiry).length}{" "}
+                paid members (ending {expiry})!
+              </Paragraph>
+            )
+        )}
       </Section>
       <Section>
         <Heading>Admin Info</Heading>

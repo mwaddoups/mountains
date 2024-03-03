@@ -11,7 +11,7 @@ interface ApprovalButtonProps {
 
 export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
   const { currentUser } = useAuth();
-  const endDate = "2024-03-31";
+  const endDate = "2025-03-31";
 
   const setMember = useCallback(() => {
     if (user) {
