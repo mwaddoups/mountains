@@ -14,6 +14,7 @@ from events.models import Event, AttendingUser
 from .models import MembershipPrice
 from .serializers import MembershipPriceSerializer
 from stripe import SignatureVerificationError
+from pprint import pformat
 
 stripe.api_key = settings.STRIPE_API_KEY
 WEBHOOK_SECRET = settings.STRIPE_WEBHOOK_SECRET
@@ -141,7 +142,7 @@ def send_error_email(line_item):
     email_body = (
         "Received unknown payment! Check Stripe for more details.\n\n"
         + "See raw details below:\n\n"
-        + "\n".join([f"{k}: {v}" for k, v in line_item["data"].items()])
+        + pformat(line_item)
         + "\n\nMake sure to add them to MS and Discord!"
     )
     email_html = "\n".join(["<p>" + line + "</p>" for line in email_body.split("\n")])
