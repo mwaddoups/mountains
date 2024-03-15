@@ -25,11 +25,11 @@ class ProductViewSet(viewsets.ViewSet):
 
     def list(self, request):
         # Nest the products under the prices
-        prices = stripe.Price.list(active=True, limit=100)["data"]
-        products = stripe.Product.list()["data"]
+        prices = stripe.Price.list(active=True, limit=100).data
+        products = stripe.Product.list().data
 
         for price in prices:
-            matching_products = [p for p in products if p["id"] == price["product"]]
+            matching_products = [p for p in products if p.id == price.product]
             price["product"] = matching_products[0]
         return Response(prices)
 
@@ -138,10 +138,11 @@ def send_joining_emails(user_data):
     )
 
 
-def send_error_email(line_item):
+def send_error_email(session: stripe.checkout.Session, line_item: stripe.LineItem):
     email_body = (
         "Received unknown payment! Check Stripe for more details.\n\n"
         + "See raw details below:\n\n"
+        + pformat(session)
         + pformat(line_item)
         + "\n\nMake sure to add them to MS and Discord!"
     )
@@ -214,7 +215,7 @@ def handle_order(request: HttpRequest):
                     att_user.is_trip_paid = True
                     att_user.save()
             else:
-                send_error_email(item)
+                send_error_email(session, item)
 
     return HttpResponse(status=200)
 
