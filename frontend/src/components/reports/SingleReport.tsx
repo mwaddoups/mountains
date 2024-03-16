@@ -14,12 +14,12 @@ export default function SingleReport() {
   const [report, setReport] = useState<FullReport | null>(null);
 
   const { reportId } = useParams();
-  
+
   const { currentUser } = useAuth();
 
   useEffect(() => {
     setLoading(true);
-    api.get(`reports/${reportId}/`).then(response => {
+    api.get(`reports/${reportId}/`).then((response) => {
       setReport(response.data);
       setLoading(false);
     });
@@ -30,21 +30,26 @@ export default function SingleReport() {
       <div className="flex items-center">
         <Link to="../">
           <div className="text-sm text-blue-400 flex mt-1 mb-2 items-center hover:underline">
-            <ArrowLeftCircleFill className="display-inline" /> 
+            <ArrowLeftCircleFill className="display-inline" />
             <p className="ml-2"> Back to Reports</p>
           </div>
         </Link>
-            
-        {currentUser?.is_committee && <Link to={`edit`}><button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-1">Edit report</button></Link>}
+
+        {currentUser?.is_site_admin && (
+          <Link to={`edit`}>
+            <button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-1">
+              Edit report
+            </button>
+          </Link>
+        )}
       </div>
       <Section>
         <Heading>{report?.title}</Heading>
-        <SmallHeading>{dateFormat(report?.report_date, "dd mmmm yyyy")}</SmallHeading>
-        <ClydeMarkdown>
-          {report?.content}
-        </ClydeMarkdown>
+        <SmallHeading>
+          {dateFormat(report?.report_date, "dd mmmm yyyy")}
+        </SmallHeading>
+        <ClydeMarkdown>{report?.content}</ClydeMarkdown>
       </Section>
     </Loading>
-  )
-
+  );
 }

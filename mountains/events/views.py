@@ -17,7 +17,7 @@ from django.db.models.functions import Concat
 
 
 def user_allowed_edit_events(user):
-    return user.is_committee or user.is_walk_coordinator
+    return user.is_site_admin or user.is_walk_coordinator
 
 
 class IsEventEditorOrReadOnly(permissions.BasePermission):

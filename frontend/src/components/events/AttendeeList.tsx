@@ -23,7 +23,7 @@ export default function AttendeeList({
 
   const { currentUser } = useAuth();
   const isEditor =
-    currentUser?.is_committee || currentUser?.is_walk_coordinator || false;
+    currentUser?.is_site_admin || currentUser?.is_walk_coordinator || false;
 
   const attendees = all_attendees
     .filter((u) => u.is_waiting_list === waiting_list)

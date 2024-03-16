@@ -10,6 +10,7 @@ export interface User extends NamedProfileUser {
   url: string,
   is_approved: boolean,
   is_committee: boolean,
+  is_site_admin: boolean,
   is_walk_coordinator: boolean,
   is_paid: boolean,
   membership_expiry: string,

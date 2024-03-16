@@ -48,14 +48,14 @@ class UserViewSet(viewsets.ModelViewSet):
             return SmallUserSerializer
 
         if self.action == "list":
-            if self.request.user.is_committee:
+            if self.request.user.is_site_admin:
                 return SmallUserSerializerCommittee
             else:
                 return SmallUserSerializer
         else:
             # In detail view, we get .get_object()
             if (
-                self.request.user.is_committee
+                self.request.user.is_site_admin
                 or self.request.user.id == self.get_object().id
             ):
                 return FullUserSerializer

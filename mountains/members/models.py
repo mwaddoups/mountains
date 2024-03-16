@@ -91,6 +91,10 @@ class User(AbstractUser):
         else:
             return False
 
+    @property
+    def is_site_admin(self):
+        return self.is_committee or self.is_staff or self.is_superuser
+
 
 class Experience(models.Model):
     # Update these lists on the frontend too!

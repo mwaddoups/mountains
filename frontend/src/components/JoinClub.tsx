@@ -90,7 +90,7 @@ export default function JoinClub() {
         <Heading> Join or Renew Now! </Heading>
         <JoinClubForm />
       </Section>
-      {currentUser?.is_committee && <JoinAdminTools />}
+      {currentUser?.is_site_admin && <JoinAdminTools />}
     </>
   );
 }

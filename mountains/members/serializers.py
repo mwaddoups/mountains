@@ -23,6 +23,7 @@ class SmallUserSerializer(serializers.HyperlinkedModelSerializer):
             "profile_picture",
             "is_approved",
             "is_committee",
+            "is_site_admin",
             "is_walk_coordinator",
             "is_paid",
             "membership_expiry",

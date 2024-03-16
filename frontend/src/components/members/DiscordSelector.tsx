@@ -79,7 +79,7 @@ export default function DiscordSelector({
             {displayName}
           </p>
           {isUser ||
-            (currentUser?.is_committee && (
+            (currentUser?.is_site_admin && (
               <SmallButton className="ml-1" onClick={getUserList}>
                 Change
               </SmallButton>

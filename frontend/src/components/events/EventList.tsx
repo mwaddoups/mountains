@@ -53,7 +53,7 @@ export default function EventList({
 
   const { currentUser } = useAuth();
   const isEditor =
-    currentUser?.is_committee || currentUser?.is_walk_coordinator || false;
+    currentUser?.is_site_admin || currentUser?.is_walk_coordinator || false;
 
   const refreshEvent = useCallback(() => {
     setLoading(true);
@@ -119,7 +119,7 @@ export default function EventList({
                     <button onClick={refreshEvent}>
                       <ArrowClockwise className="text-sm ml-2 inline" />
                     </button>
-                    {(currentUser?.is_committee ||
+                    {(currentUser?.is_site_admin ||
                       currentUser?.is_walk_coordinator) && (
                       <EventAdminTools
                         event={event}

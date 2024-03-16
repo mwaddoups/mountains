@@ -40,7 +40,7 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
     }
   }, [user, refreshUser]);
 
-  if (user && currentUser?.is_committee) {
+  if (user && currentUser?.is_site_admin) {
     return (
       <div className="rounded shadow p-2">
         <h1 className="text-lg mb-3">Admin Tools</h1>
