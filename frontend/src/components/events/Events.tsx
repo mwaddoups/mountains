@@ -100,7 +100,7 @@ export default function Events() {
           <h1 className="text-xl md:text-3xl font-medium mb-2">
             Upcoming Events
           </h1>
-          {currentUser?.is_site_admin && (
+          {(currentUser?.is_site_admin || currentUser?.is_walk_coordinator) && (
             <Link to="../new">
               <button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">
                 Create event
