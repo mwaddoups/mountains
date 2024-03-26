@@ -86,10 +86,13 @@ class EventViewSet(viewsets.ModelViewSet):
             user_id = request.data["userId"]
             user = User.objects.get(pk=user_id)
 
+        # Check waiting list BEFORE creating attending user
+        has_waiting_list = event.has_waiting_list()
+
         attending_user, _was_created = AttendingUser.objects.get_or_create(
             user=user, event=event
         )
-        if event.has_waiting_list():
+        if has_waiting_list:
             attending_user.is_waiting_list = True
             attending_user.save()
             if user != request.user:
