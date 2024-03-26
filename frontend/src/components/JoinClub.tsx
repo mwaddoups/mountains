@@ -77,9 +77,9 @@ export default function JoinClub() {
           October we offer a reduced rate of £22 or £12 for concessions.
         </Paragraph>
         <Paragraph>
-          If you are already a Mountaineering Scotland member get in touch with
-          the treasurer (treasurer@clydemc.org) before paying as we should be
-          able to offer a reduced rate.
+          If you are already a Mountaineering Scotland member please select the
+          reduced rate option when choosing the membership type. Any other
+          questions, contact our treasurer at treasurer@clydemc.org .
         </Paragraph>
         <Paragraph>
           To join, just complete the form below and follow the instructions to
