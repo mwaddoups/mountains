@@ -132,7 +132,7 @@ def send_joining_emails(user_data):
         "Clyde Mountaineering Club - New paid member!",
         email_body,
         "noreply@clydemc.org",
-        ["committee@clydemc.org"],
+        ["treasurer@clydemc.org"],
         fail_silently=True,
         html_message=email_html,
     )
