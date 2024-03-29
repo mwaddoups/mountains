@@ -147,20 +147,29 @@ export default function Resources() {
               EGM 2023 Minutes
             </Link>
           </ListItem>
+          <ListItem>
+            <Link
+              href="https://docs.google.com/document/d/1hjvRw5kI9tg8b3lqtlcQMMiqTc_SOhSt/edit?usp=sharing&ouid=107153557126889198129&rtpof=true&sd=true"
+              title="AGM Minutes 2024"
+              target="_blank"
+              rel="noreferrer"
+            >
+              AGM 2024 Minutes
+            </Link>
+          </ListItem>
         </List>
         <Heading>Club Accounts</Heading>
         <Paragraph>
           {" "}
-          You can find our
+          You can find our club accounts{" "}
           <Link
             href="https://docs.google.com/spreadsheets/d/1i89SEhLJHi7tG2CVEi6Ee1zKMi9OcS3pY9WzXIjpHpM/edit#gid=0"
             title="Club Accounts"
             target="_blank"
             rel="noreferrer"
           >
-            Club Accounts
-          </Link>{" "}
-          here{" "}
+            here.
+          </Link>
         </Paragraph>
       </Section>
     </div>

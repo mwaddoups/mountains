@@ -32,6 +32,9 @@ export const SmallCancelButton = tw.button`px-1 py-0.5 rounded-lg bg-gray-300 te
 export const CancelButton = tw.button`px-2 py-1 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mr-4`;
 export const Error = tw.p`font-light text-sm text-red-500`;
 
+export const Table = tw.table`font-light text-sm`;
+export const Td = tw.td`px-0.5 md:px-2`;
+
 export type BadgeColor =
   | "red"
   | "green"

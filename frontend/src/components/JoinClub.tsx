@@ -17,6 +17,8 @@ import {
   SmallRedButton,
   Bolded,
   CancelButton,
+  Table,
+  Td,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
@@ -71,11 +73,46 @@ export default function JoinClub() {
           and mountaineering insurance.
         </Paragraph>
         <Paragraph>
-          The cost is £39 for the year, or £21 for those that can't afford the
-          full fee - this choice is up to you. Our membership year runs until
-          April 1, 2025 so the fee will cover you until then. If you join after
-          October we offer a reduced rate of £22 or £12 for concessions.
+          Our membership fees are sown in the table below. Our membership year
+          runs until April 1, 2025 so the fee will cover you until then.
         </Paragraph>
+        <div className="p-2">
+          <Table>
+            <tr className="border-solid border-b-2">
+              <Td className="border-solid border-r-2"></Td>
+              <Td>April</Td>
+              <Td>May</Td>
+              <Td>June</Td>
+              <Td>July</Td>
+              <Td>August</Td>
+              <Td>September</Td>
+              <Td>October</Td>
+              <Td>November</Td>
+              <Td>December</Td>
+              <Td>January</Td>
+              <Td>February</Td>
+              <Td>March</Td>
+            </tr>
+            <tr>
+              <Td className="border-solid border-r-2">Full</Td>
+              <Td>£39</Td> <Td>£36</Td> <Td>£33.50</Td> <Td>£31</Td>
+              <Td>£28.50</Td> <Td>£26</Td> <Td>£23.50</Td> <Td>£21</Td>
+              <Td>£18.50</Td> <Td>£16</Td> <Td>£13.50</Td> <Td>£10</Td>
+            </tr>
+            <tr>
+              <Td className="border-solid border-r-2">Concession</Td>
+              <Td>£21</Td> <Td>£19.75</Td> <Td>£18.75</Td> <Td>£17.75</Td>
+              <Td>£16.75</Td> <Td>£15.75</Td> <Td>£14.75</Td> <Td>£13.75</Td>
+              <Td>£12.75</Td> <Td>£11.25</Td> <Td>£10.25</Td> <Td>£8.50</Td>
+            </tr>
+            <tr>
+              <Td className="border-solid border-r-2">Non-MS</Td>
+              <Td>£18</Td> <Td>£16.25</Td> <Td>£14.75</Td> <Td>£13.25</Td>{" "}
+              <Td>£11.75</Td> <Td>£10.25</Td> <Td>£8.75</Td> <Td>£7.25</Td>{" "}
+              <Td>£5.75</Td> <Td>£4.75</Td> <Td>£3.25</Td> <Td>£1.50</Td>
+            </tr>
+          </Table>
+        </div>
         <Paragraph>
           If you are already a Mountaineering Scotland member please select the
           reduced rate option when choosing the membership type. Any other
