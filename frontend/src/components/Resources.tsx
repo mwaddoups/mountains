@@ -149,14 +149,19 @@ export default function Resources() {
           </ListItem>
         </List>
         <Heading>Club Accounts</Heading>
-        <Link
-          href="https://docs.google.com/spreadsheets/d/1i89SEhLJHi7tG2CVEi6Ee1zKMi9OcS3pY9WzXIjpHpM/edit#gid=0"
-          title="Club Accounts"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Club Accounts
-        </Link>
+        <Paragraph>
+          {" "}
+          You can find our
+          <Link
+            href="https://docs.google.com/spreadsheets/d/1i89SEhLJHi7tG2CVEi6Ee1zKMi9OcS3pY9WzXIjpHpM/edit#gid=0"
+            title="Club Accounts"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Club Accounts
+          </Link>{" "}
+          here{" "}
+        </Paragraph>
       </Section>
     </div>
   );
