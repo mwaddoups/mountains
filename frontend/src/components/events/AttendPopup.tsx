@@ -165,7 +165,7 @@ function ICEStep({ isFinalStep, advanceStep }: StepProps) {
       </Paragraph>
       <Paragraph>
         Please ensure this is up to date by editing if needed below. Note this
-        will be saved on file and provided to walk leaders.
+        will be saved on file and provided to walk coordinators.
       </Paragraph>
       <FormLabel>Mobile Number</FormLabel>
       <FormInput
