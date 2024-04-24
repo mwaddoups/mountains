@@ -29,4 +29,5 @@ class Command(BaseCommand):
                 print(f"Removing membership from {user.first_name} {user.last_name}..")
                 remove_member_role(user.discord_id)
                 # Sleep in case there is an API limit (haven't checked)
-                time.sleep(0.5)
+                # There was an issue here so raised sleep from 0.5 to 2.0
+                time.sleep(2.0)

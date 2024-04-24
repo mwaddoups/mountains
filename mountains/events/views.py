@@ -180,7 +180,7 @@ class EventViewSet(viewsets.ModelViewSet):
         events_to_unpaid = defaultdict(list)
         au: AttendingUser
         for au in AttendingUser.objects.filter(
-            event__event_type__in=("SW", "WW"),
+            event__price_id__isnull=False,
             event__event_date__gt=timezone.now(),
             event__is_deleted=False,
             is_trip_paid=False,
