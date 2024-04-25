@@ -150,7 +150,7 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = BasicEventSerializer(attended_events, many=True)
         return Response(serializer.data)
 
-    @action(methods=["get"], detail=False, permission_classes=[IsCommittee])
+    @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
     def needsmembership(self, request):
         """Returns a list of users who have attended 1 or more walks but aren't yet a member"""
         attended_users = list(
