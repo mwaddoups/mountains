@@ -68,7 +68,7 @@ export default function Sidebar() {
           Join Us!
         </span>
       </NavLink>
-      {currentUser?.is_site_admin && (
+      {(currentUser?.is_site_admin || currentUser?.is_walk_coordinator) && (
         <NavLink to="committee" className={linkStyler}>
           <span className="sm:flex">
             <Binoculars className={iconStyles} />

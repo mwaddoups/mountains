@@ -174,7 +174,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
         return Response(attended_users)
 
-    @action(methods=["get"], detail=False, permission_classes=[IsCommittee])
+    @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
     def unpaidweekends(self, request):
         """Returns a list of events with all the users who are yet to pay"""
         events_to_unpaid = defaultdict(list)
