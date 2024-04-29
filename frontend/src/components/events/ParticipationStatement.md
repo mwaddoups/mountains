@@ -4,12 +4,8 @@ Please read our participation statement below in full.
 
 **Participants in these activities should be aware of and accept these risks and be responsible for their own actions and involvement.**
 
-All walk participants are recommended to bring the below equipment:
-- Suitable footwear (Hiking boots, usually)
-- Waterproofs
-- Lunch, food and water for the day
-- Headtorch
+All walk participants are reminded that walk coordinators are not leading walks, and all those participating should make themselves fully aware of the route, what it entails and be prepared with appropriate kit and equipment. 
 
-Please ask the walk coordinator or in Discord regarding any questions about equipment.
+For a list of recommended kit and safety advice, please see the kit page on the sidebar. Please ask the walk coordinator or in Discord regarding any questions about equipment.
 
 Do you understand the participation statement and our equipment expectations?
