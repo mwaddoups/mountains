@@ -347,44 +347,46 @@ function JoinAdminTools() {
           </Bolded>
         </Paragraph>
         <StrongParagraph>Select Membership Product / Prices</StrongParagraph>
-        {products.map((p) => (
-          <div key={p.id} className="flex items-center">
-            {isMemberProduct(p.id) ? (
-              <>
-                <CancelButton className="mr-4 text-xs cursor-default">
-                  Selected (
-                  {
-                    membershipProducts.find((mp) => mp.price_id === p.id)
-                      ?.expiry_date
-                  }
-                  )
-                </CancelButton>
-                <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
-                  Remove
-                </SmallRedButton>
-                <Paragraph className="mr-4">
-                  <Bolded>{getProductName(p)}</Bolded>
-                </Paragraph>
-              </>
-            ) : (
-              <>
-                <SmallButton
-                  className="mr-4"
-                  onClick={addPrice(p.id, "2024-03-31")}
-                >
-                  Add (2024-03-31)
-                </SmallButton>
-                <SmallButton
-                  className="mr-4"
-                  onClick={addPrice(p.id, "2025-03-31")}
-                >
-                  Add (2025-03-31)
-                </SmallButton>
-                <Paragraph className="mr-4">{getProductName(p)}</Paragraph>
-              </>
-            )}
-          </div>
-        ))}
+        {products
+          .filter((p) => p.product !== null) // TODO: If a selected product is deleted before being changed, might cause issue
+          .map((p) => (
+            <div key={p.id} className="flex items-center">
+              {isMemberProduct(p.id) ? (
+                <>
+                  <CancelButton className="mr-4 text-xs cursor-default">
+                    Selected (
+                    {
+                      membershipProducts.find((mp) => mp.price_id === p.id)
+                        ?.expiry_date
+                    }
+                    )
+                  </CancelButton>
+                  <SmallRedButton className="mr-4" onClick={removePrice(p.id)}>
+                    Remove
+                  </SmallRedButton>
+                  <Paragraph className="mr-4">
+                    <Bolded>{getProductName(p)}</Bolded>
+                  </Paragraph>
+                </>
+              ) : (
+                <>
+                  <SmallButton
+                    className="mr-4"
+                    onClick={addPrice(p.id, "2024-03-31")}
+                  >
+                    Add (2024-03-31)
+                  </SmallButton>
+                  <SmallButton
+                    className="mr-4"
+                    onClick={addPrice(p.id, "2025-03-31")}
+                  >
+                    Add (2025-03-31)
+                  </SmallButton>
+                  <Paragraph className="mr-4">{getProductName(p)}</Paragraph>
+                </>
+              )}
+            </div>
+          ))}
       </Section>
     );
   }
