@@ -33,7 +33,7 @@ type StripeProduct = {
 type StripePriceProduct = {
   id: string;
   nickname: string;
-  product: StripeProduct;
+  product: StripeProduct | null;
   unit_amount: number;
   currency: string;
 };
@@ -233,8 +233,9 @@ function JoinClubForm() {
       >
         {memberships.map((m) => (
           <option key={m.id} value={m.id}>
-            {m.product.name} ({m.nickname}) (£{(m.unit_amount / 100).toFixed(2)}
-            )
+            {m.product ? m.product.name : "<No product found>"} ({m.nickname})
+            (£
+            {(m.unit_amount / 100).toFixed(2)})
           </option>
         ))}
       </FormSelect>
@@ -325,9 +326,9 @@ function JoinAdminTools() {
     membershipProducts.map((p) => p.price_id).includes(priceId);
 
   const getProductName = (p: StripePriceProduct) =>
-    `${p.product.name} - (${p.nickname}) ${p.unit_amount / 100}${p.currency} (${
-      p.id
-    })`;
+    `${p.product ? p.product.name : "<No product found>"} - (${p.nickname}) ${
+      p.unit_amount / 100
+    }${p.currency} (${p.id})`;
 
   if (!loaded) {
     return <Button onClick={loadData}>Load admin tools</Button>;

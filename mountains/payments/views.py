@@ -30,7 +30,10 @@ class ProductViewSet(viewsets.ViewSet):
 
         for price in prices:
             matching_products = [p for p in products if p.id == price.product]
-            price["product"] = matching_products[0]
+            if len(matching_products) == 0:
+                price["product"] = None
+            else:
+                price["product"] = matching_products[0]
         return Response(prices)
 
     def retrieve(self, request, pk=None):
