@@ -32,6 +32,12 @@ We strongly recommend registering for the 999 text service - this enables you to
 - Personal first aid kit
 - Map and compass (or digital navigation tools, see [here](https://www.mountaineering.scot/safety-and-skills/essential-skills/navigation/electronic-navigation-aids))
 
+### For Climbing 
+- Helmet 
+- Harness 
+- Belay Plate 
+- Climbing shoes 
+
 ### For winter
 - Ice axe
 - Crampons
