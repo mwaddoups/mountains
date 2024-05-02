@@ -172,7 +172,7 @@ class DiscordMembersViewSet(viewsets.ViewSet):
                 for m in fetch_all_members()
                 if m["user"]["id"] not in existing_ids
             ],
-            key=lambda x: x["username"],
+            key=lambda x: x["username"].lower(),  # type: ignore this is a false positive as we know username is the right type
         )
 
         return Response(member_names)
