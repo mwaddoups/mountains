@@ -78,12 +78,11 @@ export default function DiscordSelector({
           <p className="ml-1 text-sm text-gray-500 tracking-wide">
             {displayName}
           </p>
-          {isUser ||
-            (currentUser?.is_site_admin && (
-              <SmallButton className="ml-1" onClick={getUserList}>
-                Change
-              </SmallButton>
-            ))}
+          {(isUser || currentUser?.is_site_admin) && (
+            <SmallButton className="ml-1" onClick={getUserList}>
+              Change
+            </SmallButton>
+          )}
         </>
       )}
       {userList.length > 0 && (
