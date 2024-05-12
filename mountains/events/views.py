@@ -89,9 +89,12 @@ class EventViewSet(viewsets.ModelViewSet):
         # Check waiting list BEFORE creating attending user
         has_waiting_list = event.has_waiting_list()
 
-        attending_user, _was_created = AttendingUser.objects.get_or_create(
-            user=user, event=event
-        )
+        # Manual get_or_create to avoid save signal
+        try:
+            attending_user = AttendingUser.objects.get(user=user, event=event)
+        except AttendingUser.DoesNotExist:
+            attending_user = AttendingUser(user=user, event=event)
+
         if has_waiting_list:
             attending_user.is_waiting_list = True
             attending_user.save()
@@ -246,6 +249,12 @@ class AttendingUserViewSet(
         permissions.IsAdminUser
         | (permissions.IsAuthenticated & (IsCommittee | IsWalkCo | ReadOnly))
     ]
+
+    def update(self, request, *args, **kwargs):
+        att_user = self.get_object()
+        response = super().update(request, *args, **kwargs)
+
+        return response
 
     def destroy(self, request, *args, **kwargs):
         """
