@@ -250,9 +250,23 @@ class AttendingUserViewSet(
         | (permissions.IsAuthenticated & (IsCommittee | IsWalkCo | ReadOnly))
     ]
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         att_user = self.get_object()
-        response = super().update(request, *args, **kwargs)
+        response = super().partial_update(request, *args, **kwargs)
+        if "is_waiting_list" in request.data:
+            user = request.user
+            if request.data["is_waiting_list"]:
+                action = f"was moved by {user.first_name} {user.last_name} to waiting list for"
+            else:
+                action = (
+                    f"was moved by {user.first_name} {user.last_name} to attending for"
+                )
+
+            Activity.objects.create(
+                user=att_user.user,
+                event=att_user.event,
+                action=action,
+            )
 
         return response
 
