@@ -122,12 +122,14 @@ export interface FullReport extends Report {
   content: string
 }
 export type SmallKit = {
-  id: string,
+  id: number,
+  text_id: string,
   description: string,
 }
 
 export interface Kit extends SmallKit {
-  id: string,
+  id: number
+  text_id: string,
   description: string,
   brand: string,
   color: string,
@@ -138,7 +140,7 @@ export interface Kit extends SmallKit {
   price: number,
   last_checked: string,
   last_condition: string,
-  notes: string,
+  notes: string | null,
 }
 
 export type KitBorrow = {
