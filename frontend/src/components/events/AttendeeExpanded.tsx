@@ -49,6 +49,8 @@ export default function AttendeeExpanded({
           className={
             user.is_walk_coordinator
               ? "text-orange-500 font-semibold mr-1"
+              : user.is_committee
+              ? "text-pink-900 font-semibold mr-1"
               : user.is_paid
               ? "text-blue-500 font-semibold mr-1"
               : "font-semibold mr-1"
