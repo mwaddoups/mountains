@@ -192,8 +192,8 @@ function JoinClubForm() {
         <Paragraph>Thank you for joining!</Paragraph>
         <Paragraph>
           Your membership on site should be confirmed shortly. Membership status
-          on Discord should happen fairly automatically - if this hasn't
-          happened in the next few hours let the treasurer know.
+          on the Discord server should happen fairly automatically - if this
+          hasn't happened in the next few hours let the treasurer know.
         </Paragraph>
         <Paragraph>
           Any questions, get in touch at treasurer@clydemc.org.

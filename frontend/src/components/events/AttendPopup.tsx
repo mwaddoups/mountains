@@ -7,6 +7,7 @@ import {
   CancelButton,
   SubHeading,
   FormLabel,
+  Bolded,
 } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
@@ -193,28 +194,20 @@ function ICEStep({ isFinalStep, advanceStep }: StepProps) {
 function DiscordStep({ isFinalStep, advanceStep }: StepProps) {
   const { currentUser, refreshUser } = useAuth();
 
-  const setDiscordAndAdvance = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (currentUser) {
-        let newUser = { id: currentUser.id, is_on_discord: true };
-
-        api.patch(`users/${currentUser.id}/`, newUser).then((res) => {
-          refreshUser();
-          advanceStep();
-        });
-      }
-    },
-    [currentUser, refreshUser, advanceStep]
-  );
+  // This step only advances once Discord is set, when refreshUser is called.
 
   return (
     <>
-      <SubHeading>Joining Discord</SubHeading>
+      <SubHeading>Joining our Discord server</SubHeading>
+      <Paragraph>
+        <Bolded>
+          To join any of our events, you need to also join our Discord server to
+          see any needed updates.
+        </Bolded>
+      </Paragraph>
       <Paragraph>
         Most updates and discussion for any of our events is on our Discord
-        server. To join any of our events, you need to also join our Discord
-        server to see any needed updates.
+        server.
       </Paragraph>
       <Paragraph>
         We also strongly recommend getting the mobile app with notifications so
@@ -235,19 +228,19 @@ function DiscordStep({ isFinalStep, advanceStep }: StepProps) {
         </a>
       </Paragraph>
       <Paragraph>
-        Please set your username below or in your profile to remove this
-        message. (If your ID is not listed, just drop a message in Discord.)
+        <Bolded>
+          Please set your username below or in your profile to be able to sign
+          up.
+        </Bolded>{" "}
+      </Paragraph>
+      <Paragraph>
+        (If your ID is not listed, just drop a message in Discord.)
       </Paragraph>
       {currentUser && (
-        <div className="m-6">
-          <DiscordSelector user={currentUser} refreshProfile={() => null} />
+        <div className="mb-6">
+          <DiscordSelector user={currentUser} refreshProfile={refreshUser} />
         </div>
       )}
-      <Button onClick={setDiscordAndAdvance}>
-        {isFinalStep
-          ? "Yes - I have signed up to Discord. Sign me up!"
-          : "Yes - I have signed up to Discord."}
-      </Button>
     </>
   );
 }
