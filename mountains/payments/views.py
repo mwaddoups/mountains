@@ -30,7 +30,7 @@ class ProductViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         assert pk is not None
-        price = stripe.Price.retrieve(id=pk, expand=["data.product"])
+        price = stripe.Price.retrieve(id=pk, expand=["product"])
 
         return Response(price)
 
