@@ -24,25 +24,13 @@ class ProductViewSet(viewsets.ViewSet):
     permission_classes = [permissions.IsAdminUser | IsCommittee]
 
     def list(self, request):
-        # Nest the products under the prices
-        prices = stripe.Price.list(active=True, limit=100).data
-        products = stripe.Product.list().data
+        prices = stripe.Price.list(active=True, limit=100, expand=["data.product"]).data
 
-        for price in prices:
-            matching_products = [p for p in products if p.id == price.product]
-            if len(matching_products) == 0:
-                price["product"] = None
-            else:
-                price["product"] = matching_products[0]
         return Response(prices)
 
     def retrieve(self, request, pk=None):
         assert pk is not None
-        price = stripe.Price.retrieve(id=pk)
-        product = stripe.Product.retrieve(id=price["product"])
-
-        # Nest the product here
-        price["product"] = product
+        price = stripe.Price.retrieve(id=pk, expand=["data.product"])
 
         return Response(price)
 
