@@ -73,8 +73,11 @@ export default function JoinClub() {
           and mountaineering insurance.
         </Paragraph>
         <Paragraph>
-          Our membership fees are sown in the table below. Our membership year
-          runs until April 1, 2025 so the fee will cover you until then.
+          Membership is a one-time cost for the whole year that covers you from
+          your join date until April 1, 2025. The cost depending on joining
+          month is shown below. Note that unfortunately the cost per month does
+          go up over the year, as we have to pass on additional fixed costs from
+          Mountaineering Scotland.
         </Paragraph>
         <div className="p-2">
           <Table>
