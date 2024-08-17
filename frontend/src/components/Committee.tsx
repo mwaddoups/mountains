@@ -197,23 +197,29 @@ function InactiveUsers() {
               </tr>
             </thead>
             <tbody>
-              {members.map((user) => (
-                <tr key={user.id}>
-                  <Td>{user.name}</Td>
+              {members
+                .sort(
+                  (u1, u2) =>
+                    new Date(u1.last_login || "2021-01-01").getTime() -
+                    new Date(u2.last_login || "2021-01-01").getTime()
+                )
+                .map((user) => (
+                  <tr key={user.id}>
+                    <Td>{user.name}</Td>
 
-                  <Td>
-                    {user.last_login
-                      ? dateFormat(user.last_login, "mmm dd, yyyy")
-                      : "Pre-2024"}
-                  </Td>
-                  <Td>
-                    {user.last_activity
-                      ? dateFormat(user.last_activity, "mmm dd, yyyy")
-                      : "Pre-2023"}
-                  </Td>
-                  <Td>{user.discord || ""}</Td>
-                </tr>
-              ))}
+                    <Td>
+                      {user.last_login
+                        ? dateFormat(user.last_login, "mmm dd, yyyy")
+                        : "Pre-2024"}
+                    </Td>
+                    <Td>
+                      {user.last_activity
+                        ? dateFormat(user.last_activity, "mmm dd, yyyy")
+                        : "Pre-2023"}
+                    </Td>
+                    <Td>{user.discord || ""}</Td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
         </div>

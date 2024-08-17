@@ -127,8 +127,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
         user_data = []
         for user in inactive:
-            if user.last_name == "Boyland":
-                print(user.id, user.first_name, user.discord_id)
             d = {
                 "id": user.id,
                 "name": user.get_full_name(),
