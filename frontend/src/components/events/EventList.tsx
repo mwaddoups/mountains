@@ -5,14 +5,7 @@ import api from "../../api";
 import { getName } from "../../methods/user";
 import { Event, EventType } from "../../models";
 import { describe_date } from "../../utils";
-import {
-  Badge,
-  EventHeading,
-  BadgeColor,
-  CancelButton,
-  Paragraph,
-  SubHeading,
-} from "../base/Base";
+import { Badge, EventHeading, BadgeColor } from "../base/Base";
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Expander from "../base/Expander";
 import { useAuth } from "../Layout";
@@ -24,7 +17,7 @@ import EventAttendButton from "./EventAttendButton";
 import Loading from "../Loading";
 import EventAdminTools from "./EventAdminTools";
 import EventPaymentButton from "./EventPaymentButton";
-import Modal from "../base/Modal";
+import PaymentPopup from "./PaymentPopup";
 
 interface EventListProps {
   eventRef: ((node: any) => void) | null;
@@ -174,22 +167,11 @@ export default function EventList({
           attUser &&
           !attUser.is_trip_paid &&
           !attUser.is_waiting_list && (
-            <>
-              <Modal>
-                <SubHeading>Trip Payment</SubHeading>
-                <Paragraph>
-                  This trip requires payment to confirm your place.
-                </Paragraph>
-                <Paragraph>
-                  Please pay for the trip now if you can! If you need to pay
-                  later there is a link on the event.
-                </Paragraph>
-                <EventPaymentButton event={event} attUser={attUser} />
-                <CancelButton onClick={() => setPaymentPopupVisible(false)}>
-                  I'll pay later..
-                </CancelButton>
-              </Modal>
-            </>
+            <PaymentPopup
+              event={event}
+              attUser={attUser}
+              setPaymentPopupVisible={setPaymentPopupVisible}
+            />
           )}
         {attendPopupVisible && (
           <AttendPopup

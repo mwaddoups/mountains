@@ -182,11 +182,17 @@ function ICEStep({ isFinalStep, advanceStep }: StepProps) {
         placeholder="Enter emergency contact..."
         onChange={(event) => setIce(event.target.value)}
       />
-      <Button onClick={updateIceAndAdvance}>
-        {isFinalStep
-          ? "This is up to date - sign me up!"
-          : "This is up to date"}
-      </Button>
+      {ice && mobile ? (
+        <Button onClick={updateIceAndAdvance}>
+          {isFinalStep
+            ? "This is up to date - sign me up!"
+            : "This is up to date"}
+        </Button>
+      ) : (
+        <CancelButton className="cursor-default">
+          Enter ICE and mobile to continue
+        </CancelButton>
+      )}
     </>
   );
 }
