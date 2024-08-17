@@ -12,6 +12,8 @@ export default function Badges({ user }: BadgesProps) {
     return <Badge $badgeColor="red">Unapproved</Badge>;
   } else if (user?.is_committee) {
     return <Badge $badgeColor="purple">Committee</Badge>;
+  } else if (user?.is_walk_coordinator) {
+    return <Badge $badgeColor="orange">Walk Coordinator</Badge>;
   } else if (user?.is_paid) {
     return <Badge $badgeColor="blue">Member</Badge>;
   } else {
@@ -23,6 +25,9 @@ export function BadgesLong({ user }: BadgesProps) {
     <>
       {!user?.is_approved && <Badge $badgeColor="red">Unapproved</Badge>}
       {user?.is_committee && <Badge $badgeColor="purple">Committee</Badge>}
+      {user?.is_walk_coordinator && (
+        <Badge $badgeColor="orange">Walk Coordinator</Badge>
+      )}
       {user?.is_paid ? (
         <Badge $badgeColor="blue">Member</Badge>
       ) : (

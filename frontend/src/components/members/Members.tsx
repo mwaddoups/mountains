@@ -44,6 +44,16 @@ export default function Members() {
           return -1;
         } else if (!lowerUser.is_committee && higherUser.is_committee) {
           return 1;
+        } else if (
+          lowerUser.is_walk_coordinator &&
+          !higherUser.is_walk_coordinator
+        ) {
+          return -1;
+        } else if (
+          !lowerUser.is_walk_coordinator &&
+          higherUser.is_walk_coordinator
+        ) {
+          return 1;
         } else if (lowerUser.is_paid && !higherUser.is_paid) {
           return -1;
         } else if (!lowerUser.is_paid && higherUser.is_paid) {

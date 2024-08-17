@@ -40,6 +40,18 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
     }
   }, [user, refreshUser]);
 
+  const toggleWalkCo = useCallback(() => {
+    if (!user) {
+      return null;
+    } else {
+      api
+        .patch(`users/${user.id}/`, {
+          is_walk_coordinator: !user.is_walk_coordinator,
+        })
+        .then((res) => refreshUser());
+    }
+  }, [user, refreshUser]);
+
   if (user && currentUser?.is_site_admin) {
     return (
       <div className="rounded shadow p-2">
@@ -55,6 +67,11 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
         <span className="ml-2">
           <ProfileButton onClick={toggleWinter}>
             Toggle Winter Skills
+          </ProfileButton>
+        </span>
+        <span className="ml-2">
+          <ProfileButton onClick={toggleWalkCo}>
+            Toggle Walk Coordinator
           </ProfileButton>
         </span>
         <span className="ml-2 text-sm">Email: {user.email}</span>
