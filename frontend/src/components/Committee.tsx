@@ -9,9 +9,12 @@ import {
   LI,
   Paragraph,
   Section,
+  Table,
+  Td,
   UList,
 } from "./base/Base";
 import Loading from "./Loading";
+import dateFormat from "dateformat";
 
 export default function Committee() {
   const [userList, setUserList] = useState<Array<User>>([]);
@@ -73,6 +76,15 @@ export default function Committee() {
           haven't paid yet.
         </Paragraph>
         <UnpaidWeekends />
+      </Section>
+      <Section>
+        <Heading>Inactive Users</Heading>
+        <Paragraph>
+          This shows non-member users who haven't logged in or been to an event
+          in over 3 months. Note we only started monitoring login in 2024, and
+          activity in 2023.
+        </Paragraph>
+        <InactiveUsers />
       </Section>
       <Activity />
     </div>
@@ -142,6 +154,69 @@ function UnpaidWeekends() {
         ))
       ) : (
         <Button onClick={fetchUnpaid}>Load Unpaid</Button>
+      )}
+    </Loading>
+  );
+}
+
+type InactiveUser = {
+  id: number;
+  name: string;
+  last_login: string;
+  discord: string;
+  last_activity: string;
+};
+
+function InactiveUsers() {
+  const [members, setMembers] = useState<Array<InactiveUser> | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const loadMembers = useCallback(() => {
+    api.get(`users/inactive`).then((res) => {
+      setMembers(res.data);
+      setLoading(false);
+    });
+  }, []);
+
+  return (
+    <Loading loading={loading}>
+      {members === null ? (
+        <Button onClick={loadMembers}>Load inactive</Button>
+      ) : (
+        <div>
+          <Paragraph>
+            <Bolded>Found {members.length} inactive members!</Bolded>
+          </Paragraph>
+          <Table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Last Login</th>
+                <th scope="col">Last Activity</th>
+                <th scope="col">Discord Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {members.map((user) => (
+                <tr key={user.id}>
+                  <Td>{user.name}</Td>
+
+                  <Td>
+                    {user.last_login
+                      ? dateFormat(user.last_login, "mmm dd, yyyy")
+                      : "Pre-2024"}
+                  </Td>
+                  <Td>
+                    {user.last_activity
+                      ? dateFormat(user.last_activity, "mmm dd, yyyy")
+                      : "Pre-2023"}
+                  </Td>
+                  <Td>{user.discord || ""}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
     </Loading>
   );

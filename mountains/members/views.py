@@ -1,27 +1,31 @@
-from rest_framework import viewsets, permissions, generics, status, views
-from rest_framework.decorators import permission_classes, action
+import datetime
+
+from django.db.models import Q
+from django.db.models.aggregates import Max
+from django.utils import timezone
+from rest_framework import generics, permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.core.mail import send_mail
+
 from .discord import (
-    get_member,
     fetch_all_members,
-    member_username,
-    set_member_role,
-    remove_member_role,
+    get_member,
     is_member_role,
+    member_username,
+    remove_member_role,
+    set_member_role,
 )
-from .permissions import ReadOnly, IsCommittee
 from .models import Experience, User
+from .permissions import IsCommittee, IsWalkCo, ReadOnly
 from .serializers import (
     CommitteeSerializer,
     ExperienceSerializer,
     FullUserSerializer,
     ProfilePictureSerializer,
-    SmallUserSerializerCommittee,
     SmallUserSerializer,
+    SmallUserSerializerCommittee,
     UserSerializer,
 )
-import datetime
 
 
 class IsUserOwner(permissions.BasePermission):
@@ -97,6 +101,51 @@ class UserViewSet(viewsets.ModelViewSet):
             committee, many=True, context={"request": request}
         )
         return Response(serializer.data)
+
+    @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
+    def inactive(self, request):
+        """
+        Returns a list of active users who haven't logged in for more than 3 months and aren't members
+        """
+        inactive = [
+            u
+            for u in User.objects.filter(
+                Q(is_active=True)
+                & (
+                    Q(last_login__lt=timezone.now() - datetime.timedelta(days=90))
+                    | Q(last_login=None)
+                )
+            ).order_by("last_login")
+            if not u.is_paid and len(u.get_full_name()) > 0
+        ]
+
+        discord_id_to_name = {
+            m["user"]["id"]: member_username(m) for m in fetch_all_members()
+        }
+
+        from activity.models import Activity
+
+        user_data = []
+        for user in inactive:
+            if user.last_name == "Boyland":
+                print(user.id, user.first_name, user.discord_id)
+            d = {
+                "id": user.id,
+                "name": user.get_full_name(),
+                "last_login": user.last_login,
+                "discord": discord_id_to_name.get(
+                    user.discord_id, "<Missing from server?>"
+                )
+                if user.discord_id is not None
+                else None,
+            }
+
+            d["last_activity"] = Activity.objects.filter(user=user).aggregate(
+                last_ts=Max("timestamp")
+            )["last_ts"]
+            user_data.append(d)
+
+        return Response(user_data)
 
 
 class ProfileUpdateView(generics.GenericAPIView):
