@@ -54,7 +54,10 @@ export default function AttendPopup({
       steps.push("discord");
     }
 
-    if (currentUser && event.show_popup) {
+    if (
+      currentUser &&
+      (event.show_popup || currentUser.in_case_emergency === "")
+    ) {
       // We just show this for any event which requires participation statement
       steps.push("ice");
     }
@@ -160,13 +163,14 @@ function ICEStep({ isFinalStep, advanceStep }: StepProps) {
     <>
       <SubHeading>Contact Details</SubHeading>
       <Paragraph>
-        In order to join on a walk, we need to have both a mobile number so we
-        can reach you on the day, and emergency contact information for you so
-        we know who to contact in case of any incidents.
+        In order to join any of our events, we need to collect some basic
+        information - a mobile number so we can reach you if needed, and
+        emergency contact information for you so we know who to contact in case
+        of any incidents during club events.
       </Paragraph>
       <Paragraph>
         Please ensure this is up to date by editing if needed below. Note this
-        will be saved on file and provided to walk coordinators.
+        will be saved on file and provided to organisers.
       </Paragraph>
       <FormLabel>Mobile Number</FormLabel>
       <FormInput
