@@ -46,6 +46,13 @@ class UserViewSet(viewsets.ModelViewSet):
         response = {"message": "User creation not allowed on this path."}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
+    def list(self, request):
+        queryset = User.objects.filter(is_active=True)
+        serializer = self.serializer_class(
+            queryset, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
+
     def get_serializer_class(self):
         if not isinstance(self.request.user, User):
             # This should never happen because of permissions

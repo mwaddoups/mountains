@@ -9,6 +9,8 @@ import {
   LI,
   Paragraph,
   Section,
+  SmallButton,
+  SmallCancelButton,
   Table,
   Td,
   UList,
@@ -194,6 +196,7 @@ function InactiveUsers() {
                 <th scope="col">Last Login</th>
                 <th scope="col">Last Activity</th>
                 <th scope="col">Discord Name</th>
+                <th scope="col">Make Inactive</th>
               </tr>
             </thead>
             <tbody>
@@ -204,26 +207,57 @@ function InactiveUsers() {
                     new Date(u2.last_login || "2021-01-01").getTime()
                 )
                 .map((user) => (
-                  <tr key={user.id}>
-                    <Td>{user.name}</Td>
-
-                    <Td>
-                      {user.last_login
-                        ? dateFormat(user.last_login, "mmm dd, yyyy")
-                        : "Pre-2024"}
-                    </Td>
-                    <Td>
-                      {user.last_activity
-                        ? dateFormat(user.last_activity, "mmm dd, yyyy")
-                        : "Pre-2023"}
-                    </Td>
-                    <Td>{user.discord || ""}</Td>
-                  </tr>
+                  <DeactivateUser key={user.id} user={user} />
                 ))}
             </tbody>
           </Table>
         </div>
       )}
     </Loading>
+  );
+}
+
+interface DeactivateUserParams {
+  user: InactiveUser;
+}
+
+function DeactivateUser({ user }: DeactivateUserParams) {
+  const [active, setActive] = useState<boolean>(true);
+
+  const deactivate = useCallback(() => {
+    api
+      .patch(`users/${user.id}/`, { is_active: false })
+      .then((res) => setActive(false));
+  }, [user.id]);
+  return (
+    <tr
+      key={user.id}
+      className={
+        active
+          ? "transition delay-500 opacity-100"
+          : "transition delay-500 opacity-10"
+      }
+    >
+      <Td>{user.name}</Td>
+
+      <Td>
+        {user.last_login
+          ? dateFormat(user.last_login, "mmm dd, yyyy")
+          : "Pre-2024"}
+      </Td>
+      <Td>
+        {user.last_activity
+          ? dateFormat(user.last_activity, "mmm dd, yyyy")
+          : "Pre-2023"}
+      </Td>
+      <Td>{user.discord || ""}</Td>
+      <Td>
+        {active ? (
+          <SmallButton onClick={deactivate}>Deactivate?</SmallButton>
+        ) : (
+          <SmallCancelButton>Deactivated</SmallCancelButton>
+        )}
+      </Td>
+    </tr>
   );
 }

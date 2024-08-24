@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import User, Experience
+
+from .models import Experience, User
 
 
 class ExperienceSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,7 +50,12 @@ class UserSerializer(SmallUserSerializer):
 
     class Meta:
         model = SmallUserSerializer.Meta.model
-        fields = SmallUserSerializer.Meta.fields + ["about", "experience", "email"]
+        fields = SmallUserSerializer.Meta.fields + [
+            "about",
+            "experience",
+            "email",
+            "is_active",
+        ]
         read_only_fields = SmallUserSerializer.Meta.read_only_fields + ["experience"]
 
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import Experience, User
 
 
@@ -11,6 +12,7 @@ class CustomUserAdmin(UserAdmin):
         "is_approved",
         "is_committee",
         "is_walk_coordinator",
+        "is_active",
         "last_login",
     )
     fieldsets = (

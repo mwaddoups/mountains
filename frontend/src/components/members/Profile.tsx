@@ -58,7 +58,12 @@ export default function Profile() {
   return (
     <Loading loading={!user}>
       <AdminTools user={user} refreshUser={refreshProfile} />
-      <div className="flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap">
+      <div
+        className={
+          "flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap" +
+          (user && !user.is_active ? " opacity-30" : "")
+        }
+      >
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow flex-auto flex lg:block items-center">
           <div className="w-32 h-32 lg:w-64 lg:h-64">
             <ProfilePicture user={user} />
@@ -78,7 +83,9 @@ export default function Profile() {
                   (user ? "" : " invisible")
                 }
               >
-                {user ? getName(user) : "Loading name..."}
+                {user
+                  ? getName(user) + (user.is_active ? "" : " (INACTIVE)")
+                  : "Loading name..."}
               </h1>
             </div>
             {isUser && (
