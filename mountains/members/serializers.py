@@ -54,7 +54,7 @@ class UserSerializer(SmallUserSerializer):
             "about",
             "experience",
             "email",
-            "is_active",
+            "is_dormant",
         ]
         read_only_fields = SmallUserSerializer.Meta.read_only_fields + ["experience"]
 

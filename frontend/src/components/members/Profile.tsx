@@ -61,7 +61,7 @@ export default function Profile() {
       <div
         className={
           "flex h-full lg:flex-row-reverse flex-wrap lg:flex-nowrap" +
-          (user && !user.is_active ? " opacity-30" : "")
+          (user && user.is_dormant ? " opacity-30" : "")
         }
       >
         <div className="ml-auto p-2 lg:p-4 rounded lg:shadow flex-auto flex lg:block items-center">
@@ -84,7 +84,7 @@ export default function Profile() {
                 }
               >
                 {user
-                  ? getName(user) + (user.is_active ? "" : " (INACTIVE)")
+                  ? getName(user) + (user.is_dormant ? " (DORMANT)" : "")
                   : "Loading name..."}
               </h1>
             </div>

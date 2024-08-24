@@ -13,7 +13,7 @@ export interface User extends NamedProfileUser {
   is_site_admin: boolean,
   is_walk_coordinator: boolean,
   is_paid: boolean,
-  is_active: boolean,
+  is_dormant: boolean,
   membership_expiry: string,
   mobile_number: string,
   in_case_emergency: string | undefined;

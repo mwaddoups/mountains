@@ -1,10 +1,11 @@
 import os
 import uuid
-from django.contrib.auth.models import AbstractUser
+
 from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django_resized import ResizedImageField
 from django.utils import timezone
+from django_resized import ResizedImageField
 
 
 class UserManager(BaseUserManager):
@@ -62,6 +63,7 @@ class User(AbstractUser):
     membership_expiry = models.DateField(default=None, null=True, blank=True)
     is_on_discord = models.BooleanField(default=False)
     is_winter_skills = models.BooleanField(default=False)
+    is_dormant = models.BooleanField(default=False)
     discord_id = models.CharField(max_length=100, null=True, default=None, unique=True)
 
     COMMITTEE_ROLES = [

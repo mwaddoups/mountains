@@ -47,7 +47,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
     def list(self, request):
-        queryset = User.objects.filter(is_active=True)
+        queryset = User.objects.filter(is_dormant=False)
         serializer = self.serializer_class(
             queryset, many=True, context={"request": request}
         )
@@ -117,7 +117,7 @@ class UserViewSet(viewsets.ModelViewSet):
         inactive = [
             u
             for u in User.objects.filter(
-                Q(is_active=True)
+                Q(is_dormant=False)
                 & (
                     Q(last_login__lt=timezone.now() - datetime.timedelta(days=90))
                     | Q(last_login=None)

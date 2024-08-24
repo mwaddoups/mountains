@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
         "is_approved",
         "is_committee",
         "is_walk_coordinator",
-        "is_active",
+        "is_dormant",
         "last_login",
     )
     fieldsets = (
@@ -30,6 +30,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_committee",
                     "is_walk_coordinator",
                     "is_active",
+                    "is_dormant",
                     "is_staff",
                     "is_superuser",
                     "groups",

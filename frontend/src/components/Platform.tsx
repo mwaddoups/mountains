@@ -5,6 +5,7 @@ import { useAuth } from "./Layout";
 import Login from "./Login";
 import ProfileEditor from "./members/ProfileEditor";
 import Sidebar from "./Sidebar";
+import DormantReturn from "./members/DormantReturn";
 
 export default function Platform() {
   const authContext = useAuth();
@@ -23,6 +24,9 @@ export default function Platform() {
 
   if (authToken && currentUser && !currentUser.is_approved) {
     return <ProfileEditor />;
+  }
+  if (authToken && currentUser && currentUser.is_dormant) {
+    return <DormantReturn />;
   }
 
   // NOTE: the main element needs w-3/4 in order to grow to it's full size, even though you'd expect w-full to work

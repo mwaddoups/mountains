@@ -226,7 +226,7 @@ function DeactivateUser({ user }: DeactivateUserParams) {
 
   const deactivate = useCallback(() => {
     api
-      .patch(`users/${user.id}/`, { is_active: false })
+      .patch(`users/${user.id}/`, { is_dormant: true })
       .then((res) => setActive(false));
   }, [user.id]);
   return (
@@ -255,7 +255,7 @@ function DeactivateUser({ user }: DeactivateUserParams) {
         {active ? (
           <SmallButton onClick={deactivate}>Deactivate?</SmallButton>
         ) : (
-          <SmallCancelButton>Deactivated</SmallCancelButton>
+          <SmallCancelButton>Dormant</SmallCancelButton>
         )}
       </Td>
     </tr>
