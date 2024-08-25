@@ -246,21 +246,24 @@ function EditableCell({
     initValue ? false : allowEdit
   );
   const [value, setValue] = useState<string | Date | number | null>(initValue);
+  const [error, setError] = useState<string | null>(null);
   const updateValue = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(e.target.elements);
       const cellValue = e.target.cellValue.value;
-      if (cellValue) {
+      if (cellValue !== null) {
         api
           .patch(`kit/inventory/${kitId}/`, { [field]: cellValue })
           .then((response) => {
             setValue(response.data[field]);
             setEditable(false);
+          })
+          .catch((err) => {
+            setError(err.response.data[field][0]);
           });
       }
     },
-    [kitId, setEditable, field]
+    [kitId, setEditable, field, setError]
   );
 
   const getInput = (fieldType: string) => {
@@ -296,6 +299,12 @@ function EditableCell({
   if (editable) {
     return (
       <td className="px-2 text-center">
+        {error && (
+          <dialog open className="rounded shadow p-2">
+            <p>{error}</p>
+            <SmallButton onClick={() => setError("")}>OK</SmallButton>
+          </dialog>
+        )}
         <form onSubmit={updateValue} className="inline">
           {getInput(fieldType)}
           <input className="hidden" type="submit" />
@@ -306,9 +315,13 @@ function EditableCell({
     return (
       <td
         onClick={allowEdit ? () => setEditable(true) : () => null}
-        className="px-2 text-center"
+        className={"px-2 text-center" + (value ? "" : " opacity-30")}
       >
-        {typeof value === "number" ? value.toFixed(2) : value?.toString()}
+        {value
+          ? typeof value === "number"
+            ? value.toFixed(2)
+            : value.toString()
+          : "N/A"}
       </td>
     );
   }
