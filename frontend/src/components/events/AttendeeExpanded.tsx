@@ -8,6 +8,13 @@ import { AttendingUser } from "../../models";
 import { getName } from "../../methods/user";
 import { useCallback, useState } from "react";
 import api from "../../api";
+import Modal from "../base/Modal";
+import {
+  Bolded,
+  SmallButton,
+  SmallCancelButton,
+  Paragraph,
+} from "../base/Base";
 
 interface ExpandedAttendeeProps {
   startUser: AttendingUser;
@@ -21,6 +28,7 @@ export default function AttendeeExpanded({
   refreshEvent,
 }: ExpandedAttendeeProps) {
   const [user, setUser] = useState<AttendingUser>(startUser);
+  const [removeConfirmation, setRemoveConfirmation] = useState<boolean>(false);
 
   const togglePaid = useCallback(() => {
     api
@@ -39,6 +47,7 @@ export default function AttendeeExpanded({
   }, [user, refreshEvent]);
 
   const removeUser = useCallback(() => {
+    setRemoveConfirmation(false);
     api.delete(`attendingusers/${user.au_id}/`).then(refreshEvent);
   }, [user, refreshEvent]);
 
@@ -91,10 +100,26 @@ export default function AttendeeExpanded({
           <button
             title="Remove user"
             className="ml-2 rounded bg-gray-300 w-6 h-6 p-1"
-            onClick={removeUser}
+            onClick={() => setRemoveConfirmation(true)}
           >
             <XSquareFill />
           </button>
+          {removeConfirmation && (
+            <Modal>
+              <div className="mx-auto w-full text-center">
+                <Paragraph>
+                  Are you sure you want to remove{" "}
+                  <Bolded>{getName(user)}</Bolded>?
+                </Paragraph>
+                <SmallButton className="mr-5" onClick={removeUser}>
+                  Remove
+                </SmallButton>
+                <SmallCancelButton onClick={() => setRemoveConfirmation(false)}>
+                  Cancel
+                </SmallCancelButton>
+              </div>
+            </Modal>
+          )}
         </>
       )}
     </>
