@@ -21,5 +21,8 @@ class Kit(models.Model):
 class KitBorrow(models.Model):
     kit = models.ForeignKey(Kit, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    request_date = models.DateTimeField(auto_now_add=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
+    collection_details = models.TextField(default="")
+    is_approved = models.BooleanField(default=False)

@@ -114,6 +114,7 @@ export default function ProfileEditor() {
           </Italic>
         </Paragraph>
         <FormTextArea
+          className="h-80"
           id="about"
           value={about}
           onChange={(event) => setAbout(event.target.value)}

@@ -145,8 +145,12 @@ export interface Kit extends SmallKit {
 }
 
 export type KitBorrow = {
+  id: number
   kit: SmallKit,
   user: User,
+  request_date: string,
   start_date: string,
   end_date: string,
+  collection_details: string,
+  is_approved: boolean,
 }
