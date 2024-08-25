@@ -88,6 +88,7 @@ export default function Inventory() {
             })
           )
         ).then((response) => {
+          setToBorrow([]);
           reloadKit();
         });
       }
