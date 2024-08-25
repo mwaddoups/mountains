@@ -54,7 +54,7 @@ function App() {
               <Route path="platform" element={<Platform />}>
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
-                <Route path="kit" element={<MemberContext />}>
+                <Route path="inventory" element={<MemberContext />}>
                   <Route index element={<Inventory />} />
                 </Route>
                 <Route path="activity" element={<Activity />} />
