@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import api from "../../api";
 import { Kit, KitBorrow } from "../../models";
 import Loading from "../Loading";
@@ -257,6 +257,7 @@ function EditableCell({
           .then((response) => {
             setValue(response.data[field]);
             setEditable(false);
+            setError(null);
           })
           .catch((err) => {
             setError(err.response.data[field][0]);
@@ -266,47 +267,55 @@ function EditableCell({
     [kitId, setEditable, field, setError]
   );
 
-  const getInput = (fieldType: string) => {
-    if (fieldType === "number") {
-      const numVal = Number(value);
-      return (
-        <FormInput
-          type="number"
-          name="cellValue"
-          defaultValue={value ? numVal : 0.0}
-          step="0.01"
-        />
-      );
-    } else if (fieldType === "date") {
-      return (
-        <FormInput
-          type="date"
-          name="cellValue"
-          defaultValue={value ? dateFormat(value.toString(), "yyyy-mm-dd") : ""}
-        />
-      );
-    } else {
-      return (
-        <FormInput
-          type="string"
-          name="cellValue"
-          defaultValue={value ? value.toString() : ""}
-        />
-      );
-    }
-  };
+  const formRef = useRef<HTMLFormElement>(null);
+  const getInput = useCallback(
+    (fieldType: string, error: string | null) => {
+      const classes = error ? "bg-red-100" : "";
+
+      if (fieldType === "number") {
+        const numVal = Number(value);
+        return (
+          <FormInput
+            type="number"
+            name="cellValue"
+            className={classes}
+            defaultValue={value ? numVal : 0.0}
+            step="0.01"
+            onBlur={(e) => formRef.current?.requestSubmit()}
+          />
+        );
+      } else if (fieldType === "date") {
+        return (
+          <FormInput
+            type="date"
+            name="cellValue"
+            className={classes}
+            defaultValue={
+              value ? dateFormat(value.toString(), "yyyy-mm-dd") : ""
+            }
+            onBlur={(e) => formRef.current?.requestSubmit()}
+          />
+        );
+      } else {
+        return (
+          <FormInput
+            type="string"
+            name="cellValue"
+            className={classes}
+            defaultValue={value ? value.toString() : ""}
+            onBlur={(e) => formRef.current?.requestSubmit()}
+          />
+        );
+      }
+    },
+    [value]
+  );
 
   if (editable) {
     return (
       <td className="px-2 text-center">
-        {error && (
-          <dialog open className="rounded shadow p-2">
-            <p>{error}</p>
-            <SmallButton onClick={() => setError("")}>OK</SmallButton>
-          </dialog>
-        )}
-        <form onSubmit={updateValue} className="inline">
-          {getInput(fieldType)}
+        <form ref={formRef} onSubmit={updateValue} className="inline">
+          {getInput(fieldType, error)}
           <input className="hidden" type="submit" />
         </form>
       </td>
