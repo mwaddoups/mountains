@@ -245,21 +245,22 @@ function EditableCell({
   const [editable, setEditable] = useState<boolean>(
     initValue ? false : allowEdit
   );
-  const [value, setValue] = useState<string | number | Date | null>(initValue);
-
+  const [value, setValue] = useState<string | Date | number | null>(initValue);
   const updateValue = useCallback(
     (e) => {
       e.preventDefault();
-      if (value) {
+      console.log(e.target.elements);
+      const cellValue = e.target.cellValue.value;
+      if (cellValue) {
         api
-          .patch(`kit/inventory/${kitId}/`, { [field]: value })
+          .patch(`kit/inventory/${kitId}/`, { [field]: cellValue })
           .then((response) => {
             setValue(response.data[field]);
             setEditable(false);
           });
       }
     },
-    [kitId, setEditable, value, field]
+    [kitId, setEditable, field]
   );
 
   const getInput = (fieldType: string) => {
@@ -268,28 +269,25 @@ function EditableCell({
       return (
         <FormInput
           type="number"
-          value={value ? numVal : 0.0}
+          name="cellValue"
+          defaultValue={value ? numVal : 0.0}
           step="0.01"
-          onChange={(event) => setValue(event.target.value)}
-          onBlur={updateValue}
         />
       );
     } else if (fieldType === "date") {
       return (
         <FormInput
           type="date"
-          value={value ? dateFormat(value.toString(), "yyyy-mm-dd") : ""}
-          onChange={(event) => setValue(event.target.value)}
-          onBlur={updateValue}
+          name="cellValue"
+          defaultValue={value ? dateFormat(value.toString(), "yyyy-mm-dd") : ""}
         />
       );
     } else {
       return (
         <FormInput
           type="string"
-          value={value ? value.toString() : ""}
-          onChange={(event) => setValue(event.target.value)}
-          onBlur={updateValue}
+          name="cellValue"
+          defaultValue={value ? value.toString() : ""}
         />
       );
     }
@@ -300,6 +298,7 @@ function EditableCell({
       <td className="px-2 text-center">
         <form onSubmit={updateValue} className="inline">
           {getInput(fieldType)}
+          <input className="hidden" type="submit" />
         </form>
       </td>
     );
