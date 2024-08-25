@@ -32,8 +32,7 @@ import Activity from "./components/Activity";
 import Reports from "./components/reports/Reports";
 import SingleReport from "./components/reports/SingleReport";
 import ReportEditor from "./components/reports/ReportEditor";
-import Kit from "./components/kit/Kit";
-import KitEditor from "./components/kit/KitEditor";
+import Inventory from "./components/kit/Inventory";
 
 function App() {
   return (
@@ -56,9 +55,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="committee" element={<Committee />} />
                 <Route path="kit" element={<MemberContext />}>
-                  <Route index element={<Kit />} />
-                  <Route path="new" element={<KitEditor />} />
-                  <Route path=":kitId/edit" element={<KitEditor />} />
+                  <Route index element={<Inventory />} />
                 </Route>
                 <Route path="activity" element={<Activity />} />
                 <Route path="members" element={<MemberContext />}>

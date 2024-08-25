@@ -1,9 +1,10 @@
-from rest_framework import serializers
-from .models import Kit, KitBorrow
 from members.serializers import SmallUserSerializer
+from rest_framework import serializers
+
+from .models import Kit, KitBorrow
 
 
-class KitSerializer(serializers.HyperlinkedModelSerializer):
+class KitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kit
         fields = "__all__"
