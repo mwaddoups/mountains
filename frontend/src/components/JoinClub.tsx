@@ -19,6 +19,7 @@ import {
   CancelButton,
   Table,
   Td,
+  Link,
 } from "./base/Base";
 import { useAuth } from "./Layout";
 import { useLocation } from "react-router-dom";
@@ -68,15 +69,20 @@ export default function JoinClub() {
         <Paragraph>
           Membership helps fund the club and goes towards purchasing club kit
           (that you can borrow) and running costs. Our membership also includes
-          Mountaineering Scotland membership, which has a host of benefits
+          Mountaineering Scotland membership, which has{" "}
+          <Link href="https://www.mountaineering.scot/members/members-benefits">
+            a host of benefits{" "}
+          </Link>
           including discounts at outdoor stores, access to talks and training
           and mountaineering insurance.
         </Paragraph>
         <Paragraph>
           Membership is a one-time cost for the whole year that covers you from
-          your join date until April 1, 2025. The cost depending on joining
-          month is shown below. Note that unfortunately the cost per month does
-          go up over the year, as we have to pass on additional fixed costs from
+          your join date until April 1, 2025. Our fees for 2024/25 are set at
+          £39 for the year. If you're not able to afford this, we can offer a
+          reduced concession rate of £21. The cost depending on joining month is
+          shown below. Note that unfortunately the cost per month does go up
+          over the year, as we have to pass on additional fixed costs from
           Mountaineering Scotland.
         </Paragraph>
         <div className="p-2">
