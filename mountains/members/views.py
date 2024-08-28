@@ -112,15 +112,22 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
     def inactive(self, request):
         """
-        Returns a list of active users who haven't logged in for more than 3 months and aren't members
+        Returns a list of users who have not become a member but been on the site for 3 months
+        (or been 3 months since last membership).
         """
         inactive = [
             u
             for u in User.objects.filter(
                 Q(is_dormant=False)
                 & (
-                    Q(last_login__lt=timezone.now() - datetime.timedelta(days=90))
-                    | Q(last_login=None)
+                    (
+                        Q(
+                            membership_expiry__lt=timezone.now()
+                            - datetime.timedelta(days=90)
+                        )
+                        | Q(membership_expiry=None)
+                    )
+                    & Q(date_joined__lt=timezone.now() - datetime.timedelta(days=90))
                 )
             ).order_by("last_login")
             if not u.is_paid and len(u.get_full_name()) > 0
@@ -138,6 +145,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 "id": user.id,
                 "name": user.get_full_name(),
                 "last_login": user.last_login,
+                "membership_expiry": user.membership_expiry,
+                "date_joined": user.date_joined,
                 "discord": discord_id_to_name.get(
                     user.discord_id, "<Missing from server?>"
                 )

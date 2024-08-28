@@ -165,6 +165,8 @@ type InactiveUser = {
   id: number;
   name: string;
   last_login: string;
+  membership_expiry: string;
+  date_joined: string;
   discord: string;
   last_activity: string;
 };
@@ -195,6 +197,8 @@ function InactiveUsers() {
                 <th scope="col">Name</th>
                 <th scope="col">Last Login</th>
                 <th scope="col">Last Activity</th>
+                <th scope="col">Membership Expiry</th>
+                <th scope="col">Account Created</th>
                 <th scope="col">Discord Name</th>
                 <th scope="col">Make Inactive</th>
               </tr>
@@ -249,6 +253,14 @@ function DeactivateUser({ user }: DeactivateUserParams) {
         {user.last_activity
           ? dateFormat(user.last_activity, "mmm dd, yyyy")
           : "Pre-2023"}
+      </Td>
+      <Td>
+        {user.membership_expiry
+          ? dateFormat(user.membership_expiry, "mmm dd, yyyy")
+          : ""}
+      </Td>
+      <Td>
+        {user.date_joined ? dateFormat(user.date_joined, "mmm dd, yyyy") : ""}
       </Td>
       <Td>{user.discord || ""}</Td>
       <Td>
