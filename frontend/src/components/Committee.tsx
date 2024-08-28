@@ -82,9 +82,10 @@ export default function Committee() {
       <Section>
         <Heading>Inactive Users</Heading>
         <Paragraph>
-          This shows non-member users who haven't logged in or been to an event
-          in over 3 months. Note we only started monitoring login in 2024, and
-          activity in 2023.
+          This shows non-member users who either joined more than 3 months ago
+          and have not become a member, or have let their membership expire for
+          longer than 3 months. Note we only started monitoring login in 2024,
+          and activity in 2023.
         </Paragraph>
         <InactiveUsers />
       </Section>
