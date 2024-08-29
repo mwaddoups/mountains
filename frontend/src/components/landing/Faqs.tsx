@@ -93,7 +93,7 @@ export default function Faqs() {
       <QA>
         <Question>How much is it to join the club?</Question>
         <Answer>
-          Our fees for 2023/24 are set at £39 for the year. If you're not able
+          Our fees for 2024/25 are set at £39 for the year. If you're not able
           to afford this, we can offer a reduced concession rate of £21. We also
           pro-rate this to some extent throughout the year.
         </Answer>
@@ -108,10 +108,10 @@ export default function Faqs() {
         </Answer>
         <Answer>
           The club is a nonprofit, so the other half goes into developing and
-          improving the club. We are looking at buying some club kit (such as
-          maps, helmets, and perhaps winter gear) that will be available to club
-          members. We currently have club helmets, safety gear such as group
-          shelters, and navigational aids such as maps and compasses.
+          improving the club. The club has a store of club kit - including club
+          helmets, safety gear such as group shelters, crampons, ice axes, some
+          climbing-related gear and navigational aids such as maps and
+          compasses.
         </Answer>
       </QA>
       <QA>
