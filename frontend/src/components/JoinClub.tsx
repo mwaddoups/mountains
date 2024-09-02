@@ -144,6 +144,7 @@ export default function JoinClub() {
 function JoinClubForm() {
   const [dob, setDob] = useState("");
   const [address, setAddress] = useState("");
+  const [postcode, setPostcode] = useState("");
   const [mobile, setMobile] = useState("");
   const [memberships, setMemberships] = useState<Array<StripePriceProduct>>([]);
   const [membershipPriceId, setMembershipPriceId] = useState<string | null>(
@@ -181,6 +182,7 @@ function JoinClubForm() {
         email,
         dob,
         address,
+        postcode,
         mobile,
         mscot,
         price_id: membershipPriceId,
@@ -192,7 +194,16 @@ function JoinClubForm() {
         window.location.assign(res.data);
       });
     },
-    [dob, address, mobile, mscot, membershipPriceId, currentUser, location]
+    [
+      dob,
+      address,
+      mobile,
+      mscot,
+      membershipPriceId,
+      currentUser,
+      location,
+      postcode,
+    ]
   );
 
   if (query.get("success")) {
@@ -219,18 +230,28 @@ function JoinClubForm() {
       <FormLabel>Date of Birth (DD/MM/YYYY)</FormLabel>
       <FormInput
         type="text"
+        required
         value={dob}
         onChange={(e) => setDob(e.target.value)}
       />
-      <FormLabel>Address (inc. Postcode)</FormLabel>
+      <FormLabel>Address</FormLabel>
       <FormInput
         type="text"
+        required
         value={address}
         onChange={(e) => setAddress(e.target.value)}
+      />
+      <FormLabel>Postcode</FormLabel>
+      <FormInput
+        type="text"
+        required
+        value={postcode}
+        onChange={(e) => setPostcode(e.target.value)}
       />
       <FormLabel>Mobile Number</FormLabel>
       <FormInput
         type="text"
+        required
         value={mobile}
         onChange={(e) => setMobile(e.target.value)}
       />
