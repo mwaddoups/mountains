@@ -1,17 +1,30 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
-import { Button, FilterBadge, SmallHeading } from "../base/Base";
+import {
+  Button,
+  FilterBadge,
+  FormCancelButton,
+  SmallHeading,
+} from "../base/Base";
 import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";
 import dateFormat from "dateformat";
+import { DebounceInput } from "react-debounce-input";
 
 const LIMIT_SIZE = 10;
 
 export default function Events() {
   const [eventList, setEventList] = useState<Array<Event>>([]);
+  const [eventSearch, setEventSearch] = useState<string>("");
   const [filters, setFilters] = useState<Array<EventType>>(
     Object.keys(eventTypeMap).filter((e) => e !== "CM") as Array<EventType>
   );
@@ -86,12 +99,28 @@ export default function Events() {
     [eventId, selectedEventRef]
   );
 
-  const todayDate = new Date();
-  todayDate.setHours(0, 0, 0, 0);
+  const todayDate = useMemo(() => {
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    return todayDate;
+  }, []);
 
-  const pastEvents = eventList
-    .filter((e) => new Date(e.event_date) < todayDate)
-    .filter((e) => filters.includes(e.event_type));
+  const filteredEvents = useMemo(
+    () =>
+      eventList
+        .filter((e) =>
+          e.title.toLowerCase().includes(eventSearch.toLowerCase())
+        )
+        .filter((e) => filters.includes(e.event_type)),
+    [eventList, eventSearch, filters]
+  );
+
+  const pastEvents = filteredEvents.filter(
+    (e) => new Date(e.event_date) < todayDate
+  );
+
+  const hasPastEvent =
+    eventList.find((e) => new Date(e.event_date) < todayDate) !== undefined;
 
   return (
     <Loading loading={isLoading}>
@@ -109,9 +138,17 @@ export default function Events() {
           )}
         </div>
         <EventFilter filters={filters} setFilters={setFilters} />
-        {eventList
+        <form className="flex">
+          <DebounceInput
+            className="font-light px-2 py-1 shadow border rounded w-full leading-tight focus:shadow-lg mb-4"
+            type="search"
+            placeholder="Search for event..."
+            value={eventSearch}
+            onChange={(event) => setEventSearch(event.target.value)}
+          />
+        </form>
+        {filteredEvents
           .filter((e) => new Date(e.event_date) >= todayDate)
-          .filter((e) => filters.includes(e.event_type))
           .map(eventDisplay)}
         {pastEvents.length > 0 && (
           <>
@@ -124,7 +161,7 @@ export default function Events() {
         {eventList.length > 0 && (
           <Button onClick={loadMoreEvents} className="w-full">
             Load more events (
-            {pastEvents.length === 0
+            {!hasPastEvent
               ? `up to ${dateFormat(
                   eventList[eventList.length - 1].event_date,
                   "mmmm dS, yyyy"
