@@ -8,12 +8,7 @@ import React, {
 import { Link, useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
-import {
-  Button,
-  FilterBadge,
-  FormCancelButton,
-  SmallHeading,
-} from "../base/Base";
+import { Button, FilterBadge, SmallHeading } from "../base/Base";
 import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";

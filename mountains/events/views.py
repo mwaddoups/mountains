@@ -1,19 +1,21 @@
-from collections import defaultdict
 import datetime
-import pytz
 import itertools
-from rest_framework import viewsets, permissions, mixins
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from members.permissions import IsCommittee, IsWalkCo, ReadOnly
-from members.models import User
-from .models import AttendingUser, Event
-from .serializers import BasicEventSerializer, EventSerializer, AttendingUserSerializer
+from collections import defaultdict
+
+import pytz
 from activity.models import Activity
-from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count, Value
 from django.db.models.functions import Concat
+from django.utils import timezone
+from members.models import User
+from members.permissions import IsCommittee, IsWalkCo, ReadOnly
+from rest_framework import mixins, permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from .models import AttendingUser, Event
+from .serializers import AttendingUserSerializer, BasicEventSerializer, EventSerializer
 
 
 def user_allowed_edit_events(user):
@@ -159,7 +161,7 @@ class EventViewSet(viewsets.ModelViewSet):
         attended_users = list(
             AttendingUser.objects.filter(
                 user__membership_expiry=None,
-                event__event_type__in=("SD", "SW", "WD", "WW"),
+                event__event_type__in=("SD", "SW", "WD", "WW", "OC"),
                 event__event_date__lt=timezone.now(),
                 is_waiting_list=False,
             )
