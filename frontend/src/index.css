@@ -2,12 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Tooltips - set <elem data-tooltip="something"> */
+
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  display: block;
+  z-index: 99;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  padding: 0.25em 0.5em;
+  font-size: small;
+  font-style: normal;
+  content: attr(data-tooltip);
+  pointer-events: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: forestgreen;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.1s ease-in;
+  border-radius: 0.5em 0.5em 0.5em 0;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 0.8;
+}
+
 .striped-gradient {
-    background: repeating-linear-gradient(
-        45deg,
-        #ffffff,
-        #ffffff 10px,
-        #dddddd 10px,
-        #dddddd 20px
-    );
+  background: repeating-linear-gradient(
+    45deg,
+    #ffffff,
+    #ffffff 10px,
+    #dddddd 10px,
+    #dddddd 20px
+  );
 }

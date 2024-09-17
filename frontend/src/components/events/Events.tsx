@@ -14,6 +14,7 @@ import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";
 import dateFormat from "dateformat";
 import { DebounceInput } from "react-debounce-input";
+import { ToggleOff, ToggleOn } from "react-bootstrap-icons";
 
 const LIMIT_SIZE = 10;
 
@@ -258,12 +259,19 @@ function EventFilter({ filters, setFilters }: EventFilterProps) {
               $badgeColor={eventTypeMap[event_type][1]}
               className={
                 "py-0.5" +
-                (filters.includes(event_type) ? " opacity-100" : " opacity-50")
+                (filters.includes(event_type) && !firstClick
+                  ? " opacity-100"
+                  : " opacity-50")
               }
               onClick={handleClick}
               id={event_type}
             >
               {eventTypeMap[event_type][0]}
+              {filters.includes(event_type) && !firstClick ? (
+                <ToggleOn className="ml-1 inline" />
+              ) : (
+                <ToggleOff className="ml-1 inline" />
+              )}
             </FilterBadge>
           ))}
         </div>

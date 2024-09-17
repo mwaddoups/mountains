@@ -110,7 +110,7 @@ export default function EventList({
                     )}
                   </div>
                   <div className="flex items-center">
-                    <button onClick={refreshEvent}>
+                    <button onClick={refreshEvent} data-tooltip="Refresh event">
                       <ArrowClockwise className="text-sm ml-2 inline" />
                     </button>
                     {(currentUser?.is_site_admin ||

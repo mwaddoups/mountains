@@ -47,23 +47,35 @@ export default function EventAdminTools({
 
   return (
     <>
-      <Link to={`../${event.id}/edit`}>
+      <Link to={`../${event.id}/edit`} data-tooltip="Edit event">
         <PencilFill className="text-sm ml-2 inline" />
       </Link>
-      <Link to={`../${event.id}/copy`}>
+      <Link to={`../${event.id}/copy`} data-tooltip="Copy event">
         <ClipboardPlus className="text-sm ml-2 inline" />
       </Link>
-      <span onClick={toggleSignup} className="cursor-pointer">
+      <span
+        onClick={toggleSignup}
+        className="cursor-pointer"
+        data-tooltip="Close/Open signup"
+      >
         {event.signup_open ? (
           <DoorOpenFill className="text-green-500 text-sm ml-2 inline" />
         ) : (
           <DoorClosedFill className="text-red-500 text-sm ml-2 inline" />
         )}
       </span>
-      <span onClick={() => setConfirmReminder(true)} className="cursor-pointer">
+      <span
+        onClick={() => setConfirmReminder(true)}
+        className="cursor-pointer"
+        data-tooltip="Send reminder email"
+      >
         <Envelope className="text-sm ml-2 inline" />
       </span>
-      <span onClick={() => setConfirmDelete(true)} className="cursor-pointer">
+      <span
+        onClick={() => setConfirmDelete(true)}
+        className="cursor-pointer"
+        data-tooltip="Delete event"
+      >
         <Trash className="text-sm ml-2 inline" />
       </span>
       {confirmDelete && (
