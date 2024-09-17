@@ -3,11 +3,11 @@ import tw from "twin.macro";
 
 export const Section = tw.div`rounded shadow md:p-4 p-2 mb-4`;
 export const Heading = tw.h1`text-3xl font-medium mb-2`;
-export const Paragraph = tw.p`mb-2 font-light text-sm`;
-export const StrongParagraph = tw.p`mb-2 font-bold`;
-export const UList = tw.ul`list-disc ml-6 mb-2 text-sm font-light tracking-wide`;
-export const OList = tw.ol`list-decimal ml-6 mb-2 text-sm font-light tracking-wide`;
-export const LI = tw.li`font-light tracking-wide text-sm`;
+export const Paragraph = tw.p`mb-2 font-light leading-relaxed text-sm md:text-base`;
+export const StrongParagraph = tw.p`mb-2 font-bold leading-relaxed text-sm md:text-base`;
+export const UList = tw.ul`list-disc ml-6 mb-2 text-sm md:text-base font-light tracking-wide`;
+export const OList = tw.ol`list-decimal ml-6 mb-2 text-sm md:text-base font-light tracking-wide`;
+export const LI = tw.li`font-light tracking-wide`;
 export const SubHeading = tw.h2`text-2xl mb-2 font-medium tracking-tight`;
 export const SmallHeading = tw.h3`text-lg mb-2 font-semibold tracking-tight`;
 export const Bolded = tw.span`font-bold`;
