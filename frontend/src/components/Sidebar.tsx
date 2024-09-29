@@ -9,6 +9,7 @@ import {
   Images,
   InfoSquareFill,
   ListCheck,
+  MapFill,
   PeopleFill,
 } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
@@ -56,6 +57,17 @@ export default function Sidebar() {
           Kit List
         </span>
       </NavLink>
+      <a
+        target="_blank"
+        rel="noreferrer"
+        className={linkStyles}
+        href="https://docs.google.com/spreadsheets/d/1__K5wAU1Cw9k2pcbia1crBqj7HAUX6f1UOEd-X1lU8c/edit?usp=drivesdk"
+      >
+        <span className="sm:flex">
+          <MapFill className={iconStyles} />
+          Kit Library
+        </span>
+      </a>
       <NavLink to="resources" className={linkStyler}>
         <span className="sm:flex">
           <InfoSquareFill className={iconStyles} />
