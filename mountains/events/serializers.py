@@ -1,8 +1,10 @@
 import types
+
 from activity.models import Activity
-from rest_framework import serializers
-from .models import Event, AttendingUser
 from members.serializers import SmallUserSerializer, SmallUserSerializerCommittee
+from rest_framework import serializers
+
+from .models import AttendingUser, Event
 
 
 class AttendingUserSerializer(serializers.HyperlinkedModelSerializer):
@@ -78,6 +80,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             "signup_open",
             "is_deleted",
             "signup_open_date",
+            "is_open",
             "price_id",
         ]
 

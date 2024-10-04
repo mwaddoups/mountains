@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from members.models import User
 
 
@@ -37,6 +38,15 @@ class Event(models.Model):
     signup_open_date = models.DateTimeField(blank=True, null=True, default=None)
     is_deleted = models.BooleanField(blank=False, null=False, default=False)
     price_id = models.CharField(max_length=200, blank=True, null=True, default=None)
+
+    @property
+    def is_open(self) -> bool:
+        """
+        This is a single source of truth for whether an event is signup-able
+        """
+        return self.signup_open and (
+            self.signup_open_date is None or self.signup_open_date <= timezone.now()
+        )
 
     def is_full(self) -> bool:
         """

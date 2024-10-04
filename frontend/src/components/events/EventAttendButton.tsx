@@ -15,24 +15,24 @@ export default function EventAttendButton({
   leaveEvent,
 }: EventAttendButtonProps) {
   const { currentUser } = useAuth();
-  // If it's manually closed
-  if (!event.signup_open) {
-    return <CancelButton>Signup closed</CancelButton>;
-  }
 
-  // If the event has a signup open date and it's in the future
-  if (
-    !(
-      event.signup_open_date === null ||
-      new Date(event.signup_open_date) <= new Date()
-    )
-  ) {
-    return (
-      <CancelButton>
-        Signup opens at{" "}
-        {dateFormat(event.signup_open_date, "dd mmm yyyy HH:MM")}
-      </CancelButton>
-    );
+  // is_open is calculated server-side to avoid clock abuse
+  if (!event.is_open) {
+    if (!event.signup_open) {
+      // If it's manually closed
+      return <CancelButton>Signup closed</CancelButton>;
+    } else if (event.signup_open_date) {
+      // It has a signup open date, but its in the future
+      return (
+        <CancelButton>
+          Signup opens at{" "}
+          {dateFormat(event.signup_open_date, "dd mmm yyyy HH:MM")}
+        </CancelButton>
+      );
+    } else {
+      // Should never happen (since is_open is calcualted server side) but just in case
+      return <CancelButton>Signup closed</CancelButton>;
+    }
   }
 
   // If already attending, leave

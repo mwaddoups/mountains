@@ -76,6 +76,7 @@ export interface Event extends BasicEvent {
   signup_open: boolean,
   is_deleted: boolean,
   signup_open_date: string | null,
+  is_open: boolean,
   price_id: string | null,
 }
 
