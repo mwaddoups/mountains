@@ -51,6 +51,8 @@ class EventViewSet(viewsets.ModelViewSet):
         selected_id = request.query_params.get("selectedId")
         limit = request.query_params.get("limit")
         offset = request.query_params.get("offset")
+        start_dt_str = request.query_params.get("start_date")
+        end_dt_str = request.query_params.get("end_date")
         if selected_id is not None:
             selected_id = int(selected_id)
             events = []
@@ -66,6 +68,13 @@ class EventViewSet(viewsets.ModelViewSet):
             events = list(itertools.islice(raw_events, offset, offset + limit))
 
             last_offset = limit + offset
+        elif start_dt_str is not None:
+            start_dt = datetime.datetime.strptime(start_dt_str, "%Y-%m-%d")
+            end_dt = datetime.datetime.strptime(end_dt_str, "%Y-%m-%d")
+            events = Event.objects.filter(
+                is_deleted=False, event_date__gte=start_dt, event_date__lte=end_dt
+            )
+            last_offset = None
         else:
             # Just return future events if no params passed
             events = list(future_events)

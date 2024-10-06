@@ -33,6 +33,7 @@ import Reports from "./components/reports/Reports";
 import SingleReport from "./components/reports/SingleReport";
 import ReportEditor from "./components/reports/ReportEditor";
 import Inventory from "./components/kit/Inventory";
+import Calendar from "./components/events/Calendar";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
                   <Route path=":memberId" element={<Profile />} />
                 </Route>
                 <Route path="events" element={<MemberContext />}>
+                  <Route path="calendar" element={<Calendar />} />
                   <Route index element={<Events />} />
                   <Route path=":eventId" element={<Events />} />
                   <Route path="new" element={<EventEditor copyFrom={false}/>} />

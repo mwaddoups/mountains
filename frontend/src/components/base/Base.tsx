@@ -47,11 +47,11 @@ export type BadgeColor =
   | "pink"
   | "gray"
   | "lightblue";
-interface BadgeProps {
+export interface BadgeProps {
   $badgeColor: BadgeColor;
 }
 
-const colorVariants: Record<BadgeColor, any> = {
+export const colorVariants: Record<BadgeColor, any> = {
   red: tw`bg-red-400 text-gray-100`,
   green: tw`bg-green-400 text-gray-100`,
   purple: tw`bg-purple-400 text-gray-100`,

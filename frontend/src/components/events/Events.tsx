@@ -5,16 +5,16 @@ import React, {
   useRef,
   useMemo,
 } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../../api";
 import { Event, EventType } from "../../models";
 import { Button, FilterBadge, SmallHeading } from "../base/Base";
-import { useAuth } from "../Layout";
 import Loading from "../Loading";
 import EventList, { eventTypeMap } from "./EventList";
 import dateFormat from "dateformat";
 import { DebounceInput } from "react-debounce-input";
 import { ToggleOff, ToggleOn } from "react-bootstrap-icons";
+import EventsHeader from "./EventsHeader";
 
 const LIMIT_SIZE = 10;
 
@@ -34,7 +34,6 @@ export default function Events() {
 
   const { eventId } = useParams();
 
-  const { currentUser } = useAuth();
   const selectedEventRef = useCallback(
     (node) => {
       if (node !== null) {
@@ -119,20 +118,9 @@ export default function Events() {
     eventList.find((e) => new Date(e.event_date) < todayDate) !== undefined;
 
   return (
-    <Loading loading={isLoading}>
-      <div>
-        <div className="flex">
-          <h1 className="text-xl md:text-3xl font-medium mb-2">
-            Upcoming Events
-          </h1>
-          {(currentUser?.is_site_admin || currentUser?.is_walk_coordinator) && (
-            <Link to="../new">
-              <button className="ml-4 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm p-2">
-                Create event
-              </button>
-            </Link>
-          )}
-        </div>
+    <div>
+      <EventsHeader />
+      <Loading loading={isLoading}>
         <EventFilter filters={filters} setFilters={setFilters} />
         <form className="flex">
           <DebounceInput
@@ -169,8 +157,8 @@ export default function Events() {
             )
           </Button>
         )}
-      </div>
-    </Loading>
+      </Loading>
+    </div>
   );
 }
 
