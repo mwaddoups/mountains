@@ -11,6 +11,7 @@ class Event(models.Model):
         WINTER_WEEKEND = "WW"
         INDOOR_CLIMBING = "CL"
         OUTDOOR_CLIMBING = "OC"
+        RUNNING = "RN"
         SOCIAL = "SO"
         COMMITTEE = "CM"
         OTHER = "XX"

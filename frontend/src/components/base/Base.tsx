@@ -44,6 +44,7 @@ export type BadgeColor =
   | "darkgreen"
   | "darkblue"
   | "orange"
+  | "yellow"
   | "pink"
   | "gray"
   | "lightblue";
@@ -60,6 +61,7 @@ export const colorVariants: Record<BadgeColor, any> = {
   lightblue: tw`bg-blue-300 text-gray-100`,
   darkgreen: tw`bg-green-700 text-gray-100`,
   darkblue: tw`bg-blue-700 text-gray-100`,
+  yellow: tw`bg-yellow-500 text-gray-100`,
   orange: tw`bg-orange-400 text-gray-100`,
   pink: tw`bg-pink-400 text-gray-100`,
   gray: tw`bg-gray-500 text-gray-100`,
