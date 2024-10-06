@@ -17,15 +17,15 @@ export default function EventsHeader() {
           </Link>
         )}
       </div>
-      <div className="flex items-center gap-1 md:justify-end w-full my-1">
+      <div className="flex items-center gap-2 md:justify-end w-full my-1">
         <Link to="..">
-          <button className="flex items-center gap-1 border-2 border-blue-500 rounded hover:opacity-90 p-2">
-            <ListTask /> <span>List View</span>
+          <button className="flex items-center gap-1 border-2 border-blue-500 rounded hover:border-blue-700 hover:bg-gray-100 p-2">
+            <ListTask /> <span>List</span>
           </button>
         </Link>
         <Link to="../calendar">
-          <button className="flex items-center gap-1 border-2 border-blue-500 rounded hover:opacity-90 p-2">
-            <Calendar /> <span>Calendar View</span>
+          <button className="flex items-center gap-1 border-2 border-blue-500 rounded hover:border-blue-700 hover:bg-gray-100 p-2">
+            <Calendar /> <span>Calendar</span>
           </button>
         </Link>
       </div>
