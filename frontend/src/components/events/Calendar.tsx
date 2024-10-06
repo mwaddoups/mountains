@@ -110,6 +110,11 @@ export default function Calendar() {
                 className={
                   (Math.floor(ix / 7) % 2 === 0 ? "bg-gray-50 " : "") +
                   (dt.getMonth() !== month ? "opacity-50 " : "") +
+                  (dt.getFullYear() === now.getFullYear() &&
+                  dt.getMonth() === now.getMonth() &&
+                  dt.getDate() === now.getDate()
+                    ? "border-2 border-blue-300 "
+                    : "") +
                   "p-1 min-h-[6em]"
                 }
               >
