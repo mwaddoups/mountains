@@ -67,6 +67,7 @@ export type BasicEvent = {
 
 export interface Event extends BasicEvent {
   created_date: string,
+  event_end_date: string | null,
   description: string,
   attendees: Array<AttendingUser>,
   max_attendees: number,

@@ -15,6 +15,7 @@ import {
   Error,
   FormSelect,
   Link as BaseLink,
+  Button,
 } from "../base/Base";
 import { eventTypeMap } from "./EventList";
 
@@ -48,6 +49,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
   const [description, setDescription] = useState<string>("");
   const [descriptionEdited, setDescriptionEdited] = useState<boolean>(false);
   const [eventDate, setEventDate] = useState<Date>(new Date());
+  const [eventEndDate, setEventEndDate] = useState<Date | null>(null);
   const [eventSignupOpenDate, setEventSignupOpenDate] = useState<
     Date | undefined
   >(undefined);
@@ -75,6 +77,9 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         setDescription(event.description);
         setDescriptionEdited(true);
         setEventDate(new Date(event.event_date));
+        setEventEndDate(
+          event.event_end_date === null ? null : new Date(event.event_end_date)
+        );
         setShowPopup(event.show_popup);
         setMembersOnly(event.members_only);
         setMaxAttendees(event.max_attendees);
@@ -110,6 +115,10 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
       newEvent.title = title;
       newEvent.description = description;
       newEvent.event_date = dateFormat(eventDate, "isoDateTime");
+      newEvent.event_end_date =
+        eventEndDate === null
+          ? eventEndDate
+          : dateFormat(eventEndDate, "isoDateTime");
       newEvent.show_popup = showPopup;
       newEvent.members_only = membersOnly;
       newEvent.signup_open = !signupClosed;
@@ -150,6 +159,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
       title,
       description,
       eventDate,
+      eventEndDate,
       currentEvent,
       showPopup,
       eventId,
@@ -176,8 +186,15 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         if (newEventType === "SW" || newEventType === "WW") {
           // Weekend trips are members only by default
           setMembersOnly(true);
+          // And we set an end date of 2 days by default
+          if (eventEndDate === null) {
+            const endDate = new Date(eventDate);
+            endDate.setDate(endDate.getDate() + 2);
+            setEventEndDate(endDate);
+          }
         } else {
           setMembersOnly(false);
+          setEventEndDate(null);
         }
       }
 
@@ -192,7 +209,7 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
         }
       }
     },
-    [setEventType, setShowPopup, descriptionEdited]
+    [setEventType, setShowPopup, descriptionEdited, eventDate, eventEndDate]
   );
 
   const handleDescriptionChange = useCallback(
@@ -221,14 +238,35 @@ export default function EventEditor({ copyFrom }: EventEditorProps) {
               onChange={(event) => setTitle(event.target.value)}
             />
           </div>
-          <div>
-            <FormLabel>Date</FormLabel>
-            <DateTimePicker
-              className="text-sm rounded shadow border mb-4"
-              onChange={setEventDate}
-              value={eventDate}
-              format="dd/MM/y h:mm a"
-            />
+          <div className="w-full flex items-center">
+            <div className="w-full">
+              <FormLabel>{eventEndDate ? "Start Date" : "Date"}</FormLabel>
+              <DateTimePicker
+                className="text-sm rounded shadow border mb-4"
+                onChange={setEventDate}
+                value={eventDate}
+                format="dd/MM/y h:mm a"
+              />
+            </div>
+            <div className="w-full">
+              {eventEndDate !== null ? (
+                <>
+                  <FormLabel>End Date</FormLabel>
+                  <DateTimePicker
+                    className="text-sm rounded shadow border mb-4"
+                    onChange={(v) =>
+                      v ? setEventEndDate(v) : setEventEndDate(null)
+                    }
+                    value={eventEndDate || undefined}
+                    format="dd/MM/y h:mm a"
+                  />
+                </>
+              ) : (
+                <Button onClick={() => setEventEndDate(new Date(eventDate))}>
+                  Add end date
+                </Button>
+              )}
+            </div>
           </div>
           <div className="w-full">
             <FormLabel htmlFor="eventtype">Event Type</FormLabel>

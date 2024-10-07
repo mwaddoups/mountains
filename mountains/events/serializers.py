@@ -70,6 +70,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             "title",
             "created_date",
             "event_date",
+            "event_end_date",
             "event_type",
             "description",
             "attendees",

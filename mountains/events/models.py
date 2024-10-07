@@ -20,6 +20,7 @@ class Event(models.Model):
     title = models.CharField(max_length=100, blank=False)
     created_date = models.DateTimeField(auto_now_add=True)
     event_date = models.DateTimeField(blank=False)
+    event_end_date = models.DateTimeField(blank=True, null=True, default=None)
     event_type = models.CharField(
         max_length=2, choices=EventType.choices, default=EventType.OTHER
     )
