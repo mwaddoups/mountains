@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { ArrowClockwise } from "react-bootstrap-icons";
+import { ArrowClockwise, ArrowRight, Calendar2 } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import { getName } from "../../methods/user";
@@ -127,7 +127,18 @@ export default function EventList({
                   Created by {getName(event.organiser)}.{" "}
                   {describe_date(event.created_date)}
                 </h6>
-                <CalendarTime dateStr={event.event_date} />
+                {event.event_end_date ? (
+                  <div className="flex gap-1 items-center content-center mt-1">
+                    <Calendar2 />
+                    <p>{describe_date(event.event_date)}</p>
+                    <ArrowRight />
+                    <p>{describe_date(event.event_end_date)}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <CalendarTime dateStr={event.event_date} />
+                  </div>
+                )}
               </div>
             </div>
             <div className="w-full mt-2">

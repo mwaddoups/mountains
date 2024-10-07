@@ -110,9 +110,8 @@ export default function Calendar() {
                 className={
                   (Math.floor(ix / 7) % 2 === 0 ? "bg-gray-50 " : "") +
                   (dt.getMonth() !== month ? "opacity-50 " : "") +
-                  (dt.getFullYear() === now.getFullYear() &&
-                  dt.getMonth() === now.getMonth() &&
-                  dt.getDate() === now.getDate()
+                  (dateFormat(dt, "yyyy mm dd") ===
+                  dateFormat(now, "yyyy mm dd")
                     ? "border-2 border-blue-300 "
                     : "") +
                   "p-1 min-h-[6em]"
@@ -122,23 +121,88 @@ export default function Calendar() {
                   {dateFormat(dt, "dd")}
                 </p>
                 {eventList
+                  .sort((e1, e2) => {
+                    // Sort those with end dates on top, to make sure they're contiguous
+                    if (
+                      e1.event_end_date !== null &&
+                      e2.event_end_date === null
+                    ) {
+                      return -1;
+                    } else if (
+                      e2.event_end_date !== null &&
+                      e1.event_end_date === null
+                    ) {
+                      return 1;
+                    }
+
+                    // If they start on the same day and both have end dates put longer on top
+                    if (
+                      e1.event_end_date !== null &&
+                      e2.event_end_date !== null &&
+                      dateFormat(e1.event_end_date, "yyyy mm dd") ===
+                        dateFormat(e2.event_end_date, "yyyy mm dd")
+                    ) {
+                      if (e1.event_end_date > e2.event_end_date) {
+                        return -1;
+                      } else if (e1.event_end_date === e2.event_end_date) {
+                        return 0;
+                      } else {
+                        return 1;
+                      }
+                    }
+
+                    if (e1.event_date > e2.event_date) {
+                      return 1;
+                    } else if (e1.event_date === e2.event_date) {
+                      return 0;
+                    } else {
+                      return -1;
+                    }
+                  })
                   .filter((e) => {
                     const ed = new Date(e.event_date);
-                    return (
+                    const isDay =
                       dt.getFullYear() === ed.getFullYear() &&
                       dt.getMonth() === ed.getMonth() &&
-                      dt.getDate() === ed.getDate()
-                    );
+                      dt.getDate() === ed.getDate();
+                    if (e.event_end_date) {
+                      return (
+                        isDay ||
+                        (dt > new Date(e.event_date) &&
+                          dt < new Date(e.event_end_date))
+                      );
+                    } else {
+                      return isDay;
+                    }
                   })
                   .map((e) => (
                     <Link to={`../${e.id}`}>
                       <CalendarEvent
                         $badgeColor={eventTypeMap[e.event_type][1]}
                       >
-                        <span className="font-medium">
-                          {dateFormat(e.event_date, "HH:MM")}
-                        </span>{" "}
-                        {e.title}
+                        {dateFormat(dt, "yyyy mm dd") ===
+                        dateFormat(e.event_date, "yyyy mm dd") ? (
+                          <div>
+                            <span className="font-medium">
+                              {dateFormat(e.event_date, "HH:MM")}
+                            </span>
+                            <span>{" " + e.title}</span>
+                          </div>
+                        ) : e.event_end_date !== null &&
+                          dateFormat(dt, "yyyy mm dd") ===
+                            dateFormat(e.event_end_date, "yyyy mm dd") ? (
+                          <div>
+                            <span className="font-medium">
+                              {dateFormat(e.event_end_date, "HH:MM")}
+                            </span>
+                            <span>{" " + e.title}</span>
+                          </div>
+                        ) : (
+                          <div>
+                            <span className="font-medium">All Day</span>
+                            <span>{" " + e.title}</span>
+                          </div>
+                        )}
                       </CalendarEvent>
                     </Link>
                   ))}
