@@ -170,7 +170,7 @@ class EventViewSet(viewsets.ModelViewSet):
         attended_users = list(
             AttendingUser.objects.filter(
                 user__membership_expiry=None,
-                event__event_type__in=("SD", "SW", "WD", "WW", "OC"),
+                event__event_type__in=("SD", "SW", "WD", "WW", "OC", "RN"),
                 event__event_date__lt=timezone.now(),
                 is_waiting_list=False,
             )
