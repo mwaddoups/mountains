@@ -164,6 +164,25 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = BasicEventSerializer(attended_events, many=True)
         return Response(serializer.data)
 
+    @action(
+        methods=["post"], detail=False, permission_classes=[permissions.IsAuthenticated]
+    )
+    def trialevents(self, request):
+        """Returns list of all events attended by userId that are in the trial period"""
+        attended_user_events = list(
+            AttendingUser.objects.filter(
+                user=request.data["userId"],
+                event__event_type__in=("SD", "SW", "WD", "WW", "OC", "RN"),
+                is_waiting_list=False,
+                event__event_date__lt=timezone.now() + datetime.timedelta(days=1),
+            ).order_by("-event__event_date")
+        )
+
+        attended_events = [au.event for au in attended_user_events]
+
+        serializer = BasicEventSerializer(attended_events, many=True)
+        return Response(serializer.data)
+
     @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
     def needsmembership(self, request):
         """Returns a list of users who have attended 1 or more walks but aren't yet a member"""

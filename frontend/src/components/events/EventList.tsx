@@ -186,8 +186,9 @@ export default function EventList({
               setPaymentPopupVisible={setPaymentPopupVisible}
             />
           )}
-        {attendPopupVisible && (
+        {currentUser && attendPopupVisible && (
           <AttendPopup
+            currentUser={currentUser}
             event={event}
             attendEvent={attendEvent}
             setVisible={setAttendPopupVisible}

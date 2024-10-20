@@ -12,25 +12,38 @@ import {
 import ClydeMarkdown from "../base/ClydeMarkdown";
 import Modal from "../base/Modal";
 import { useAuth } from "../Layout";
-import { Event } from "../../models";
+import { Event, FullUser, User } from "../../models";
 import participationStatementURL from "./ParticipationStatement.md";
 import DiscordSelector from "../members/DiscordSelector";
+import Loading from "../Loading";
+import dateFormat from "dateformat";
+import { Link } from "react-router-dom";
 
-export type PopupStep = "participation" | "ice" | "discord" | "members_only";
+export type PopupStep =
+  | "participation"
+  | "ice"
+  | "discord"
+  | "members_only"
+  | "trial_over";
 
 interface AttendPopupProps {
+  currentUser: FullUser;
   event: Event;
   attendEvent: () => void;
   setVisible: (a: boolean) => void;
 }
 
 export default function AttendPopup({
+  currentUser,
   event,
   attendEvent,
   setVisible,
 }: AttendPopupProps) {
   let [currentStep, setCurrentStep] = useState<number>(0);
   let [participationStatement, setParticipationStatement] = useState("");
+  let [trialEvents, setTrialEvents] = useState<Array<Event>>([]);
+  let [steps, setSteps] = useState<Array<PopupStep>>([]);
+  let [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function f() {
@@ -41,43 +54,31 @@ export default function AttendPopup({
     f().then((text) => setParticipationStatement(text));
   }, []);
 
-  const { currentUser } = useAuth();
-  const calcSteps = () => {
-    // Setup the steps
-    let steps: Array<PopupStep> = [];
-    if (currentUser && !currentUser.is_paid && event.members_only) {
-      // If it's members only,
-      steps.push("members_only");
-    }
-
-    if (currentUser && !currentUser.discord_id) {
-      steps.push("discord");
-    }
-
-    if (
-      currentUser &&
-      (event.show_popup || currentUser.in_case_emergency === "")
-    ) {
-      // We just show this for any event which requires participation statement
-      steps.push("ice");
-    }
-    if (event.show_popup) {
-      steps.push("participation");
-    }
-
-    return steps;
-  };
-
-  const steps = calcSteps();
-
   useEffect(() => {
-    // This essentially short-circuits the popup if no steps are generated.
-    // This needs to only run once, on initial run
-    if (steps.length === 0) {
-      attendEvent();
+    if (currentUser.is_paid) {
+      const steps = calcSteps(currentUser, event, []);
+      setSteps(steps);
+      setLoading(false);
+      if (steps.length === 0) {
+        // Short-circuit the popup
+        attendEvent();
+      }
+    } else {
+      api
+        .post("events/trialevents/", { userId: currentUser.id })
+        .then((response) => {
+          const trialEvents = response.data;
+          setTrialEvents(trialEvents);
+          const steps = calcSteps(currentUser, event, trialEvents);
+          setSteps(steps);
+          setLoading(false);
+          if (steps.length === 0) {
+            // Short-circuit the popup
+            attendEvent();
+          }
+        });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [attendEvent, currentUser, event]);
 
   const isFinalStep = steps !== null && currentStep >= steps.length - 1; // Use >= just to catch any weird issues
 
@@ -90,40 +91,78 @@ export default function AttendPopup({
     }
   }, [attendEvent, isFinalStep]);
 
-  if (steps.length === 0) {
+  if (steps.length === 0 && !loading) {
     return null;
   }
 
   return (
-    <Modal>
-      {steps !== null && (
-        <>
-          {steps[currentStep] === "ice" && (
-            <ICEStep isFinalStep={isFinalStep} advanceStep={advanceStep} />
-          )}
-          {steps[currentStep] === "members_only" && (
-            <MembersOnlyStep
-              isFinalStep={isFinalStep}
-              advanceStep={advanceStep}
-            />
-          )}
-          {steps[currentStep] === "discord" && (
-            <DiscordStep isFinalStep={isFinalStep} advanceStep={advanceStep} />
-          )}
-          {steps[currentStep] === "participation" && (
-            <>
-              <SubHeading>Participation Statement</SubHeading>
-              <ClydeMarkdown>{participationStatement}</ClydeMarkdown>
-              <Button onClick={advanceStep}>
-                {isFinalStep ? "Yes - I agree. Sign me up!" : "Next"}
-              </Button>
-            </>
-          )}
-        </>
-      )}
-      <CancelButton onClick={() => setVisible(false)}>Cancel</CancelButton>
-    </Modal>
+    <Loading loading={loading}>
+      <Modal>
+        {steps !== null && (
+          <>
+            {steps[currentStep] === "ice" && (
+              <ICEStep isFinalStep={isFinalStep} advanceStep={advanceStep} />
+            )}
+            {steps[currentStep] === "trial_over" && (
+              <TrialEventsStep
+                trialEvents={trialEvents}
+                isFinalStep={isFinalStep}
+                advanceStep={advanceStep}
+              />
+            )}
+            {steps[currentStep] === "members_only" && (
+              <MembersOnlyStep
+                isFinalStep={isFinalStep}
+                advanceStep={advanceStep}
+              />
+            )}
+            {steps[currentStep] === "discord" && (
+              <DiscordStep
+                isFinalStep={isFinalStep}
+                advanceStep={advanceStep}
+              />
+            )}
+            {steps[currentStep] === "participation" && (
+              <>
+                <SubHeading>Participation Statement</SubHeading>
+                <ClydeMarkdown>{participationStatement}</ClydeMarkdown>
+                <Button onClick={advanceStep}>
+                  {isFinalStep ? "Yes - I agree. Sign me up!" : "Next"}
+                </Button>
+              </>
+            )}
+          </>
+        )}
+        <CancelButton onClick={() => setVisible(false)}>Cancel</CancelButton>
+      </Modal>
+    </Loading>
   );
+}
+
+function calcSteps(user: User, event: Event, trialEvents: Array<Event>) {
+  // Setup the steps
+  let steps: Array<PopupStep> = [];
+  if (!user.is_paid && trialEvents.length > 4) {
+    steps.push("trial_over");
+  }
+  if (!user.is_paid && event.members_only) {
+    // If it's members only,
+    steps.push("members_only");
+  }
+
+  if (!user.discord_id) {
+    steps.push("discord");
+  }
+
+  if (event.show_popup || user.in_case_emergency === "") {
+    // We just show this for any event which requires participation statement
+    steps.push("ice");
+  }
+  if (event.show_popup) {
+    steps.push("participation");
+  }
+
+  return steps;
 }
 
 interface StepProps {
@@ -270,6 +309,45 @@ function MembersOnlyStep({ isFinalStep, advanceStep }: StepProps) {
         side of the sidebar. This also helps support the club and allows use of
         shared club kit.
       </Paragraph>
+    </>
+  );
+}
+
+interface TrialEventsStepProps extends StepProps {
+  trialEvents: Array<Event>;
+}
+
+function TrialEventsStep({
+  isFinalStep,
+  advanceStep,
+  trialEvents,
+}: TrialEventsStepProps) {
+  return (
+    <>
+      <SubHeading>Trial Events</SubHeading>
+      <Paragraph>
+        It looks like you may have hit your limit on trial events before joining
+        the club. We have you listed as attending the below events.
+      </Paragraph>
+      {trialEvents.map((e) => (
+        <Paragraph className="ml-4">
+          <Bolded>{dateFormat(e.event_date, "mmm dd, yyyy")}</Bolded> {e.title}
+        </Paragraph>
+      ))}
+      <Paragraph>
+        We would ask that you join the club before attending any further events.
+        This a requirement for our liability insurance. For more information and
+        to join, follow the link below.
+      </Paragraph>
+      <Link to={"../../join"}>
+        <Button>Join the Club</Button>
+      </Link>
+      <Paragraph>
+        If there's an error in our records (for example, one of these events was
+        cancelled or you did not attend) - then please ignore this and go ahead
+        to join.
+      </Paragraph>
+      <Button onClick={advanceStep}>Ignore and Join Event</Button>
     </>
   );
 }
