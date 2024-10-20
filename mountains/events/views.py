@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import pytz
 from activity.models import Activity
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.db.models import Count, Value
 from django.db.models.functions import Concat
 from django.utils import timezone
@@ -165,23 +165,43 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(
-        methods=["post"], detail=False, permission_classes=[permissions.IsAuthenticated]
+        methods=["get", "post"],
+        detail=True,
+        permission_classes=[permissions.IsAuthenticated],
     )
-    def trialevents(self, request):
+    def trialevents(self, request, pk=None):
         """Returns list of all events attended by userId that are in the trial period"""
-        attended_user_events = list(
-            AttendingUser.objects.filter(
-                user=request.data["userId"],
-                event__event_type__in=("SD", "SW", "WD", "WW", "OC", "RN"),
-                is_waiting_list=False,
-                event__event_date__lt=timezone.now() + datetime.timedelta(days=1),
-            ).order_by("-event__event_date")
-        )
+        if request.method == "GET":
+            attended_user_events = list(
+                AttendingUser.objects.filter(
+                    user=request.user,
+                    event__event_type__in=("SD", "SW", "WD", "WW", "OC", "RN"),
+                    is_waiting_list=False,
+                    event__event_date__lt=timezone.now() + datetime.timedelta(days=1),
+                ).order_by("-event__event_date")
+            )
 
-        attended_events = [au.event for au in attended_user_events]
+            attended_events = [au.event for au in attended_user_events]
 
-        serializer = BasicEventSerializer(attended_events, many=True)
-        return Response(serializer.data)
+            serializer = BasicEventSerializer(attended_events, many=True)
+            return Response(serializer.data)
+        elif request.method == "POST":
+            event = self.get_object()
+            user = request.user
+            email_body = (
+                f"This email is just to let you know that {user.first_name} {user.last_name} has signed up to {event.title} despite appearing to be over the event limit.\n"
+                "They were shown a popup with the list of events, so it's likely that one was cancelled or they did not attend.\n"
+                "However, it may be worth quickly checking to ensure this is correct."
+            )
+            send_mail(
+                "Clyde Mountaineering Club - User skipped trial events popup!",
+                email_body,
+                "noreply@clydemc.org",
+                ["admin@clydemc.org", "treasurer@clydemc.org"],
+                fail_silently=True,
+            )
+
+            return Response({"email_sent": True})
 
     @action(methods=["get"], detail=False, permission_classes=[IsCommittee | IsWalkCo])
     def needsmembership(self, request):

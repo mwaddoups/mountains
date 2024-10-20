@@ -64,19 +64,17 @@ export default function AttendPopup({
         attendEvent();
       }
     } else {
-      api
-        .post("events/trialevents/", { userId: currentUser.id })
-        .then((response) => {
-          const trialEvents = response.data;
-          setTrialEvents(trialEvents);
-          const steps = calcSteps(currentUser, event, trialEvents);
-          setSteps(steps);
-          setLoading(false);
-          if (steps.length === 0) {
-            // Short-circuit the popup
-            attendEvent();
-          }
-        });
+      api.get(`events/${event.id}/trialevents/`).then((response) => {
+        const trialEvents = response.data;
+        setTrialEvents(trialEvents);
+        const steps = calcSteps(currentUser, event, trialEvents);
+        setSteps(steps);
+        setLoading(false);
+        if (steps.length === 0) {
+          // Short-circuit the popup
+          attendEvent();
+        }
+      });
     }
   }, [attendEvent, currentUser, event]);
 
@@ -105,6 +103,7 @@ export default function AttendPopup({
             )}
             {steps[currentStep] === "trial_over" && (
               <TrialEventsStep
+                event={event}
                 trialEvents={trialEvents}
                 isFinalStep={isFinalStep}
                 advanceStep={advanceStep}
@@ -315,13 +314,24 @@ function MembersOnlyStep({ isFinalStep, advanceStep }: StepProps) {
 
 interface TrialEventsStepProps extends StepProps {
   trialEvents: Array<Event>;
+  event: Event;
 }
 
 function TrialEventsStep({
+  event,
   isFinalStep,
   advanceStep,
   trialEvents,
 }: TrialEventsStepProps) {
+  const notifyCommitteeAndAdvance = useCallback(
+    (e) => {
+      e.preventDefault();
+      api.post(`events/${event.id}/trialevents/`).then((res) => {
+        advanceStep();
+      });
+    },
+    [advanceStep, event]
+  );
   return (
     <>
       <SubHeading>Trial Events</SubHeading>
@@ -347,7 +357,7 @@ function TrialEventsStep({
         cancelled or you did not attend) - then please ignore this and go ahead
         to join.
       </Paragraph>
-      <Button onClick={advanceStep}>Ignore and Join Event</Button>
+      <Button onClick={notifyCommitteeAndAdvance}>Ignore and Join Event</Button>
     </>
   );
 }
