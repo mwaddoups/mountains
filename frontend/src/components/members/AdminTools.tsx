@@ -71,7 +71,7 @@ export default function AdminTools({ user, refreshUser }: ApprovalButtonProps) {
         </span>
         <span className="ml-2">
           <ProfileButton onClick={toggleWalkCo}>
-            Toggle Walk Coordinator
+            Toggle Coordinator
           </ProfileButton>
         </span>
         <span className="ml-2 text-sm">Email: {user.email}</span>
